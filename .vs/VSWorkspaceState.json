@@ -1,12 +1,13 @@
 {
   "ExpandedNodes": [
     "",
-    "\\env\\Scripts",
-    "\\PheonixFirewall",
-    "\\PheonixFirewall\\main",
-    "\\PheonixFirewall\\main\\templates",
-    "\\PheonixFirewall\\PheonixFirewall"
+    "\\dj",
+    "\\PhoenixFirewall",
+    "\\PhoenixFirewall\\main",
+    "\\PhoenixFirewall\\main\\templates",
+    "\\PhoenixFirewall\\PhoenixFirewall",
+    "\\PhoenixFirewall\\static"
   ],
-  "SelectedNode": "\\PheonixFirewall\\main\\views.py",
+  "SelectedNode": "\\PhoenixFirewall\\PhoenixFirewall\\urls.py",
   "PreviewInSolutionExplorer": false
 }
