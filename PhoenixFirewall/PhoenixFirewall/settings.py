@@ -45,14 +45,15 @@ LIVERELOAD_PORT = '8001'
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'livereload',
-    'django.contrib.staticfiles',
-    'main'
+    'django.contrib.staticfiles'
+#    'main'
 ]
 
 MIDDLEWARE = [
