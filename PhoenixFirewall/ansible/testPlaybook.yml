@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+  
+  - name: Print available facts
+    ansible.builtin.debug:
+      var: ansible_facts
