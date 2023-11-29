@@ -42,6 +42,9 @@ ALLOWED_HOSTS = []
 LIVERELOAD_HOST = '127.0.0.1'
 LIVERELOAD_PORT = '8001'
 
+# Settings for redirector
+LOGIN_REDIRECT_URL = 'home'
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -52,7 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'livereload',
     'django.contrib.staticfiles',
-    'main'
+    'main',
+    'bootstrap5'
 ]
 
 MIDDLEWARE = [

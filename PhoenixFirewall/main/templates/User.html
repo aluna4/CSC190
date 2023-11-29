@@ -5,12 +5,15 @@
     <style>button {display: block;}</style>
 </head>
 <body>
-    <h1>User</h1>
+    <form method='post'>
+        {% csrf_token %}
+        <h1>User</h1>
     
-    <button id="create-rule">Create Rule</button>
-    <button id="add-rule">Add Rule</button>
-    <button id="delete-rule">Delete Rule</button>
-    <button id="remove-rule">Remove Rule</button>
-    <button id="log-out">Log Out</button>
+        <button id="create-rule">Create Rule</button>
+        <button id="add-rule">Add Rule</button>
+        <button id="delete-rule">Delete Rule</button>
+        <button id="remove-rule">Remove Rule</button>
+        <button id="log-out">Log Out</button>
+    </form>
 </body>
 </html>
