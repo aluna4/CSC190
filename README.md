@@ -6,13 +6,13 @@
 2) Navigate into the `CSC190` directory
 	1) `cd CSC190`
 3) Install python virtual environments
-	4) `sudo apt install python3-venv`
+	1) `sudo apt install python3-venv`
 4) Create a virtual environment within the root folder
 	1) `python3 -m venv venv`
 5) Navigate into the virtual environment 
 	1) `source venv/bin/activate`
 6) Download and install the dependencies
-	2) `pip3 install -r requirements.txt`
+	1) `pip3 install -r requirements.txt`
 7) Navigate to the main runner for the application
 	1) `cd PhoenixFirewall`
 8) Run the PhoenixFirewall application
