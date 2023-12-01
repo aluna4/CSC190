@@ -21,4 +21,4 @@ class scripts(models.Model):
    scriptTxt = models.CharField(max_length=100) #holds script created by user
 
    def __str__(self):
-      return "Employee: "+self.employeeID+ ", Script = "+self.scriptTxt
+      return "Employee: " +self.employeeID+ ", Script = "+self.scriptTxt
