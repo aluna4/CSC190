@@ -1,30 +1,44 @@
 ![](https://lh7-us.googleusercontent.com/Q5qISaC80enw9vhh_JmkwlelJS5Kkxu_U5Oy03W-LZ7wMiQUXAb2MhCGINlo3p8Ft8Lvy-j1uT8bh09CySWQZFcyg8GRVQoeQ3VskPOTfi_cfD356djTSzpTgreCIgoiUV_o2vDvsYpfx6o=s2048)
 
+## PhoenixFirewall
+PhoenixFirewall is meant to streamline the process of firewall amendment requests as well as help set up complete firewalls from configs. Rather than having continuous pipelines with developers creating tickets to amend the firewall and having administrators go in and manually accept/decline each request, PhoenixFirewall is aiming to make it so that developers can create rules directly on the firewall using specifically crafted requests with a definite scope. One of the main purposes of PhoenixFirewall  is to deploy and modify Palo Alto specific firewalls.  Utilizing Palo Alto's native API as well as Django's native API, PhoenixFirewall will create routes and workflows to alter the Palo Alto firewall as defined by an administrative user.
+
 ## Installation Guide
 1) Clone this repository
 	1) `git clone https://github.com/aluna4/CSC190.git`
 2) Navigate into the `CSC190` directory
 	1) `cd CSC190`
-3) Install python virtual environments
+3) Create a `.env` file
+	1) `touch .env`
+2) Populate the `.env` file with variables as follows:
+	1) NOTE: Change `SECRET_KEY` when running in production. 
+   ```
+   PHOENIX_USER="${Palo Alto Firewall Username}"
+   PHOENIX_PASS="${Palo Alto Firewall User Password}"
+   SECRET_KEY="django-insecure-u2&7**ao7+($5*y$_o*xpy(al94(ls@)hd5_k#%m#nkul+7@(%"
+   ```
+1) Install python virtual environments
 	1) `sudo apt install python3-venv`
-4) Create a virtual environment within the root folder
+2) Create a virtual environment within the root folder
 	1) `python3 -m venv venv`
-5) Navigate into the virtual environment 
+3) Navigate into the virtual environment 
 	1) `source venv/bin/activate`
-6) Download and install the dependencies
+4) Download and install the dependencies
 	1) `pip3 install -r requirements.txt`
-7) Navigate to the main runner for the application
+5) Navigate to the main runner for the application
 	1) `cd PhoenixFirewall`
-8) Run the PhoenixFirewall application
+6) Run the PhoenixFirewall application
 	1) `python3 manage.py runserver`
 
-** Note: Make sure to include a .env file with the SECRET_KEY variable as such:
-`````
-SECRET_KEY=""
-`````
+## Visualization Demo
+![[sprint4.mp4]]
 
-## PhoenixFirewall
-PhoenixFirewall is meant to streamline the process of firewall amendment requests as well as help set up complete firewalls from configs. Rather than having continuous pipelines with developers creating tickets to amend the firewall and having administrators go in and manually accept/decline each request, PhoenixFirewall is aiming to make it so that developers can create rules directly on the firewall using specifically crafted requests with a definite scope. One of the main purposes of PhoenixFirewall  is to deploy and modify Palo Alto specific firewalls.  Utilizing Palo Alto's native API as well as Django's native API, PhoenixFirewall will create routes and workflows to alter the Palo Alto firewall as defined by an administrative user.
+## Future Milestones
+### Ansible Playbooks
+A key element to our project is having the ability to spin up new Palo Alto firewalls using config files automatically. We are aiming to accomplish this by utilizing Ansible to store and mass-deploy firewall configurations
+
+### Working Rule sets
+Currently, we are working towards getting a running GUI and having inputs get parsed correctly. Once we figure out all the fields to get rules added to the firewall via the API, we can start getting real rule sets added.
 
 ## Q&A
 ### Q)  What stack is this project running?
