@@ -4,7 +4,7 @@ nic_190/
 PhoenixFirewall/__pycache__
 migrations/__pycache__
 main/__pycache__
-
+.gitignore
 dj/
 .vs/
 .env
