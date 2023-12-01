@@ -1,9 +1,25 @@
+from django.contrib import messages
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
 from .panorama_api import add_firewall_rule
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
 
-def index(request):
-    return HttpResponse("OK", status=200)
+
+def home(request):
+    return HttpResponse("Phoenix Firewall Homepage", status=200)
+
+#log in page
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return render(request, 'User.html')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    return render(request, 'login.html')
 
 # add firewall rule
 def add_rule(request):
@@ -16,7 +32,7 @@ def add_rule(request):
         add_firewall_rule(rule_name, ip, port)
 
         # redirect back to home page
-        return redirect('index')  
+        return redirect('home')  
     else:
         # if not POST then for now just show addrule.html
         return render(request, "AddRule.html")

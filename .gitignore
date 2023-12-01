@@ -4,3 +4,6 @@ nic_190/
 PhoenixFirewall/PhoenixFirewall/__pycache__
 PhoenixFirewall/main/migrations/__pycache__
 PhoenixFirewall/main/__pycache__
+
+dj/
+.vs/
