@@ -1,2 +1,6 @@
 venv/
 nic_190/
+.env
+PhoenixFirewall/PhoenixFirewall/__pycache__
+PhoenixFirewall/main/migrations/__pycache__
+PhoenixFirewall/main/__pycache__
