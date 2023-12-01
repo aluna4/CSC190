@@ -31,7 +31,7 @@ PhoenixFirewall is meant to streamline the process of firewall amendment request
 	1) `python3 manage.py runserver`
 
 ## Visualization Demo
-![Video Link](https://www.youtube.com/shorts/pWTXqm0EDjQ)
+[Video Link](https://www.youtube.com/shorts/pWTXqm0EDjQ)
 
 ## Future Milestones
 ### Ansible Playbooks
