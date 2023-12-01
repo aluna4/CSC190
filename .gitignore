@@ -6,8 +6,7 @@ dj/
 
 env/
 __pycache__/
-PhoenixFirewall/PhoenixFirewall/__pycache__/
-PhoenixFirewall/main/__pycache__/
+
 .env
 
 .gitignore
