@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'livereload',
     'django.contrib.staticfiles'
-#    'main'
+#   'main'
 ]
 
 MIDDLEWARE = [
