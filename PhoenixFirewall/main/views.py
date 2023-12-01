@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login
 
 
 def home(request):
-    return HttpResponse("Phoenix Firewall Homepage", status=200)
+    return render(request, 'homepage.html')
 
 def add_success(request):
     return HttpResponse("Firewall Rule added successfully", status=200)
