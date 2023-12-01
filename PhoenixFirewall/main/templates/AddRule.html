@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phoenix {{ role }}</title>
+    <style>button {display: block;}</style>
+</head>
+<body>
+    <h1>{{ role }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="rule-name">Rule Name:</label>
+        <input type="text" id="rule-name" name="rule_name"><br><br>
+        <label for="ip">IP:</label>
+        <input type="text" id="ip" name="ip"><br><br>
+        <label for="port">Port (Use 12345):</label>
+        <input type="text" id="port" name="port"><br><br>
+        <input type="submit" value="Add Rule">
+    </form>
+</body>
+</html>
