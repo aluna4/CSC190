@@ -1,16 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phoenix User</title>
-    <style>button {display: block;}</style>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        button {
+            display: block;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff8000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            button:hover {
+                background-color: #ff8000;
+            }
+    </style>
 </head>
 <body>
     <h1>User</h1>
-    
+
     <button id="create-rule">Create Rule</button>
-    <button id="add-rule">Add Rule</button>
+
+    </a>
+    <a href="{% url 'add_rule' %}">
+        <button>Add Rule</button>
+    </a>
+
     <button id="delete-rule">Delete Rule</button>
     <button id="remove-rule">Remove Rule</button>
-    <button id="log-out">Log Out</button>
+
+    </a>
+    <a href="{% url 'home' %}">
+        <button>Log Out</button>
+    </a>
 </body>
 </html>

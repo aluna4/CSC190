@@ -6,7 +6,10 @@ from django.contrib.auth import authenticate, login
 
 
 def home(request):
-    return HttpResponse("Phoenix Firewall Homepage", status=200)
+    return render(request, 'homepage.html')
+
+def add_success(request):
+    return HttpResponse("Firewall Rule added successfully", status=200)
 
 #log in page
 def login_view(request):
@@ -21,6 +24,10 @@ def login_view(request):
             messages.error(request, 'Invalid username or password.')
     return render(request, 'login.html')
 
+#user page
+def user_view(request):
+    return render(request, 'User.html')
+
 # add firewall rule
 def add_rule(request):
     if request.method == "POST":
@@ -32,7 +39,7 @@ def add_rule(request):
         add_firewall_rule(rule_name, ip, port)
 
         # redirect back to home page
-        return redirect('home')  
+        return redirect('add_success')  
     else:
         # if not POST then for now just show addrule.html
         return render(request, "AddRule.html")
