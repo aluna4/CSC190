@@ -7,3 +7,4 @@ PhoenixFirewall/main/__pycache__
 
 dj/
 .vs/
+.env

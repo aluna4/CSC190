@@ -1,0 +1,30 @@
+
+---
+- name: Create security policies
+  hosts: phoenix_firewall
+  connection: local
+  vars_files:
+    - nic_vault.txt
+
+  vars:
+    device:
+      ip_address: "{{ ip_address }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+
+  collections:
+    - paloaltonetworks.panos
+
+  tasks:
+    - name: Add rule
+      paloaltonetworks.panos.panos_security_rule:
+        provider: "{{ device }}"
+        rule_name: "Nnnnn"
+        source_zone: ["any"]
+        source_ip: ["1.3.4.5"]
+        destination_zone: ["any"]
+        destination_ip: ["destination-server"]
+        application: ["ssh"]
+        service: ["tcp-12345"]
+        action: "allow"
+    
