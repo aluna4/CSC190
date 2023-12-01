@@ -3,3 +3,7 @@ nic_190/
 
 dj/
 .vs/
+
+env/
+__pycache__/
+.env
