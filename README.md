@@ -18,6 +18,11 @@
 8) Run the PhoenixFirewall application
 	1) `python3 manage.py runserver`
 
+** Note: Make sure to include a .env file with the SECRET_KEY variable as such:
+`````
+SECRET_KEY=""
+`````
+
 ## PhoenixFirewall
 PhoenixFirewall is meant to streamline the process of firewall amendment requests as well as help set up complete firewalls from configs. Rather than having continuous pipelines with developers creating tickets to amend the firewall and having administrators go in and manually accept/decline each request, PhoenixFirewall is aiming to make it so that developers can create rules directly on the firewall using specifically crafted requests with a definite scope. One of the main purposes of PhoenixFirewall  is to deploy and modify Palo Alto specific firewalls.  Utilizing Palo Alto's native API as well as Django's native API, PhoenixFirewall will create routes and workflows to alter the Palo Alto firewall as defined by an administrative user.
 
