@@ -1,11 +1,16 @@
 asgiref==3.7.2
 beautifulsoup4==4.12.2
+certifi==2024.2.2
+charset-normalizer==3.3.2
 Django==4.2.6
 django-livereload-server==0.4
+idna==3.6
 pan-os-python==1.11.0
 pan-python==0.17.0
 python-dotenv==1.0.0
+requests==2.31.0
 six==1.16.0
 soupsieve==2.5
 sqlparse==0.4.4
 tornado==6.3.3
+urllib3==2.2.0
