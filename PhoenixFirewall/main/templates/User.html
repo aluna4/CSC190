@@ -49,6 +49,12 @@
         <button>Add Rule</button>
     </a>
 
+    <form action="{% url 'get_pan_security_config' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Download Security Policy</button>
+    </form>
+    
+
     <button id="delete-rule">Delete Rule</button>
     <button id="remove-rule">Remove Rule</button>
 

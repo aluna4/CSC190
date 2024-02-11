@@ -13,9 +13,10 @@ PhoenixFirewall is meant to streamline the process of firewall amendment request
 2) Populate the `.env` file with variables as follows:
 	1) NOTE: Change `SECRET_KEY` when running in production. 
    ```
-   PHOENIX_USER="${Palo Alto Firewall Username}"
-   PHOENIX_PASS="${Palo Alto Firewall User Password}"
+   PHOENIX_USER="Palo Alto Firewall Username"
+   PHOENIX_PASS="Palo Alto Firewall User Password"
    SECRET_KEY="django-insecure-u2&7**ao7+($5*y$_o*xpy(al94(ls@)hd5_k#%m#nkul+7@(%"
+   PAN_URL="YOUR PALO ALTO FIREWALL URL HERE"
    ```
 1) Install python virtual environments
 	1) `sudo apt install python3-venv`
