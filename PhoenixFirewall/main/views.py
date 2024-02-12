@@ -70,7 +70,6 @@ def delete_rule(request):
 
         # call panorama_api function
         # delete_firewall_rule(rule_name, ip, port)
-        get_pan_security_config()
 
         # redirect back to home page
         return redirect('delete_success')
