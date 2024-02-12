@@ -3,14 +3,23 @@ from panos import network
 from panos import firewall
 from dotenv import load_dotenv, find_dotenv
 import subprocess
+from pathlib import Path
 
-# Import user and pass from environment variables.
+# import user and pass from environment variables
 load_dotenv(find_dotenv())
 USER=os.getenv('PHOENIX_USER')
 PASS=os.getenv('PHOENIX_PASS')
 
+# define the base directory from the PROJECT_ROOT environment variable
+project_root = Path(os.getenv('PROJECT_ROOT', '.'))
+
+# construct paths relative to the project root
+ansible_dir = project_root / 'CSC190/PhoenixFirewall/ansible'
+playbook_path = ansible_dir / 'create-security-policies.yml'
+vault_pass_file = ansible_dir / 'nic_vault_pass.txt'
+
 # add firewall rule
-def add_firewall_rule(rule_name, ip, port):
+def add_firewall_rule(rule_name, source_zone, source_ip, destination_zone, destination_ip, application, service, action):
     playbook_template = """
 ---
 - name: Create security policies
@@ -20,6 +29,7 @@ def add_firewall_rule(rule_name, ip, port):
     - nic_vault.txt
 
   vars:
+    ansible_python_interpreter: "{ansible_python_interpreter}"
     device:
       ip_address: "{{{{ ip_address }}}}"
       username: "{{{{ username }}}}"
@@ -33,23 +43,33 @@ def add_firewall_rule(rule_name, ip, port):
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{{{ device }}}}"
         rule_name: "{rule_name}"
-        source_zone: ["any"]
+        source_zone: ["{source_zone}"]
         source_ip: ["{source_ip}"]
-        destination_zone: ["any"]
-        destination_ip: ["destination-server"]
-        application: ["ssh"]
-        service: ["tcp-{service_port}"]
-        action: "allow"
+        destination_zone: ["{destination_zone}"]
+        destination_ip: ["{destination_ip}"]
+        application: ["{application}"]
+        service: ["tcp-{service}"]
+        action: "{action}"
     """
 
     # create ansible playbook
-    playbook_content = playbook_template.format(rule_name=rule_name, source_ip=ip, service_port=port)
-    with open('/home/ubuntu/nic_190/CSC190/PhoenixFirewall/ansible/create-security-policies.yml', 'w') as file:
+    playbook_content = playbook_template.format(
+        rule_name=rule_name,
+        source_zone=source_zone,
+        source_ip=source_ip,
+        destination_zone=destination_zone,
+        destination_ip=destination_ip,
+        application=application,
+        service=service,
+        action=action,
+        ansible_python_interpreter=str((project_root / 'CSC190/venv/bin/python3'))
+    )
+    with open(playbook_path, 'w') as file:
         file.write(playbook_content)
     
     # run ansible playbook
-    command = ["ansible-playbook", "-i", "hosts", "--vault-password-file", "nic_vault_pass.txt","create-security-policies.yml"]
-    subprocess.run(command, check=True, cwd="/home/ubuntu/nic_190/CSC190/PhoenixFirewall/ansible/")
+    command = ["ansible-playbook", "-i", "hosts", "--vault-password-file", str(vault_pass_file), str(playbook_path)]
+    subprocess.run(command, check=True, cwd=str(ansible_dir))
 
     return True
 

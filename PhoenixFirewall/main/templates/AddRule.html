@@ -62,30 +62,52 @@
             }
 
                 input[type="submit"]:hover {
-                    background-color: #ff8000;
+                    background-color: #ff700f;
                 }
     </style>
 </head>
 <body>
     <header>
         {% load static %}
-        <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
+        <a href = "{% url 'home' %}">
+            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
+        </a>
     </header>
-
+    
     <h1>{{ role }}</h1>
     <form method="post">
         {% csrf_token %}
         <label for="rule-name">Rule Name:</label>
         <input type="text" id="rule-name" name="rule_name">
 
-        <label for="ip">IP:</label>
-        <input type="text" id="ip" name="ip">
+        <label for="source-zone">Source Zone:</label>
+        <input type="text" id="source-zone" name="source_zone">
 
-        <label for="port">Port (Use 12345):</label>
-        <input type="text" id="port" name="port">
+        <label for="source-ip">Source IP:</label>
+        <input type="text" id="source-ip" name="source_ip">
+
+        <label for="destination-zone">Destination Zone:</label>
+        <input type="text" id="destination-zone" name="destination_zone">
+
+        <label for="destination-ip">Destination IP:</label>
+        <input type="text" id="destination-ip" name="destination_ip">
+
+        <label for="application">Application:</label>
+        <input type="text" id="application" name="application">
+
+        <label for="service">Service:</label>
+        <input type="text" id="service" name="service">
+
+        <label for="action">Action:</label>
+        <select id="action" name="action">
+            <option value="allow">Allow</option>
+            <option value="deny">Deny</option>
+        </select>
 
         <input type="submit" value="Add Rule">
-
+        <a href="{% url 'user' %}">
+            <input type="button" name="Back" value="Back">
+        </a>
     </form>
 </body>
 </html>
