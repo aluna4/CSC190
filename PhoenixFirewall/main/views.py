@@ -24,6 +24,9 @@ def home(request):
 
 def add_success(request):
     return HttpResponse("Firewall Rule added successfully", status=200)
+    
+def delete_success(request):
+    return HttpResponse("Firewall Rule deleted successfully", status=200)
 
 #log in page
 def login_view(request):
@@ -73,6 +76,21 @@ def add_rule(request):
     else:
         # if not POST then for now just show addrule.html
         return render(request, "AddRule.html")
+# delete firewall rule
+def delete_rule(request):
+    if request.method == "POST":
+        rule_name = request.POST.get("rule_name")
+        ip = request.POST.get("ip")
+        port = request.POST.get("port")
+
+        # call panorama_api function
+        # delete_firewall_rule(rule_name, ip, port)
+
+        # redirect back to home page
+        return redirect('delete_success')
+    else:
+        # if not POST then for now just show addrule.html
+        return render(request, "DeleteRule.html")
     
 def _get_api_key(request):
     # Send POST request to get headers form 
