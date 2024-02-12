@@ -8,12 +8,18 @@
 <body>
     <form method="post" action="/login/" class="login-form">
         {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
         <h1>Login</h1>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
-        <button type="submit">Log in</button>
+        <button type="submit" style="background-color: #ff8000; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; margin-top: 10px;">Log in</button>
+        <a href="http://127.0.0.1:8000/" style="background-color: #ff8000; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block; margin-top: 10px;">Home</a>
     </form>
 </body>
 </html>

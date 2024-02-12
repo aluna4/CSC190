@@ -35,7 +35,7 @@ def login_view(request):
             login(request, user)
             return render(request, 'User.html')
         else:
-            messages.error(request, 'Invalid username or password.')
+            messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
 
 #user page
