@@ -50,8 +50,7 @@ def add_rule(request):
         port = request.POST.get("port")
         
         # call panorama_api function
-        # add_firewall_rule(rule_name, ip, port)
-        get_pan_security_config()
+        add_firewall_rule(rule_name, ip, port)
 
         # redirect back to home page
         return redirect('add_success')  
