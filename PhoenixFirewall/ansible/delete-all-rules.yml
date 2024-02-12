@@ -1,0 +1,25 @@
+---
+- name: Delete all security rules
+  hosts: phoenix_firewall
+  connection: local
+  vars_files:
+    - nic_vault.txt
+
+  vars:
+    ansible_python_interpreter: "/home/malk/CSC190/venv/bin/python3"
+    device:
+      ip_address: "{{ ip_address }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      
+
+  collections:  paloaltonetworks.panos
+
+  tasks:
+
+
+    - name: Delete all rules
+      paloaltonetworks.panos.panos_security_rule:
+        provider: "{{ device }}"
+        rule_name: "myrule"
+        state: 'absent'
