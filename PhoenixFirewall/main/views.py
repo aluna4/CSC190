@@ -54,13 +54,6 @@ def add_rule(request):
         service = request.POST.get("service")
         action = request.POST.get("action")
         
-<<<<<<< Updated upstream
-        # call panorama_api function
-        add_firewall_rule(rule_name, ip, port)
-
-        # redirect back to home page
-        return redirect('add_success')  
-=======
         try:
             success = add_firewall_rule(rule_name, source_zone, source_ip, destination_zone, destination_ip, application, service, action)
             if success:
@@ -69,7 +62,6 @@ def add_rule(request):
                 return HttpResponse("Error adding firewall rule", status=500)
         except Exception as e:
             return HttpResponse(str(e), status=500)
->>>>>>> Stashed changes
     else:
         # if not POST then for now just show addrule.html
         return render(request, "AddRule.html")
