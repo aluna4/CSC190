@@ -62,16 +62,18 @@
             }
 
                 input[type="submit"]:hover {
-                    background-color: #ff8000;
+                    background-color: #ff700f;
                 }
     </style>
 </head>
 <body>
     <header>
         {% load static %}
-        <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
+        <a href = "{% url 'home' %}">
+            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
+        </a>
     </header>
-
+    
     <h1>{{ role }}</h1>
     <form method="post">
         {% csrf_token %}
@@ -85,7 +87,9 @@
         <input type="text" id="port" name="port">
 
         <input type="submit" value="Add Rule">
-
+        <a href="{% url 'user' %}">
+            <input type="button" name="Back" value="Back">
+        </a>
     </form>
 </body>
 </html>
