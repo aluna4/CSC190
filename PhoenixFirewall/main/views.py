@@ -24,6 +24,9 @@ def home(request):
 
 def add_success(request):
     return HttpResponse("Firewall Rule added successfully", status=200)
+    
+def delete_success(request):
+    return HttpResponse("Firewall Rule deleted successfully", status=200)
 
 #log in page
 def login_view(request):
@@ -46,17 +49,40 @@ def user_view(request):
 def add_rule(request):
     if request.method == "POST":
         rule_name = request.POST.get("rule_name")
-        ip = request.POST.get("ip")
-        port = request.POST.get("port")
+        source_zone = request.POST.get("source_zone")
+        source_ip = request.POST.get("source_ip")
+        destination_zone = request.POST.get("destination_zone")
+        destination_ip = request.POST.get("destination_ip")
+        application = request.POST.get("application")
+        service = request.POST.get("service")
+        action = request.POST.get("action")
         
-        # call panorama_api function
-        add_firewall_rule(rule_name, ip, port)
-
-        # redirect back to home page
-        return redirect('add_success')  
+        try:
+            success = add_firewall_rule(rule_name, source_zone, source_ip, destination_zone, destination_ip, application, service, action)
+            if success:
+                return render(request, "AddRule.html")
+            else:
+                return HttpResponse("Error adding firewall rule", status=500)
+        except Exception as e:
+            return HttpResponse(str(e), status=500)
     else:
         # if not POST then for now just show addrule.html
         return render(request, "AddRule.html")
+# delete firewall rule
+def delete_rule(request):
+    if request.method == "POST":
+        rule_name = request.POST.get("rule_name")
+        ip = request.POST.get("ip")
+        port = request.POST.get("port")
+
+        # call panorama_api function
+        # delete_firewall_rule(rule_name, ip, port)
+
+        # redirect back to home page
+        return redirect('delete_success')
+    else:
+        # if not POST then for now just show addrule.html
+        return render(request, "DeleteRule.html")
     
 def _get_api_key(request):
     # Send POST request to get headers form 
