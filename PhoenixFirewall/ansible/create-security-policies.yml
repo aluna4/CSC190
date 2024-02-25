@@ -20,12 +20,12 @@
     - name: Add rule
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{ device }}"
-        rule_name: "asfdaaaaa"
-        source_zone: ["any"]
+        rule_name: "nic_rule5"
+        source_zone: ["Internal"]
         source_ip: ["1.1.1.1"]
-        destination_zone: ["any"]
-        destination_ip: ["1.1.1.1"]
+        destination_zone: ["Internet"]
+        destination_ip: ["1.1.1.2"]
         application: ["ssh"]
-        service: ["tcp-12345"]
+        service: ["any"]
         action: "allow"
     
