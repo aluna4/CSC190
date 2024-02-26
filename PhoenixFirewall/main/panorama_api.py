@@ -74,3 +74,43 @@ def add_firewall_rule(rule_name, source_zone, source_ip, destination_zone, desti
     return True
 
 
+def delete_firewall_rule(rule_name, ip, port):
+    playbook_template = """
+---
+- name: Delete all security rules
+  hosts: phoenix_firewall
+  connection: local
+  vars_files:
+    - nic_vault.txt
+
+  vars:
+    ansible_python_interpreter: "/home/malk/CSC190/venv/bin/python3"
+    device:
+      ip_address: "{{ ip_address }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+      
+
+  collections:  paloaltonetworks.panos
+
+  tasks:
+
+
+    - name: Delete all rules
+      paloaltonetworks.panos.panos_security_rule:
+        provider: "{{ device }}"
+        rule_name: "myrule"
+        state: 'absent'
+
+"""
+
+    #create the ansible playbook
+    playbook_content = playbook_template.format(rule_name=rule_name, source_ip=ip, service_port=port)
+    with open('/home/malk/CSC190/PhoenixFirewall/ansible/delete-all-rules.yml', 'w') as file:
+        file.write(playbook_content)
+    
+    #run the ansible playbook
+    command = ["ansible-playbook", "-i", "hosts", "--vault-password-file", "nic_vault_pass.txt","delete-all-rules.yml"]
+    subprocess.run(command, check=True, cwd="/home/malk/CSC190/PhoenixFirewall/ansible")
+
+    return True
