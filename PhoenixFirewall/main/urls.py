@@ -15,5 +15,7 @@ urlpatterns = [
     #user url
     path("user/", views.user_view, name="user"),
     #download config
-    path("get_pan_security_config/", views.get_pan_security_config, name="get_pan_security_config")
+    path("get_pan_security_config/", views.get_pan_security_config, name="get_pan_security_config"),
+    #create user url
+    path("create_user/", views.create_user_view, name="create_user"),
 ]

@@ -5,6 +5,8 @@ import requests
 import regex as re
 from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
+from django.contrib.auth.hashers import make_password
+from .models import userlogIn
 
 from django.contrib import messages
 from django.http import HttpResponse
@@ -12,7 +14,6 @@ from .panorama_api import add_firewall_rule
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseBadRequest
-
 
 # Varibles for config
 load_dotenv(find_dotenv())
@@ -23,6 +24,9 @@ URL=os.getenv('PAN_URL')
 def home(request):
     return render(request, 'homepage.html')
 
+def create_user_view(request):
+    return render(request, 'create_user.html')
+
 def add_success(request):
     return HttpResponse("Firewall Rule added successfully", status=200)
     
@@ -31,6 +35,44 @@ def delete_success(request):
 
 def config_sucess_resp(request):
     return HttpResponse("Security Config Uploaded Successfully", status=200)
+
+
+def create_user(request):
+    if request.method == 'POST':
+        # Get data from the form
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        employee_id = request.POST.get('employee_id')
+
+        # Check if the username or employee ID already exists
+        if userlogIn.objects.filter(user_name=username).exists():
+            messages.error(request, "Username already exists.")
+            return render(request, 'create_user.html')
+        if userlogIn.objects.filter(employeeID=employee_id).exists():
+            messages.error(request, "Employee ID already exists.")
+            return render(request, 'create_user.html')
+
+        # Create the user
+        new_user = userlogIn(
+            first_name=first_name,
+            last_name=last_name,
+            user_name=username,
+            user_pswd=make_password(password),  # Hash the password
+            employeeID=employee_id,
+            create_date=datetime.timezone.now()
+        )
+        new_user.save()
+        
+        # Redirect to the login page after creating the user
+        messages.success(request, "User created successfully. Please log in.")
+        return redirect('login')  # Replace 'login' with the name of your login URL
+    else:
+        # If not a POST request, render the form again
+        return render(request, 'create_user.html')
+    
+
 
 #log in page
 def login_view(request):
