@@ -80,16 +80,22 @@ def login_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
+        context = {
+            'username': request.user
+        }
         if user is not None:
             login(request, user)
-            return render(request, 'User.html')
+            return render(request, 'User.html',context)
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
 
 #user page
 def user_view(request):
-    return render(request, 'User.html')
+    context = {
+        'username': request.user
+    }
+    return render(request, 'User.html', context)
 
 # define allowed flows based on the simulated subnet segmentation
 ALLOWED_FLOWS = [
@@ -100,6 +106,7 @@ ALLOWED_FLOWS = [
 # add firewall rule
 def add_rule(request):
     context = {
+        'username': request.user,
         'rule_name': '',
         'source_zone': '',
         'source_ip': '',
@@ -137,9 +144,12 @@ def add_rule(request):
             context['error'] = str(e)
             return render(request, "AddRule.html", context)
     else:
-        return render(request, "AddRule.html")
+        return render(request, "AddRule.html", context)
 # delete firewall rule
 def delete_rule(request):
+    context = {
+        'username': request.user
+    }
     if request.method == "POST":
         rule_name = request.POST.get("rule_name")
         ip = request.POST.get("ip")
@@ -152,7 +162,7 @@ def delete_rule(request):
         return redirect('delete_success')
     else:
         # if not POST then for now just show addrule.html
-        return render(request, "DeleteRule.html")
+        return render(request, "DeleteRule.html", context)
     
 # Handle upload file
 def handle_uploaded_file(f):
