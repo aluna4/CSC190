@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Phoenix {{ role }}</title>
+        <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #808080;
+            color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+            input[type="submit"] {
+                background-color: #ff8000;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+                input[type="submit"]:hover {
+                    background-color: #ff700f;
+                }
+    </style>
+</head>
+<body>
+    <header>
+        {% load static %}
+        <a href = "{% url 'home' %}">
+            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
+        </a>
+    </header>
+    {% block content %}
+    form
+    {% endblock %}
+</body>
+</html>
