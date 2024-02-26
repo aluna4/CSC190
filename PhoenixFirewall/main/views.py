@@ -49,28 +49,52 @@ def login_view(request):
 def user_view(request):
     return render(request, 'User.html')
 
+# define allowed flows based on the simulated subnet segmentation
+ALLOWED_FLOWS = [
+    ('Internal', 'DMZ'),
+    ('Internal', 'Internet'),
+]
+
 # add firewall rule
 def add_rule(request):
+    context = {
+        'rule_name': '',
+        'source_zone': '',
+        'source_ip': '',
+        'destination_zone': '',
+        'destination_ip': '',
+        'application': '',
+        'service': '',
+        'action': 'allow',
+        'error': '',
+    }
+
     if request.method == "POST":
-        rule_name = request.POST.get("rule_name")
-        source_zone = request.POST.get("source_zone")
-        source_ip = request.POST.get("source_ip")
-        destination_zone = request.POST.get("destination_zone")
-        destination_ip = request.POST.get("destination_ip")
-        application = request.POST.get("application")
-        service = request.POST.get("service")
-        action = request.POST.get("action")
+        context['rule_name'] = request.POST.get("rule_name")
+        context['source_zone'] = request.POST.get("source_zone")
+        context['source_ip'] = request.POST.get("source_ip")
+        context['destination_zone'] = request.POST.get("destination_zone")
+        context['destination_ip'] = request.POST.get("destination_ip")
+        context['application'] = request.POST.get("application")
+        context['service'] = request.POST.get("service")
+        context['action'] = request.POST.get("action")
         
+        # Check if the flow is allowed
+        if (context['source_zone'], context['destination_zone']) not in ALLOWED_FLOWS:
+            context['error'] = 'The specified flow is not allowed.'
+            return render(request, "AddRule.html", context)
+
         try:
-            success = add_firewall_rule(rule_name, source_zone, source_ip, destination_zone, destination_ip, application, service, action)
+            success = add_firewall_rule(context['rule_name'], context['source_zone'], context['source_ip'], context['destination_zone'], context['destination_ip'], context['application'], context['service'], context['action'])
             if success:
-                return render(request, "AddRule.html")
+                return render(request, "AddRule.html", {'success': 'Rule added successfully.'})
             else:
-                return HttpResponse("Error adding firewall rule", status=500)
+                context['error'] = 'Error adding firewall rule'
+                return render(request, "AddRule.html", context)
         except Exception as e:
-            return HttpResponse(str(e), status=500)
+            context['error'] = str(e)
+            return render(request, "AddRule.html", context)
     else:
-        # if not POST then for now just show addrule.html
         return render(request, "AddRule.html")
 # delete firewall rule
 def delete_rule(request):

@@ -48,7 +48,7 @@ def add_firewall_rule(rule_name, source_zone, source_ip, destination_zone, desti
         destination_zone: ["{destination_zone}"]
         destination_ip: ["{destination_ip}"]
         application: ["{application}"]
-        service: ["tcp-{service}"]
+        service: ["{service}"]
         action: "{action}"
     """
 

@@ -75,33 +75,43 @@
     </header>
     
     <h1>{{ role }}</h1>
+
+    <!-- display error message -->
+    {% if error %}
+        <p style="color: red; text-align: center;">{{ error }}</p>
+    {% endif %}
+
+    {% if success %}
+        <p style="color: green; text-align: center;">{{ success }}</p>
+    {% endif %}
+
     <form method="post">
         {% csrf_token %}
         <label for="rule-name">Rule Name:</label>
-        <input type="text" id="rule-name" name="rule_name">
+        <input type="text" id="rule-name" name="rule_name" value="{{ rule_name|default:'' }}">
 
         <label for="source-zone">Source Zone:</label>
-        <input type="text" id="source-zone" name="source_zone">
+        <input type="text" id="source-zone" name="source_zone" value="{{ source_zone|default:'' }}">
 
         <label for="source-ip">Source IP:</label>
-        <input type="text" id="source-ip" name="source_ip">
+        <input type="text" id="source-ip" name="source_ip" value="{{ source_ip|default:'' }}">
 
         <label for="destination-zone">Destination Zone:</label>
-        <input type="text" id="destination-zone" name="destination_zone">
+        <input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' }}">
 
         <label for="destination-ip">Destination IP:</label>
-        <input type="text" id="destination-ip" name="destination_ip">
+        <input type="text" id="destination-ip" name="destination_ip" value="{{ destination_ip|default:'' }}">
 
         <label for="application">Application:</label>
-        <input type="text" id="application" name="application">
+        <input type="text" id="application" name="application" value="{{ application|default:'' }}">
 
         <label for="service">Service:</label>
-        <input type="text" id="service" name="service">
+        <input type="text" id="service" name="service" value="{{ service|default:'' }}">
 
         <label for="action">Action:</label>
         <select id="action" name="action">
-            <option value="allow">Allow</option>
-            <option value="deny">Deny</option>
+            <option value="allow" {% if action == 'allow' %}selected{% endif %}>Allow</option>
+            <option value="deny" {% if action == 'deny' %}selected{% endif %}>Deny</option>
         </select>
 
         <input type="submit" value="Add Rule">
