@@ -1,80 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoenix {{ role }}</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+{% extends 'base.html' %}
 
-        header {
-            text-align: center;
-            padding: 20px;
-            background-color: #808080;
-            color: white;
-            width: 100%;
-            box-sizing: border-box;
-        }
+{% block content %}
 
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-
-        form {
-            max-width: 400px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            display: block;
-            margin: 10px 0;
-            color: #555;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
-
-            input[type="submit"] {
-                background-color: #ff8000;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-            }
-
-                input[type="submit"]:hover {
-                    background-color: #ff700f;
-                }
-    </style>
-</head>
-<body>
-    <header>
-        {% load static %}
-        <a href = "{% url 'home' %}">
-            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
-        </a>
-    </header>
-    
-    <h1>{{ role }}</h1>
+<h1>{{ role }}</h1>
 
     <!-- display error message -->
     {% if error %}
@@ -97,7 +25,8 @@
         <input type="text" id="source-ip" name="source_ip" value="{{ source_ip|default:'' }}">
 
         <label for="destination-zone">Destination Zone:</label>
-        <input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' }}">
+        <input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' 
+}}">
 
         <label for="destination-ip">Destination IP:</label>
         <input type="text" id="destination-ip" name="destination_ip" value="{{ destination_ip|default:'' }}">
@@ -119,5 +48,4 @@
             <input type="button" name="Back" value="Back">
         </a>
     </form>
-</body>
-</html>
+{% endblock %}
