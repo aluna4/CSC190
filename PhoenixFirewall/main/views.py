@@ -156,7 +156,7 @@ def delete_rule(request):
         port = request.POST.get("port")
 
         # call panorama_api function
-        # delete_firewall_rule(rule_name, ip, port)
+        delete_firewall_rule(rule_name, ip, port)
 
         # redirect back to home page
         return redirect('delete_success')
