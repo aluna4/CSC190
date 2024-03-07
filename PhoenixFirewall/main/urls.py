@@ -16,6 +16,8 @@ urlpatterns = [
     path("commit_rule/", views.commit_rule, name="commit_rule"),
     #user url
     path("user/", views.user_view, name="user"),
+    # admin url
+    path("admin/", views.admin_view, name="admin"),
     #download config
     path("get_pan_security_config/", views.get_pan_security_config, name="get_pan_security_config"),
     #create user url
