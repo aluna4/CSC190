@@ -272,4 +272,3 @@ def set_pan_security_config(request):
         return render(request, config_sucess_resp(request))
     except:
         return HttpResponseBadRequest()
-    
