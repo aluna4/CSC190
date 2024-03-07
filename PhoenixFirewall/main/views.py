@@ -7,6 +7,7 @@ from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
 from django.contrib.auth.hashers import make_password
 from .models import userlogIn
+from .forms import SecurityConfUpload
 
 from django.contrib import messages
 from django.http import HttpResponse
@@ -198,7 +199,7 @@ def commit_rule(request):
 
 # Handle upload file
 def handle_uploaded_file(f):
-    with open("tmp/security_config.txt", "wb+") as destination:
+    with open("/tmp/upl_security_config.txt", "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
@@ -226,15 +227,6 @@ def _download_config(request):
         response['Content-Disposition'] = 'attachment; filename="security_policies.txt"'
         return response
 
-# Function to read security config from upload form 
-def _read_config(request):
-    if request.method == 'POST':
-        file = request.FILES['security_config']
-
-        if file.size > 2000000:
-            return HttpResponseBadRequest()
-        return file
-
 # Function to grab config from PAN
 def get_pan_security_config(request):
     # Generate API key for authentication
@@ -258,18 +250,24 @@ def get_pan_security_config(request):
 # Function to set security config rules on PAN
 # Note, this will change the default rulesets
 # Documentation for API: https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-panorama-api/pan-os-xml-api-request-types/configuration-api/set-configuration#id52c0a29e-5573-4a40-bccf-5585fee352f3
-def set_pan_security_config(request):
-    try:
-        # Gemerate API key
-        key = _get_api_key(request)
+def _set_pan_security_config(request, file):
+    # Gemerate API key
+    key = _get_api_key(request)
 
-        # Load security config into memory
-        file = _read_config(request)
-
-        # upload config rules via API
-        headers = {"X-PAN-KEY":key}
-        requests.post(f"{URL}/api/?type=config&action=set&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules/entry[@name='vsys1']&element={file}", headers=headers, verify=False)
-        return render(request, config_sucess_resp(request))
-    except:
-        return HttpResponseBadRequest()
+    # upload config rules via API
+    headers = {"X-PAN-KEY":key}
+    requests.post(f"{URL}/api/?type=config&action=set&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules/entry[@name='vsys1']&element={file}", headers=headers, verify=False)
     
+# Function used to handle file uploads from upload template
+def upload(request):  
+    if request.method == 'POST':  
+        file = SecurityConfUpload(request.POST, request.FILES)  
+        if file.is_valid():  
+            handle_uploaded_file(request.FILES['file'])
+
+            # This requires further testing to get the xml correct
+            # _set_pan_security_config(request, request.FILES['/tmp/upl_security_config.txt'])  
+            return HttpResponse("File uploaded successfuly")  
+    else:  
+        upload = SecurityConfUpload()  
+        return render(request,"upload.html",{'form':upload})  

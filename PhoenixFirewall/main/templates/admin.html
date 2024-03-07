@@ -1,16 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Phoenix Admin</title>
-    <style>button {display: block;}</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #555;
+            padding: 10px;
+            text-align: center;
+        }
+
+            nav a {
+                color: white;
+                text-decoration: none;
+                padding: 10px;
+                margin: 0 10px;
+            }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            background-color: #ff8000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+
+            .action-btn:hover {
+                background-color: #ff9933;
+            }
+
+        .download-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+            .download-btn:hover {
+                background-color: #45a049;
+            }
+    </style>
 </head>
 <body>
-    <h1>Admin</h1>
-    <button id="deploy-firewall">Deploy Firewall</button>
-    <button id="create-rule">Create Rule</button>
-    <button id="add-rule">Add Rule</button>
-    <button id="delete-rule">Delete Rule</button>
-    <button id="remove-rule">Remove Rule</button>
-    <button id="log-out">Log Out</button>
+    <header>
+        <h1>User Dashboard</h1>
+    </header>
+
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'add_rule' %}">View Rules</a>
+    </nav>
+
+    <main>
+        <h2>Welcome, Admin!</h2>
+        <p>This is your dashboard.</p>
+
+        <button class="action-btn" onclick="location.href='{% url 'add_rule' %}'">Add Rule</button>
+        <button class="action-btn" onclick="location.href='{% url 'delete_rule' %}'">Delete Rule</button>
+        <button class="action-btn" onclick="location.href='{% url 'commit_rule' %}'">Commit Rule</button>
+        <button class="action-btn" onclick="location.href='{% url 'upload' %}'">Upload Security Config</button>
+
+        <form action="{% url 'get_pan_security_config' %}" method="post">
+            {% csrf_token %}
+            <button class="download-btn" type="submit">Download Security Policy</button>
+        </form>
+    </main>
 </body>
 </html>
