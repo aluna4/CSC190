@@ -12,6 +12,8 @@ urlpatterns = [
     path("add_rule/", views.add_rule, name="add_rule"),
     # delete rule url
     path("delete_rule/", views.delete_rule, name="delete_rule"),
+    # commit rule url
+    path("commit_rule/", views.commit_rule, name="commit_rule"),
     #user url
     path("user/", views.user_view, name="user"),
     #download config

@@ -15,7 +15,7 @@
         header {
             text-align: center;
             padding: 20px;
-            background-color: #808080;
+            background-color: #333;
             color: white;
             width: 100%;
             box-sizing: border-box;
@@ -26,8 +26,8 @@
             text-align: center;
         }
 
-        h3 {
-            color: #333;
+        h6 {
+            color: white;
             text-align: right;
         }
 
@@ -76,8 +76,7 @@
         <a href = "{% url 'home' %}">
             <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
         </a>
-        <h3>Role:User</h3>
-        <h3>Username:{{ username }}</h3>
+        <h6>Role:User <br>Username:{{ username }}</h6>
     </header>   
     {% block content %}
     form
