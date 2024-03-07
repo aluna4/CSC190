@@ -86,7 +86,10 @@ def login_view(request):
         }
         if user is not None:
             login(request, user)
-            return render(request, 'user.html',context)
+            if not request.user.is_superuser:
+                return render(request, 'user.html', context)
+            else:
+                return render(request, 'admin.html', context)
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
@@ -97,6 +100,13 @@ def user_view(request):
         'username': request.user
     }
     return render(request, 'user.html', context)
+
+# admin page
+def admin_view(request):
+    context = {
+        'username': request.user
+    }
+    return render(request, 'admin.html', context)
 
 # define allowed flows based on the simulated subnet segmentation
 ALLOWED_FLOWS = [
