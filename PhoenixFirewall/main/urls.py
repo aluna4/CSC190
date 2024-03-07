@@ -20,6 +20,7 @@ urlpatterns = [
     path("admin/", views.admin_view, name="admin"),
     #download config
     path("get_pan_security_config/", views.get_pan_security_config, name="get_pan_security_config"),
+    path("upload/", views.upload, name="upload"),
     #create user url
     path("create_user/", views.create_user_view, name="create_user"),
 ]
