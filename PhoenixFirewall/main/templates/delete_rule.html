@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ role }}</h1>
     <form method="post">
         {% csrf_token %}
        <label for="rule-name">Rule Name:</label>

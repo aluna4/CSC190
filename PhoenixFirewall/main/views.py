@@ -5,7 +5,8 @@ from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import userlogIn
-from django.utils import timezone
+from .forms import SecurityConfUpload
+
 from django.contrib import messages
 from django.http import HttpResponse
 from .panorama_api import add_firewall_rule
@@ -31,6 +32,9 @@ def add_success(request):
 def delete_success(request):
     return HttpResponse("Firewall Rule deleted successfully", status=200)
 
+def commit_success(request):
+    return HttpResponse("Firewall Rule commited successfully", status=200)
+    
 def config_sucess_resp(request):
     return HttpResponse("Security Config Uploaded Successfully", status=200)
 
@@ -74,7 +78,6 @@ def create_user_view(request):
         return redirect('login')
     else:
         return render(request, 'create_user.html')
-    
 
 #log in page
 def login_view(request):
@@ -90,16 +93,32 @@ def login_view(request):
             user = None
         
         # If a user with the provided username exists, check the password
+        context = {
+            'username': request.user
+        }
         if user is not None and check_password(password, user.user_pswd):
             request.session['user_id'] = user.id  # Store user's id in session
-            return render(request, 'User.html')  # Redirect to a user page after successful login
+            if not request.user.is_superuser:
+                return render(request, 'user.html', context)
+            else:
+                return render(request, 'admin.html', context)  # Redirect to a user page after successful login
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
 
 #user page
 def user_view(request):
-    return render(request, 'User.html')
+    context = {
+        'username': request.user
+    }
+    return render(request, 'user.html', context)
+
+# admin page
+def admin_view(request):
+    context = {
+        'username': request.user
+    }
+    return render(request, 'admin.html', context)
 
 # define allowed flows based on the simulated subnet segmentation
 ALLOWED_FLOWS = [
@@ -110,6 +129,7 @@ ALLOWED_FLOWS = [
 # add firewall rule
 def add_rule(request):
     context = {
+        'username': request.user,
         'rule_name': '',
         'source_zone': '',
         'source_ip': '',
@@ -134,7 +154,7 @@ def add_rule(request):
         # Check if the flow is allowed
         if (context['source_zone'], context['destination_zone']) not in ALLOWED_FLOWS:
             context['error'] = 'The specified flow is not allowed.'
-            return render(request, "AddRule.html", context)
+            return render(request, "add_rule.html", context)
 
         try:
             success = add_firewall_rule(context['rule_name'], context['source_zone'], context['source_ip'], context['destination_zone'], context['destination_ip'], context['application'], context['service'], context['action'])
@@ -142,31 +162,55 @@ def add_rule(request):
                 return render(request, "AddRule.html", {'success': 'Rule added successfully.'})
             else:
                 context['error'] = 'Error adding firewall rule'
-                return render(request, "AddRule.html", context)
+                return render(request, "add_rule.html", context)
         except Exception as e:
             context['error'] = str(e)
-            return render(request, "AddRule.html", context)
+            return render(request, "add_rule.html", context)
     else:
-        return render(request, "AddRule.html")
+        return render(request, "add_rule.html", context)
 # delete firewall rule
 def delete_rule(request):
+    context = {
+        'username': request.user
+    }
     if request.method == "POST":
         rule_name = request.POST.get("rule_name")
         ip = request.POST.get("ip")
         port = request.POST.get("port")
 
         # call panorama_api function
-        # delete_firewall_rule(rule_name, ip, port)
+        delete_firewall_rule(rule_name, ip, port)
 
         # redirect back to home page
         return redirect('delete_success')
     else:
         # if not POST then for now just show addrule.html
-        return render(request, "DeleteRule.html")
-    
+        return render(request, "delete_rule.html", context)
+
+def commit_rule(request):
+    context = {
+        'username': request.user,
+        'rule_name': '',
+        'destination_zone': '',
+        'port': '',
+    }
+    if request.method == "POST":
+        rule_name = request.POST.get("rule_name")
+        destination_zone = request.POST.get('destination_zone')
+        port = request.POST.get("port")
+
+        # call panorama_api function
+        commit_firewall_rule(rule_name, destination_zone, port)
+
+        # redirect back to home page
+        return redirect('commit_success')
+    else:
+        # if not POST then for now just show addrule.html
+        return render(request, "commit_rule.html", context)
+
 # Handle upload file
 def handle_uploaded_file(f):
-    with open("tmp/security_config.txt", "wb+") as destination:
+    with open("/tmp/upl_security_config.txt", "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
@@ -194,15 +238,6 @@ def _download_config(request):
         response['Content-Disposition'] = 'attachment; filename="security_policies.txt"'
         return response
 
-# Function to read security config from upload form 
-def _read_config(request):
-    if request.method == 'POST':
-        file = request.FILES['security_config']
-
-        if file.size > 2000000:
-            return HttpResponseBadRequest()
-        return file
-
 # Function to grab config from PAN
 def get_pan_security_config(request):
     # Generate API key for authentication
@@ -226,18 +261,24 @@ def get_pan_security_config(request):
 # Function to set security config rules on PAN
 # Note, this will change the default rulesets
 # Documentation for API: https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-panorama-api/pan-os-xml-api-request-types/configuration-api/set-configuration#id52c0a29e-5573-4a40-bccf-5585fee352f3
-def set_pan_security_config(request):
-    try:
-        # Gemerate API key
-        key = _get_api_key(request)
+def _set_pan_security_config(request, file):
+    # Gemerate API key
+    key = _get_api_key(request)
 
-        # Load security config into memory
-        file = _read_config(request)
-
-        # upload config rules via API
-        headers = {"X-PAN-KEY":key}
-        requests.post(f"{URL}/api/?type=config&action=set&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules/entry[@name='vsys1']&element={file}", headers=headers, verify=False)
-        return render(request, config_sucess_resp(request))
-    except:
-        return HttpResponseBadRequest()
+    # upload config rules via API
+    headers = {"X-PAN-KEY":key}
+    requests.post(f"{URL}/api/?type=config&action=set&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules/entry[@name='vsys1']&element={file}", headers=headers, verify=False)
     
+# Function used to handle file uploads from upload template
+def upload(request):  
+    if request.method == 'POST':  
+        file = SecurityConfUpload(request.POST, request.FILES)  
+        if file.is_valid():  
+            handle_uploaded_file(request.FILES['file'])
+
+            # This requires further testing to get the xml correct
+            # _set_pan_security_config(request, request.FILES['/tmp/upl_security_config.txt'])  
+            return HttpResponse("File uploaded successfuly")  
+    else:  
+        upload = SecurityConfUpload()  
+        return render(request,"upload.html",{'form':upload})  

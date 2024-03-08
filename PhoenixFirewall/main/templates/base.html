@@ -15,7 +15,7 @@
         header {
             text-align: center;
             padding: 20px;
-            background-color: #808080;
+            background-color: #333;
             color: white;
             width: 100%;
             box-sizing: border-box;
@@ -24,6 +24,11 @@
         h1 {
             color: #333;
             text-align: center;
+        }
+
+        h6 {
+            color: white;
+            text-align: right;
         }
 
         form {
@@ -71,7 +76,12 @@
         <a href = "{% url 'home' %}">
             <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
         </a>
-    </header>
+        {%if username.is_superuser%}
+        <h6>Role: Superuser <br>Username: {{ username }}</h6>
+        {%else%}
+        <h6>Role: User <br>Username: {{ username }}</h6>
+        {% endif %}
+    </header>   
     {% block content %}
     form
     {% endblock %}

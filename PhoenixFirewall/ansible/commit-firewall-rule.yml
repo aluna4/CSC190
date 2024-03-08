@@ -1,0 +1,24 @@
+---
+- name: Commit firewall change
+  hosts: phoenix_firewall
+  connection: local
+  vars_files:
+    - nic_vault.txt
+
+  vars:
+    device:
+      ip_address: "{{ ip_address }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+
+  collections:
+    - paloaltonetworks.panos
+
+  tasks:
+    - name: Commit candidate configuration
+      paloaltonetworks.panos.panos_commit_firewall:
+        provider: "{{ device }}"
+      register: results
+    - debug:
+        msg: "Commit with Job ID: {{ results.jobid }} had output: {{ results.details }}"
+
