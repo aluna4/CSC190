@@ -6,6 +6,7 @@ from django.http import HttpResponse, Http404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import userlogIn
 from .forms import SecurityConfUpload
+from django.utils import timezone
 
 from django.contrib import messages
 from django.http import HttpResponse
@@ -60,7 +61,7 @@ def create_user_view(request):
             messages.error(request, "Employee ID must be exactly 8 characters long.")
             return render(request, 'create_user.html')
         # Validate password length
-        if len(password) >= 8:
+        if len(password) < 8:
             messages.error(request, "Password must be atleast 8 characters long.")
             return render(request, 'create_user.html')
         
@@ -88,22 +89,21 @@ def login_view(request):
         try:
             # Get the userlogIn object with the given username
             user = userlogIn.objects.get(user_name=username)
-        except userlogIn.DoesNotExist:
-            # No user was found with this username
-            user = None
-        
-        # If a user with the provided username exists, check the password
-        context = {
-            'username': request.user
-        }
-        if user is not None and check_password(password, user.user_pswd):
-            request.session['user_id'] = user.id  # Store user's id in session
-            if not request.user.is_superuser:
-                return render(request, 'user.html', context)
+            if user is not None and check_password(password, user.user_pswd):
+                # if user.is_superuser:
+                #     return redirect('admin')
+                # else:
+                    request.session['user_id'] = user.id  # Store user's id in session
+                    return render(request, 'user.html')  # Redirect to a user page after successful login
             else:
-                return render(request, 'admin.html', context)  # Redirect to a user page after successful login
-        else:
-            messages.error(request, 'Invalid username or password')
+                messages.error(request, 'Invalid username or password')
+        except userlogIn.DoesNotExist:
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return render(request, 'admin.html')
+                else:
+                    messages.error(request, 'Might be super')
     return render(request, 'login.html')
 
 #user page
