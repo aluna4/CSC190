@@ -123,19 +123,6 @@ ALLOWED_FLOWS = [
 
 # add firewall rule
 def add_rule(request):
-    # context = {
-    #     'username': request.user,
-    #     'rule_name': '',
-    #     'source_zone': '',
-    #     'source_ip': '',
-    #     'destination_zone': '',
-    #     'destination_ip': '',
-    #     'application': '',
-    #     'service': '',
-    #     'action': 'allow',
-    #     'error': '',
-    # }
-
     if request.method == "POST":
         rule_name = request.POST.get("rule_name")
         source_zone = request.POST.get("source_zone")
@@ -145,15 +132,7 @@ def add_rule(request):
         application = request.POST.get("application")
         service = request.POST.get("service")
         action = request.POST.get("action")
-    #     context['rule_name'] = request.POST.get("rule_name")
-    #     context['source_zone'] = request.POST.get("source_zone")
-    #     context['source_ip'] = request.POST.get("source_ip")
-    #     context['destination_zone'] = request.POST.get("destination_zone")
-    #     context['destination_ip'] = request.POST.get("destination_ip")
-    #     context['application'] = request.POST.get("application")
-    #     context['service'] = request.POST.get("service")
-    #     context['action'] = request.POST.get("action")
-        
+
         # Check if the flow is allowed
         if (source_zone, destination_zone) not in ALLOWED_FLOWS:
             messages.error(request,'The specified flow is not allowed.')
@@ -175,6 +154,7 @@ def add_rule(request):
         return redirect('user')
     else:
         return render(request, 'user')
+    
 # delete firewall rule
 def delete_rule(request):
     context = {
