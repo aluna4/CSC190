@@ -1,13 +1,12 @@
 import os
-import time
-import datetime
 import requests
 import regex as re
 from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from .models import userlogIn
 from .forms import SecurityConfUpload
+from django.utils import timezone
 
 from django.contrib import messages
 from django.http import HttpResponse
@@ -25,8 +24,8 @@ URL=os.getenv('PAN_URL')
 def home(request):
     return render(request, 'homepage.html')
 
-def create_user_view(request):
-    return render(request, 'create_user.html')
+# def create_user_view(request):
+#     return render(request, 'create_user.html')
 
 def add_success(request):
     return HttpResponse("Firewall Rule added successfully", status=200)
@@ -41,7 +40,7 @@ def config_sucess_resp(request):
     return HttpResponse("Security Config Uploaded Successfully", status=200)
 
 
-def create_user(request):
+def create_user_view(request):
     if request.method == 'POST':
         # Get data from the form
         username = request.POST.get('username')
@@ -57,23 +56,28 @@ def create_user(request):
         if userlogIn.objects.filter(employeeID=employee_id).exists():
             messages.error(request, "Employee ID already exists.")
             return render(request, 'create_user.html')
-
+        # Validate Employee ID length
+        if len(employee_id) != 8:
+            messages.error(request, "Employee ID must be exactly 8 characters long.")
+            return render(request, 'create_user.html')
+        # Validate password length
+        if len(password) < 8:
+            messages.error(request, "Password must be atleast 8 characters long.")
+            return render(request, 'create_user.html')
+        
         # Create the user
         new_user = userlogIn(
             first_name=first_name,
             last_name=last_name,
             user_name=username,
-            user_pswd=make_password(password),  # Hash the password
+            user_pswd=make_password(password),
             employeeID=employee_id,
-            create_date=datetime.timezone.now()
+            create_date=timezone.now()
         )
         new_user.save()
-        
-        # Redirect to the login page after creating the user
         messages.success(request, "User created successfully. Please log in.")
-        return redirect('login')  # Replace 'login' with the name of your login URL
+        return redirect('login')
     else:
-        # If not a POST request, render the form again
         return render(request, 'create_user.html')
 
 #log in page
@@ -81,18 +85,25 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        context = {
-            'username': request.user
-        }
-        if user is not None:
-            login(request, user)
-            if not request.user.is_superuser:
-                return render(request, 'user.html', context)
+        
+        try:
+            # Get the userlogIn object with the given username
+            user = userlogIn.objects.get(user_name=username)
+            if user is not None and check_password(password, user.user_pswd):
+                # if user.is_superuser:
+                #     return redirect('admin')
+                # else:
+                    request.session['user_id'] = user.id  # Store user's id in session
+                    return render(request, 'user.html')  # Redirect to a user page after successful login
             else:
-                return render(request, 'admin.html', context)
-        else:
-            messages.error(request, 'Invalid username or password')
+                messages.error(request, 'Invalid username or password')
+        except userlogIn.DoesNotExist:
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return render(request, 'admin.html')
+                else:
+                    messages.error(request, 'Might be super')
     return render(request, 'login.html')
 
 #user page
