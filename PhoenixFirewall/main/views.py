@@ -5,6 +5,7 @@ from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import userlogIn
+from .models import Rule
 from .forms import SecurityConfUpload
 from django.utils import timezone
 
@@ -23,9 +24,6 @@ URL=os.getenv('PAN_URL')
 
 def home(request):
     return render(request, 'homepage.html')
-
-# def create_user_view(request):
-#     return render(request, 'create_user.html')
 
 def add_success(request):
     return HttpResponse("Firewall Rule added successfully", status=200)
@@ -90,11 +88,8 @@ def login_view(request):
             # Get the userlogIn object with the given username
             user = userlogIn.objects.get(user_name=username)
             if user is not None and check_password(password, user.user_pswd):
-                # if user.is_superuser:
-                #     return redirect('admin')
-                # else:
-                    request.session['user_id'] = user.id  # Store user's id in session
-                    return render(request, 'user.html')  # Redirect to a user page after successful login
+                request.session['user_id'] = user.id  # Store user's id in session
+                return render(request, 'user.html')  # Redirect to a user page after successful login
             else:
                 messages.error(request, 'Invalid username or password')
         except userlogIn.DoesNotExist:
@@ -103,7 +98,7 @@ def login_view(request):
                     login(request, user)
                     return render(request, 'admin.html')
                 else:
-                    messages.error(request, 'Might be super')
+                    messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
 
 #user page
@@ -128,46 +123,58 @@ ALLOWED_FLOWS = [
 
 # add firewall rule
 def add_rule(request):
-    context = {
-        'username': request.user,
-        'rule_name': '',
-        'source_zone': '',
-        'source_ip': '',
-        'destination_zone': '',
-        'destination_ip': '',
-        'application': '',
-        'service': '',
-        'action': 'allow',
-        'error': '',
-    }
+    # context = {
+    #     'username': request.user,
+    #     'rule_name': '',
+    #     'source_zone': '',
+    #     'source_ip': '',
+    #     'destination_zone': '',
+    #     'destination_ip': '',
+    #     'application': '',
+    #     'service': '',
+    #     'action': 'allow',
+    #     'error': '',
+    # }
 
     if request.method == "POST":
-        context['rule_name'] = request.POST.get("rule_name")
-        context['source_zone'] = request.POST.get("source_zone")
-        context['source_ip'] = request.POST.get("source_ip")
-        context['destination_zone'] = request.POST.get("destination_zone")
-        context['destination_ip'] = request.POST.get("destination_ip")
-        context['application'] = request.POST.get("application")
-        context['service'] = request.POST.get("service")
-        context['action'] = request.POST.get("action")
+        rule_name = request.POST.get("rule_name")
+        source_zone = request.POST.get("source_zone")
+        source_ip = request.POST.get("source_ip")
+        destination_zone = request.POST.get("destination_zone")
+        destination_ip = request.POST.get("destination_ip")
+        application = request.POST.get("application")
+        service = request.POST.get("service")
+        action = request.POST.get("action")
+    #     context['rule_name'] = request.POST.get("rule_name")
+    #     context['source_zone'] = request.POST.get("source_zone")
+    #     context['source_ip'] = request.POST.get("source_ip")
+    #     context['destination_zone'] = request.POST.get("destination_zone")
+    #     context['destination_ip'] = request.POST.get("destination_ip")
+    #     context['application'] = request.POST.get("application")
+    #     context['service'] = request.POST.get("service")
+    #     context['action'] = request.POST.get("action")
         
         # Check if the flow is allowed
-        if (context['source_zone'], context['destination_zone']) not in ALLOWED_FLOWS:
-            context['error'] = 'The specified flow is not allowed.'
-            return render(request, "add_rule.html", context)
-
-        try:
-            success = add_firewall_rule(context['rule_name'], context['source_zone'], context['source_ip'], context['destination_zone'], context['destination_ip'], context['application'], context['service'], context['action'])
-            if success:
-                return render(request, "AddRule.html", {'success': 'Rule added successfully.'})
-            else:
-                context['error'] = 'Error adding firewall rule'
-                return render(request, "add_rule.html", context)
-        except Exception as e:
-            context['error'] = str(e)
-            return render(request, "add_rule.html", context)
+        if (source_zone, destination_zone) not in ALLOWED_FLOWS:
+            messages.error(request,'The specified flow is not allowed.')
+            return render(request, "add_rule.html")
+        
+        new_rule = Rule(
+            employeeID = userlogIn.get_employeeID,
+            rule_name = rule_name,
+            source_zone = source_zone, 
+            source_ip = source_ip, 
+            destination_zone = destination_zone,
+            destination_ip = destination_ip,
+            application = application,
+            service = service,
+            action = action
+        )
+        new_rule.save()
+        messages.success(request, "Rule created successfully")
+        return redirect('user')
     else:
-        return render(request, "add_rule.html", context)
+        return render(request, 'user')
 # delete firewall rule
 def delete_rule(request):
     context = {
