@@ -1,69 +1,108 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoenix Firewall Application</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
+    <title>Homepage</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
 
-        header {
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav {
-            background-color: #ff8000;
-            padding: 10px;
-        }
-
-            nav a {
-                color: white;
-                text-decoration: none;
-                padding: 10px;
-                margin: 0 10px;
-            }
-
-        main {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-    </style>
 </head>
-<body>
-    <header>
-        {% load static %}
-        <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
-    </header>
+<body class="is-preload">
+    <div id="page-wrapper">
 
-    <nav>
-        <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'login' %}">Log In</a>
-        <a href="{% url 'login' %}">Firewall Status</a>
-        <a href="{% url 'login' %}">System Logs</a>
-        <a href="{% url 'create_user' %}">Create User</a>
+        <!-- Header -->
+        <div id="header">
 
-    </nav>
+            <!-- Logo -->
+            <h1><a href="" id="logo">Phoenix <em>Firewall Application</em></a></h1>
+            {% load static %}
+            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
 
-    <main>
-        <h1>Welcome to Phoenix Firewall Application</h1>
-        <p>You can navigate to different sections using the links above.</p>
-    </main>
+            <!-- Nav -->
+            <nav id="nav">
+                <ul>
+                    <li class="current"><a href="">Home</a></li>
+                    <li><a href="{% url 'login' %}">Log In</a></li>
+                    <li><a href="{% url 'login' %}">Firewall Status</a></li>
+                </ul>
+            </nav>
+
+        </div>
+
+        <!-- Banner -->
+        <section id="banner">
+            <header>
+                <h2>Don't have an account?</h2>
+                <a href="{% url 'create_user' %}" class="button">Create User</a>
+            </header>
+        </section>
+
+        <!-- Highlights -->
+        <section class="wrapper style1">
+            <div class="container">
+                <div class="row gtr-200">
+                    <section class="col-4 col-12-narrower">
+                        <div class="box highlight">
+                            <i class="icon solid major fa-users"></i>
+                            <h3>User Friendly</h3>
+                            <p>Enhance efficiency</p>
+                        </div>
+                    </section>
+                    <section class="col-4 col-12-narrower">
+                        <div class="box highlight">
+                            <i class="icon solid major fa-lock"></i>
+                            <h3>Secure</h3>
+                            <p>Quicker response time to threats</p>
+                        </div>
+                    </section>
+                    <section class="col-4 col-12-narrower">
+                        <div class="box highlight">
+                            <i class="icon solid major fa-laptop-code"></i>
+                            <h3>Automation</h3>
+                            <p>Minimize manual oversight</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gigantic Heading -->
+        <section class="wrapper style2">
+            <div class="container">
+                <header class="major">
+                    <h2>Phoenix Firewall Application</h2>
+                    <p>Our application features comprehensive user access control, implementing checks and balances to prevent error-prone rule implementations that could compromise network integrity</p>
+                </header>
+            </div>
+        </section>
+
+
+        <!-- CTA -->
+        <section id="cta" class="wrapper style3">
+            <div class="container">
+                <header>
+                    <h2>Are you ready to control your network?</h2>
+                    <a href="{% url 'login' %}" class="button">Log In</a>
+                </header>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <div id="footer">
+            
+
+            <!-- Icons -->
+            <ul class="icons">
+                <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                <li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+                
+            </ul>
+
+        </div>
+
+    </div>
+
 </body>
 </html>
