@@ -1,6 +1,7 @@
 import os
 import requests
 import regex as re
+import ipaddress
 from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
 from django.contrib.auth.hashers import make_password, check_password
@@ -119,7 +120,16 @@ def admin_view(request):
 ALLOWED_FLOWS = [
     ('Internal', 'DMZ'),
     ('Internal', 'Internet'),
+    ('Internet', 'DMZ')
 ]
+
+# define zone to subnet mappings
+ZONE_SUBNETS = {
+    'Internal': ipaddress.ip_network('10.0.0.0/26'),
+    'DMZ': ipaddress.ip_network('10.0.0.64/26'),
+    'Internet': ipaddress.ip_network('10.0.0.128/26'),
+    'Other': ipaddress.ip_network('10.0.0.192/26'),
+}
 
 # add firewall rule
 def add_rule(request):
@@ -136,9 +146,20 @@ def add_rule(request):
         # Check if the flow is allowed
         if (source_zone, destination_zone) not in ALLOWED_FLOWS:
             messages.error(request,'The specified flow is not allowed.')
-            return render(request, "add_rule.html")
-        
+            return render(request, "AddRule.html", context)
+
+        # Validate IP addresses
+        if context['source_zone'] in ZONE_SUBNETS and context['destination_zone'] in ZONE_SUBNETS:
+            source_ip_valid = ipaddress.ip_address(context['source_ip']) in ZONE_SUBNETS[context['source_zone']]
+            destination_ip_valid = ipaddress.ip_address(context['destination_ip']) in ZONE_SUBNETS[context['destination_zone']]
+
+            if not source_ip_valid or not destination_ip_valid:
+                context['error'] = 'The IP address entered is not within the correct zone.'
+                return render(request, "AddRule.html")
+                
         new_rule = Rule(
+            # Here you should add your logic to actually add the firewall rule
+            # Assuming add_firewall_rule is a function that returns True on success
             employeeID = userlogIn.get_employeeID,
             rule_name = rule_name,
             source_zone = source_zone, 
@@ -153,8 +174,8 @@ def add_rule(request):
         messages.success(request, "Rule created successfully")
         return redirect('user')
     else:
-        return render(request, 'user')
-    
+        return render(request, "AddRule.html")
+        
 # delete firewall rule
 def delete_rule(request):
     context = {
