@@ -179,18 +179,28 @@ def add_rule(request):
 # delete firewall rule
 def delete_rule(request):
     context = {
-        'username': request.user
+        'username': request.user, 
+        'rule_name': '',
+        'source_ip':'',
+        'port': '',
     }
     if request.method == "POST":
-        rule_name = request.POST.get("rule_name")
-        ip = request.POST.get("ip")
-        port = request.POST.get("port")
+        context['rule_name'] = request.POST.get("rule_name")
+        context['source_ip'] = request.POST.get("ip")
+        context['port'] = request.POST.get("port")
 
-        # call panorama_api function
-        delete_firewall_rule(rule_name, ip, port)
 
-        # redirect back to home page
-        return redirect('delete_success')
+        try:
+            #call panorama_api function
+            success = delete_firewall_rule(context['rule_name'], context['source_ip'], context['port'])
+            if success:
+                return render(request, "delete_rule.html", {'success': 'Rule deleted successfully.'})
+            else:
+                context['error'] = 'Error deleting firewall rule'
+                return render(request, "DeleteRule.html", context)
+        except Exception as e:
+            context['error'] = str(e)
+            return render(request, "delete_rule.html", context)
     else:
         # if not POST then for now just show addrule.html
         return render(request, "delete_rule.html", context)
@@ -203,18 +213,26 @@ def commit_rule(request):
         'port': '',
     }
     if request.method == "POST":
-        rule_name = request.POST.get("rule_name")
-        destination_zone = request.POST.get('destination_zone')
-        port = request.POST.get("port")
+        context['rule_name'] = request.POST.get("rule_name")
+        context['destination_zone'] = request.POST.get('destination_zone')
+        context['port'] = request.POST.get("port")
 
-        # call panorama_api function
-        commit_firewall_rule(rule_name, destination_zone, port)
-
-        # redirect back to home page
-        return redirect('commit_success')
+        try:
+            #call panorama_api function
+            success = commit_firewall_rule(context['rule_name'], context['destination_zone'], context['port'])
+            if success:
+                return render(request, "commit_rule.html", {'success': 'Configurations committed successfully.'})
+            else:
+                context['error'] = 'Error committing configurations'
+                return render(request, "CommitRule.html", context)
+        except Exception as e:
+            context['error'] = str(e)
+            print(context['error'])
+            return render(request, "commit_rule.html", context)
     else:
         # if not POST then for now just show addrule.html
         return render(request, "commit_rule.html", context)
+
 
 # Handle upload file
 def handle_uploaded_file(f):

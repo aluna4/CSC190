@@ -1,5 +1,5 @@
 ---
-- name: Delete all security rules
+- name: Delete security rule
   hosts: phoenix_firewall
   connection: local
   vars_files:
@@ -12,14 +12,14 @@
       username: "{{ username }}"
       password: "{{ password }}"
       
-
-  collections:  paloaltonetworks.panos
+  collections:  
+    - paloaltonetworks.panos
 
   tasks:
-
-
-    - name: Delete all rules
+    - name: Delete rule
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{ device }}"
-        rule_name: "myrule"
+        rule_name: "up"
+        source_ip: "1.1.1.1"
+        port: 12345
         state: 'absent'
