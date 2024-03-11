@@ -146,15 +146,15 @@ def add_rule(request):
         # Check if the flow is allowed
         if (source_zone, destination_zone) not in ALLOWED_FLOWS:
             messages.error(request,'The specified flow is not allowed.')
-            return render(request, "AddRule.html", context)
+            return render(request, "AddRule.html")
 
         # Validate IP addresses
-        if context['source_zone'] in ZONE_SUBNETS and context['destination_zone'] in ZONE_SUBNETS:
-            source_ip_valid = ipaddress.ip_address(context['source_ip']) in ZONE_SUBNETS[context['source_zone']]
-            destination_ip_valid = ipaddress.ip_address(context['destination_ip']) in ZONE_SUBNETS[context['destination_zone']]
+        if source_zone in ZONE_SUBNETS and destination_zone in ZONE_SUBNETS:
+            source_ip_valid = ipaddress.ip_address(source_ip) in ZONE_SUBNETS [source_zone]
+            destination_ip_valid = ipaddress.ip_address(destination_ip) in ZONE_SUBNETS[destination_zone]
 
             if not source_ip_valid or not destination_ip_valid:
-                context['error'] = 'The IP address entered is not within the correct zone.'
+                messages.error(request, 'The IP address entered is not within the correct zone.')
                 return render(request, "AddRule.html")
                 
         new_rule = Rule(
