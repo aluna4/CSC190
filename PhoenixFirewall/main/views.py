@@ -1,10 +1,12 @@
 import os
 import requests
 import regex as re
+import ipaddress
 from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import userlogIn
+from .models import Rule
 from .forms import SecurityConfUpload
 from django.utils import timezone
 
@@ -23,9 +25,6 @@ URL=os.getenv('PAN_URL')
 
 def home(request):
     return render(request, 'homepage.html')
-
-# def create_user_view(request):
-#     return render(request, 'create_user.html')
 
 def add_success(request):
     return HttpResponse("Firewall Rule added successfully", status=200)
@@ -90,11 +89,8 @@ def login_view(request):
             # Get the userlogIn object with the given username
             user = userlogIn.objects.get(user_name=username)
             if user is not None and check_password(password, user.user_pswd):
-                # if user.is_superuser:
-                #     return redirect('admin')
-                # else:
-                    request.session['user_id'] = user.id  # Store user's id in session
-                    return render(request, 'user.html')  # Redirect to a user page after successful login
+                request.session['user_id'] = user.id  # Store user's id in session
+                return render(request, 'user.html')  # Redirect to a user page after successful login
             else:
                 messages.error(request, 'Invalid username or password')
         except userlogIn.DoesNotExist:
@@ -103,7 +99,7 @@ def login_view(request):
                     login(request, user)
                     return render(request, 'admin.html')
                 else:
-                    messages.error(request, 'Might be super')
+                    messages.error(request, 'Invalid username or password')
     return render(request, 'login.html')
 
 #user page
@@ -124,65 +120,87 @@ def admin_view(request):
 ALLOWED_FLOWS = [
     ('Internal', 'DMZ'),
     ('Internal', 'Internet'),
+    ('Internet', 'DMZ')
 ]
+
+# define zone to subnet mappings
+ZONE_SUBNETS = {
+    'Internal': ipaddress.ip_network('10.0.0.0/26'),
+    'DMZ': ipaddress.ip_network('10.0.0.64/26'),
+    'Internet': ipaddress.ip_network('10.0.0.128/26'),
+    'Other': ipaddress.ip_network('10.0.0.192/26'),
+}
 
 # add firewall rule
 def add_rule(request):
-    context = {
-        'username': request.user,
-        'rule_name': '',
-        'source_zone': '',
-        'source_ip': '',
-        'destination_zone': '',
-        'destination_ip': '',
-        'application': '',
-        'service': '',
-        'action': 'allow',
-        'error': '',
-    }
-
     if request.method == "POST":
-        context['rule_name'] = request.POST.get("rule_name")
-        context['source_zone'] = request.POST.get("source_zone")
-        context['source_ip'] = request.POST.get("source_ip")
-        context['destination_zone'] = request.POST.get("destination_zone")
-        context['destination_ip'] = request.POST.get("destination_ip")
-        context['application'] = request.POST.get("application")
-        context['service'] = request.POST.get("service")
-        context['action'] = request.POST.get("action")
-        
-        # Check if the flow is allowed
-        if (context['source_zone'], context['destination_zone']) not in ALLOWED_FLOWS:
-            context['error'] = 'The specified flow is not allowed.'
-            return render(request, "add_rule.html", context)
+        rule_name = request.POST.get("rule_name")
+        source_zone = request.POST.get("source_zone")
+        source_ip = request.POST.get("source_ip")
+        destination_zone = request.POST.get("destination_zone")
+        destination_ip = request.POST.get("destination_ip")
+        application = request.POST.get("application")
+        service = request.POST.get("service")
+        action = request.POST.get("action")
 
-        try:
-            success = add_firewall_rule(context['rule_name'], context['source_zone'], context['source_ip'], context['destination_zone'], context['destination_ip'], context['application'], context['service'], context['action'])
-            if success:
-                return render(request, "AddRule.html", {'success': 'Rule added successfully.'})
-            else:
-                context['error'] = 'Error adding firewall rule'
-                return render(request, "add_rule.html", context)
-        except Exception as e:
-            context['error'] = str(e)
-            return render(request, "add_rule.html", context)
+        # Check if the flow is allowed
+        if (source_zone, destination_zone) not in ALLOWED_FLOWS:
+            messages.error(request,'The specified flow is not allowed.')
+            return render(request, "AddRule.html")
+
+        # Validate IP addresses
+        if source_zone in ZONE_SUBNETS and destination_zone in ZONE_SUBNETS:
+            source_ip_valid = ipaddress.ip_address(source_ip) in ZONE_SUBNETS [source_zone]
+            destination_ip_valid = ipaddress.ip_address(destination_ip) in ZONE_SUBNETS[destination_zone]
+
+            if not source_ip_valid or not destination_ip_valid:
+                messages.error(request, 'The IP address entered is not within the correct zone.')
+                return render(request, "AddRule.html")
+                
+        new_rule = Rule(
+            # Here you should add your logic to actually add the firewall rule
+            # Assuming add_firewall_rule is a function that returns True on success
+            employeeID = userlogIn.get_employeeID,
+            rule_name = rule_name,
+            source_zone = source_zone, 
+            source_ip = source_ip, 
+            destination_zone = destination_zone,
+            destination_ip = destination_ip,
+            application = application,
+            service = service,
+            action = action
+        )
+        new_rule.save()
+        messages.success(request, "Rule created successfully")
+        return redirect('user')
     else:
-        return render(request, "add_rule.html", context)
+        return render(request, "AddRule.html")
+        
 # delete firewall rule
 def delete_rule(request):
     context = {
-        'username': request.user
+        'username': request.user, 
+        'rule_name': '',
+        'source_ip':'',
+        'port': '',
     }
     if request.method == "POST":
-        rule_name = request.POST.get("rule_name")
-        ip = request.POST.get("ip")
-        port = request.POST.get("port")
+        context['rule_name'] = request.POST.get("rule_name")
+        context['source_ip'] = request.POST.get("ip")
+        context['port'] = request.POST.get("port")
 
-        # call panorama_api function
-        delete_firewall_rule(rule_name, ip, port)
 
-        # redirect back to home page
-        return redirect('delete_success')
+        try:
+            #call panorama_api function
+            success = delete_firewall_rule(context['rule_name'], context['source_ip'], context['port'])
+            if success:
+                return render(request, "delete_rule.html", {'success': 'Rule deleted successfully.'})
+            else:
+                context['error'] = 'Error deleting firewall rule'
+                return render(request, "DeleteRule.html", context)
+        except Exception as e:
+            context['error'] = str(e)
+            return render(request, "delete_rule.html", context)
     else:
         # if not POST then for now just show addrule.html
         return render(request, "delete_rule.html", context)
@@ -195,18 +213,26 @@ def commit_rule(request):
         'port': '',
     }
     if request.method == "POST":
-        rule_name = request.POST.get("rule_name")
-        destination_zone = request.POST.get('destination_zone')
-        port = request.POST.get("port")
+        context['rule_name'] = request.POST.get("rule_name")
+        context['destination_zone'] = request.POST.get('destination_zone')
+        context['port'] = request.POST.get("port")
 
-        # call panorama_api function
-        commit_firewall_rule(rule_name, destination_zone, port)
-
-        # redirect back to home page
-        return redirect('commit_success')
+        try:
+            #call panorama_api function
+            success = commit_firewall_rule(context['rule_name'], context['destination_zone'], context['port'])
+            if success:
+                return render(request, "commit_rule.html", {'success': 'Configurations committed successfully.'})
+            else:
+                context['error'] = 'Error committing configurations'
+                return render(request, "CommitRule.html", context)
+        except Exception as e:
+            context['error'] = str(e)
+            print(context['error'])
+            return render(request, "commit_rule.html", context)
     else:
         # if not POST then for now just show addrule.html
         return render(request, "commit_rule.html", context)
+
 
 # Handle upload file
 def handle_uploaded_file(f):
