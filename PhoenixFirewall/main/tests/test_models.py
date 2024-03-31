@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import userlogIn, Rule
+from main.models import userlogIn, Rule
 from django.utils import timezone
 
 class UserModelTest(TestCase):
