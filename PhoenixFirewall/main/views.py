@@ -9,7 +9,7 @@ from .models import userlogIn
 from .models import Rule
 from .forms import SecurityConfUpload
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.http import HttpResponse
 from .panorama_api import add_firewall_rule
@@ -50,32 +50,31 @@ def create_user_view(request):
 
         # Check if the username or employee ID already exists
         if userlogIn.objects.filter(user_name=username).exists():
-            messages.error(request, "Username already exists.")
-            return render(request, 'create_user.html')
+             messages.error(request, "Username already exists")
+             return render(request, 'create_user.html')
         if userlogIn.objects.filter(employeeID=employee_id).exists():
-            messages.error(request, "Employee ID already exists.")
-            return render(request, 'create_user.html')
-        # Validate Employee ID length
-        if len(employee_id) != 8:
-            messages.error(request, "Employee ID must be exactly 8 characters long.")
-            return render(request, 'create_user.html')
-        # Validate password length
-        if len(password) < 8:
-            messages.error(request, "Password must be atleast 8 characters long.")
+            messages.error(request, "Employee ID already exists")
             return render(request, 'create_user.html')
         
         # Create the user
-        new_user = userlogIn(
-            first_name=first_name,
-            last_name=last_name,
+        try:
+            new_user = userlogIn(
+            first_name=first_name.upper(),
+            last_name=last_name.upper(),
             user_name=username,
             user_pswd=make_password(password),
             employeeID=employee_id,
             create_date=timezone.now()
-        )
-        new_user.save()
-        messages.success(request, "User created successfully. Please log in.")
-        return redirect('login')
+            )
+            new_user.save()
+            messages.success(request, "User created successfully. Please log in.")
+            return redirect('login')
+        except ValidationError as e:
+            # Handle validation errors from the model here
+            for field, errors in e.message_dict.items():
+                for error in errors:
+                    messages.error(request, error)
+            return render(request, 'create_user.html')
     else:
         return render(request, 'create_user.html')
 

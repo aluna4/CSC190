@@ -74,6 +74,16 @@
         background-color: #ffe5b4;
         color: #cc8400;
     }
+    .message {
+    color: red;
+    font-size: 0.875rem; /* Adjust this value as needed */
+  }
+  
+  /* If using specific message tags */
+  .message.error {
+    color: red;
+    font-size: 0.875rem;
+  }
 
 </style>
 </head>
@@ -83,6 +93,18 @@
     <h2>Create User</h2>
     <form action="/create_user/" method="post">
         {% csrf_token %}
+
+        {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+          <div {% if message.tags %}class="{{ message.tags }}"{% endif %}>
+            {{ message }}
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+
         <div class="form-group">
             <label for="first-name">First Name:</label>
             <input type="text" id="first_name" name="first_name" required placeholder="John">
