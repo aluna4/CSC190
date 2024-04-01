@@ -142,6 +142,7 @@ def add_rule(request):
         service = request.POST.get("service")
         action = request.POST.get("action")
 
+        
         # Check if the flow is allowed
         if (source_zone, destination_zone) not in ALLOWED_FLOWS:
             messages.error(request,'The specified flow is not allowed.')
