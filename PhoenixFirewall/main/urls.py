@@ -23,4 +23,6 @@ urlpatterns = [
     path("upload/", views.upload, name="upload"),
     #create user url
     path("create_user/", views.create_user_view, name="create_user"),
+    #add Zones url
+    path("add_zones/", views.add_zones, name="add_zones"),
 ]
