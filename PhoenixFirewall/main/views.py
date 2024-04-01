@@ -9,7 +9,7 @@ from .models import userlogIn
 from .models import Rule
 from .forms import SecurityConfUpload
 from django.utils import timezone
-
+from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.http import HttpResponse
 from .panorama_api import add_firewall_rule
@@ -50,32 +50,31 @@ def create_user_view(request):
 
         # Check if the username or employee ID already exists
         if userlogIn.objects.filter(user_name=username).exists():
-            messages.error(request, "Username already exists.")
-            return render(request, 'create_user.html')
+             messages.error(request, "Username already exists")
+             return render(request, 'create_user.html')
         if userlogIn.objects.filter(employeeID=employee_id).exists():
-            messages.error(request, "Employee ID already exists.")
-            return render(request, 'create_user.html')
-        # Validate Employee ID length
-        if len(employee_id) != 8:
-            messages.error(request, "Employee ID must be exactly 8 characters long.")
-            return render(request, 'create_user.html')
-        # Validate password length
-        if len(password) < 8:
-            messages.error(request, "Password must be atleast 8 characters long.")
+            messages.error(request, "Employee ID already exists")
             return render(request, 'create_user.html')
         
         # Create the user
-        new_user = userlogIn(
-            first_name=first_name,
-            last_name=last_name,
+        try:
+            new_user = userlogIn(
+            first_name=first_name.upper(),
+            last_name=last_name.upper(),
             user_name=username,
             user_pswd=make_password(password),
             employeeID=employee_id,
             create_date=timezone.now()
-        )
-        new_user.save()
-        messages.success(request, "User created successfully. Please log in.")
-        return redirect('login')
+            )
+            new_user.save()
+            messages.success(request, "User created successfully. Please log in.")
+            return redirect('login')
+        except ValidationError as e:
+            # Handle validation errors from the model here
+            for field, errors in e.message_dict.items():
+                for error in errors:
+                    messages.error(request, error)
+            return render(request, 'create_user.html')
     else:
         return render(request, 'create_user.html')
 
@@ -143,6 +142,7 @@ def add_rule(request):
         service = request.POST.get("service")
         action = request.POST.get("action")
 
+        
         # Check if the flow is allowed
         if (source_zone, destination_zone) not in ALLOWED_FLOWS:
             messages.error(request,'The specified flow is not allowed.')
@@ -179,18 +179,28 @@ def add_rule(request):
 # delete firewall rule
 def delete_rule(request):
     context = {
-        'username': request.user
+        'username': request.user, 
+        'rule_name': '',
+        'source_ip':'',
+        'port': '',
     }
     if request.method == "POST":
-        rule_name = request.POST.get("rule_name")
-        ip = request.POST.get("ip")
-        port = request.POST.get("port")
+        context['rule_name'] = request.POST.get("rule_name")
+        context['source_ip'] = request.POST.get("ip")
+        context['port'] = request.POST.get("port")
 
-        # call panorama_api function
-        delete_firewall_rule(rule_name, ip, port)
 
-        # redirect back to home page
-        return redirect('delete_success')
+        try:
+            #call panorama_api function
+            success = delete_firewall_rule(context['rule_name'], context['source_ip'], context['port'])
+            if success:
+                return render(request, "delete_rule.html", {'success': 'Rule deleted successfully.'})
+            else:
+                context['error'] = 'Error deleting firewall rule'
+                return render(request, "DeleteRule.html", context)
+        except Exception as e:
+            context['error'] = str(e)
+            return render(request, "delete_rule.html", context)
     else:
         # if not POST then for now just show addrule.html
         return render(request, "delete_rule.html", context)
@@ -203,18 +213,26 @@ def commit_rule(request):
         'port': '',
     }
     if request.method == "POST":
-        rule_name = request.POST.get("rule_name")
-        destination_zone = request.POST.get('destination_zone')
-        port = request.POST.get("port")
+        context['rule_name'] = request.POST.get("rule_name")
+        context['destination_zone'] = request.POST.get('destination_zone')
+        context['port'] = request.POST.get("port")
 
-        # call panorama_api function
-        commit_firewall_rule(rule_name, destination_zone, port)
-
-        # redirect back to home page
-        return redirect('commit_success')
+        try:
+            #call panorama_api function
+            success = commit_firewall_rule(context['rule_name'], context['destination_zone'], context['port'])
+            if success:
+                return render(request, "commit_rule.html", {'success': 'Configurations committed successfully.'})
+            else:
+                context['error'] = 'Error committing configurations'
+                return render(request, "CommitRule.html", context)
+        except Exception as e:
+            context['error'] = str(e)
+            print(context['error'])
+            return render(request, "commit_rule.html", context)
     else:
         # if not POST then for now just show addrule.html
         return render(request, "commit_rule.html", context)
+
 
 # Handle upload file
 def handle_uploaded_file(f):

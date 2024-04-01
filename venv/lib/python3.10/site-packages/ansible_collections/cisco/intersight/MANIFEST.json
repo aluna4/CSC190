@@ -1,0 +1,34 @@
+{
+ "collection_info": {
+  "namespace": "cisco",
+  "name": "intersight",
+  "version": "2.0.7",
+  "authors": [
+   "David Soper (@dsoper2)"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "cisco",
+   "intersight",
+   "infrastructure"
+  ],
+  "description": "modules for Cisco Intersight",
+  "license": [
+   "MIT"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "https://github.com/CiscoDevNet/intersight-ansible",
+  "documentation": "https://intersight.com/apidocs",
+  "homepage": "https://github.com/CiscoDevNet/intersight-ansible",
+  "issues": "https://github.com/CiscoDevNet/intersight-ansible"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "0a61cf97c55cb7fea120fa4d211ada5f4c5929bd8b617b9213d7b19cc3302c68",
+  "format": 1
+ },
+ "format": 1
+}

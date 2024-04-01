@@ -1,0 +1,37 @@
+{
+ "collection_info": {
+  "namespace": "purestorage",
+  "name": "flashblade",
+  "version": "1.16.0",
+  "authors": [
+   "Pure Storage Ansible Team <pure-ansible-team@purestorage.com>"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "purestorage",
+   "flashblade",
+   "storage",
+   "object",
+   "nfs"
+  ],
+  "description": "Collection of modules to manage Pure Storage FlashBlade",
+  "license": [
+   "GPL-3.0-or-later",
+   "BSD-2-Clause"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "https://github.com/Pure-Storage-Ansible/FlashBlade-Collection",
+  "documentation": "https://docs.ansible.com/ansible/latest/collections/purestorage/flashblade/index.html#plugins-in-purestorage-flashblade",
+  "homepage": null,
+  "issues": "https://github.com/Pure-Storage-Ansible/FlashBlade-Collection/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "14b510daea00c6bbcbf0a5bcfff2c45937740e569c86fedeb64970968dc4eecc",
+  "format": 1
+ },
+ "format": 1
+}

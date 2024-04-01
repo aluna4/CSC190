@@ -1,0 +1,51 @@
+{
+ "collection_info": {
+  "namespace": "infinidat",
+  "name": "infinibox",
+  "version": "1.4.3",
+  "authors": [
+   "Infinidat <partners.infi@infinidat.com>",
+   "David Ohlemacher",
+   "Gregory Shulov"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "array",
+   "cloud",
+   "fiber",
+   "fibre_channel",
+   "fibrechannel",
+   "hostpowertools",
+   "ibox",
+   "infinibox",
+   "infinidat",
+   "infinihost",
+   "infinisdk",
+   "iscsi",
+   "nas",
+   "nfs",
+   "san",
+   "storage",
+   "storage_array",
+   "storagearray"
+  ],
+  "description": "A set of Ansible modules that allow simple, but powerful, idempotent interactions with Infinidat Infiniboxes.",
+  "license": [
+   "GPL-3.0-or-later"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "https://www.github.com/infinidat/ansible-infinidat-collection",
+  "documentation": null,
+  "homepage": null,
+  "issues": "https://www.github.com/infinidat/ansible-infinidat-collection/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "e45ed8525f39595d529c89a74a32429e893f5b90ee87289e837086a630df0bbd",
+  "format": 1
+ },
+ "format": 1
+}

@@ -1,0 +1,104 @@
+ancestor: 3.9.0
+releases:
+  4.0.0:
+    changes:
+      breaking_changes:
+      - Removed support for ansible-core version < 2.15.0.
+      - vmware_dvs_host - removed defaults for `vmnics` and `lag_uplinks` (https://github.com/ansible-collections/community.vmware/issues/1516).
+      - vmware_host_acceptance - removed `acceptance_level` and used its options in
+        `state`. This also means there will be no state `list` anymore. In order to
+        get information about the current acceptance level, use the new module `vmware_host_acceptance_info`
+        (https://github.com/ansible-collections/community.vmware/issues/1872).
+      - vmware_vm_info - added prefix length to IP addresses in vm_network, so they
+        now show up as for example 10.76.33.228/24 instead of just 10.76.33.228 (https://github.com/ansible-collections/community.vmware/issues/1761).
+      bugfixes:
+      - vmware_deploy_ovf - fix error in finding networks part of code (https://github.com/ansible-collections/community.vmware/issues/1853).
+      - vmware_guest_custom_attributes - fix problem when module try apply non global
+        or non VM type custom attribute to VM object (https://github.com/ansible-collections/community.vmware/issues/1772).
+      minor_changes:
+      - Removed module / plugin documentation RST files from the repository (https://github.com/ansible-collections/community.vmware/pull/1897).
+      - Using semantic markup in documentation (https://github.com/ansible-collections/community.vmware/issues/1771).
+      - vmware_deploy_ovf - New parameter enable_hidden_properties to force OVF properties
+        marked as `ovf:userConfigurable=false` to become user configurable (https://github.com/ansible-collections/community.vmware/issues/802).
+      - vmware_dvs_portgroup_info - add moid property in the return value for the
+        module (https://github.com/ansible-collections/community.vmware/issues/1849).
+      - vmware_guest_snapshot - add new snapshot_id option (https://github.com/ansible-collections/community.vmware/pull/1847).
+      - vmware_host_snmp module now can configure SNMP agent on set of hosts (list
+        in esxi_hostname parameter or as cluster in cluster_name parameter). The ability
+        to configure the host directly remains (https://github.com/ansible-collections/community.vmware/issues/1799).
+      removed_features:
+      - Removed module util `version` (https://github.com/ansible-collections/community.vmware/issues/1639).
+      - vmware_guest - removed specifying CDROM configuration as a dict, instead use
+        a list (https://github.com/ansible-collections/community.vmware/issues/1472).
+      - vmware_host_lockdown - removed deprecated states `absent` and `present` (https://github.com/ansible-collections/community.vmware/issues/1517).
+      - vmware_rest_client - removed deprecated method `get_tag_by_category()` (https://github.com/ansible-collections/community.vmware/issues/1898).
+    fragments:
+    - 1472-vmware_guest.yml
+    - 1516-vmware_dvs_host.yml
+    - 1517_vmware_host_lockdown.yml
+    - 1639.yml
+    - 1761_vmware_vm_info.yml
+    - 1771-semantic_markup.yml
+    - 1799_configure_snmp_on_esxii_hosts_via_vcenter.yaml
+    - 1847_vmware_guest_snapshot.yml
+    - 1853.yml
+    - 1855_vmware_dsv_portgroup_info.yml
+    - 1872-vmware_host_acceptance.yml
+    - 1898-vmware_rest_client.yml
+    - 20231026-remove_module_docs.yml
+    - 4.0.0-required_ansible_version.yml
+    - 802-vmware_deploy_ovf.yml
+    - issue_1772.yml
+    release_date: '2023-10-31'
+  4.0.1:
+    changes:
+      bugfixes:
+      - vmware_vm_info - Fix an AttributeError when gathering network information
+        (https://github.com/ansible-collections/community.vmware/pull/1919).
+    fragments:
+    - 1919-vmware_vm_info.yml
+    release_date: '2023-11-28'
+  4.1.0:
+    changes:
+      bugfixes:
+      - Fix InsecureRequestWarning for modules based on the VmwareRestClient module
+        util when setting ``validate_certs`` to ``False`` (https://github.com/ansible-collections/community.vmware/pull/1969).
+      - module_utils/vmware.py - remove ssl.wrap_socet() function. Replaced for code
+        based on ssl.get_server_certificate (https://github.com/ansible-collections/community.vmware/issues/1930).
+      - vmware_guest - Fix failure of vm reconfiguration with enabled virt_based_security
+        (https://github.com/ansible-collections/community.vmware/pull/1848).
+      minor_changes:
+      - vmware_guest - Add IPv6 support for VM network interfaces (https://github.com/ansible-collections/community.vmware/pull/1937).
+      - vmware_guest_sendkey - Add Windows key (https://github.com/ansible-collections/community.vmware/issues/1959).
+      - vmware_guest_tools_upgrade - Add parameter `installer_options` to pass command
+        line options to the installer to modify the installation procedure for tools
+        (https://github.com/ansible-collections/community.vmware/pull/1059).
+    fragments:
+    - 1059-vmware_guest_tools_upgrade.yml
+    - 1848-fix-vm-reconfiguration-with-enabled-vbs.yml
+    - 1930-fix_ssl_deprecation_function.yml
+    - 1937-vmware_guest.yml
+    - 1959-vmware_guest_sendkey.yml
+    - 1969-InsecureRequestWarning.yml
+    release_date: '2024-01-25'
+  4.2.0:
+    changes:
+      minor_changes:
+      - Add standard function vmware_argument_spec() from module_utils for using default
+        env fallback function. https://github.com/ansible-collections/community.vmware/issues/1977
+      - vmware_first_class_disk_info - Add a module to gather informations about first
+        class disks. (https://github.com/ansible-collections/community.vmware/pull/1996).
+        (https://github.com/ansible-collections/community.vmware/issues/1988).
+      - vmware_host_facts - Add the possibility to get the related datacenter. (https://github.com/ansible-collections/community.vmware/pull/1994).
+      - vmware_vm_inventory - Add parameter `subproperties` (https://github.com/ansible-collections/community.vmware/pull/1972).
+      - vmware_vmkernel - Add the function to set the enable_backup_nfc setting (https://github.com/ansible-collections/community.vmware/pull/1978)
+      - vsphere_copy - Add parameter to tell vsphere_copy which diskformat is being
+        uploaded (https://github.com/ansible-collections/community.vmware/pull/1995).
+    fragments:
+    - 1972-vm_inventory_subproperties.yml
+    - 1977-vsphere_file_add_env_fallback.yml
+    - 1978-vmware_vmkernel.yaml
+    - 1994-vmware-host-facts.yml
+    - 1995-vsphere_copy.yml
+    - 1996 - vmware_first_class_disk_info.yml
+    release_date: '2024-02-24'

@@ -1,0 +1,40 @@
+{
+ "collection_info": {
+  "namespace": "cisco",
+  "name": "meraki",
+  "version": "2.17.2",
+  "authors": [
+   "Francisco Mu\u00f1oz <fmunoz@cloverhound.com>",
+   "Bryan Vargas <bvargas@cloverhound.com>",
+   "William Astorga <wastorga@cloverhound.com>",
+   "Jose Bogarin <jbogarin@cloverhound.com>"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "cisco",
+   "meraki",
+   "cloud",
+   "collection",
+   "networking",
+   "sdn"
+  ],
+  "description": "Ansible Modules for Meraki",
+  "license": [],
+  "license_file": "LICENSE",
+  "dependencies": {
+   "ansible.utils": ">=2.0.0,<4.0"
+  },
+  "repository": "https://github.com/meraki/dashboard-api-ansible",
+  "documentation": "https://meraki.github.io/dashboard-api-ansible/",
+  "homepage": "https://github.com/meraki/dashboard-api-ansible",
+  "issues": "https://github.com/meraki/dashboard-api-ansible/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "25a0e6b84e05b702fda09387109297a3491dd507f35fb966796b7f612b4a76af",
+  "format": 1
+ },
+ "format": 1
+}
