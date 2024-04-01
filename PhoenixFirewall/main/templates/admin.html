@@ -109,6 +109,8 @@
         <button class="action-btn" onclick="location.href='{% url 'delete_rule' %}'">Delete Rule</button>
         <button class="action-btn" onclick="location.href='{% url 'commit_rule' %}'">Commit Rule</button>
         <button class="action-btn" onclick="location.href='{% url 'upload' %}'">Upload Security Config</button>
+        <button class="action-btn" onclick="location.href='{% url 'add_zones' %}'">Add Zones</button>
+        
 
         <form action="{% url 'get_pan_security_config' %}" method="post">
             {% csrf_token %}

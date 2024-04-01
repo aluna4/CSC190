@@ -34,7 +34,22 @@ class Rule(models.Model):
    destination_ip = models.CharField(max_length=50)
    application = models.CharField(max_length=50)
    service = models.CharField(max_length=50)
-   action = models.CharField(max_length=50)
+   action = models.CharField(max_length=50)   
 
    def __str__(self):
       return f"Employee: {self.employeeID} Rule Name = {self.rule_name}"
+   
+class Zones(models.Model):
+   zone_name = models.CharField(max_length=15)
+   start_zone = models.CharField(max_length=50)
+   end_zone = models.CharField(max_length=50)
+   source_ip = models.CharField(max_length=50)
+   destination_ip = models.CharField(max_length=50)
+   source_zone = models.CharField(max_length=50)
+   destination_zone = models.CharField(max_length=50)
+
+   def __str__(self):
+      return f"Zone: {self.zone_name}"
+   
+
+      

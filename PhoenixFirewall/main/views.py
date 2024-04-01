@@ -290,3 +290,47 @@ def upload(request):
     else:  
         upload = SecurityConfUpload()  
         return render(request,"upload.html",{'form':upload})  
+    
+
+
+ #add firewall zones 
+def add_zones(request):
+    if request.method == "POST":
+        zone_name = request.POST.get("zone_name")
+        start_zone = request.POST.get("start_zone")
+        end_zone = request.POST.get("end_zone")
+        source_zone = request.POST.get("source_zone")
+        source_ip = request.POST.get("source_ip")
+        destination_zone = request.POST.get("destination_zone")
+        destination_ip = request.POST.get("destination_ip")
+        
+
+        #check if the flow is allowed
+        if (start_zone, end_zone) not in ALLOWED_FLOWS:
+            messages.error(request,'The specified flow is not allowed.')
+            return render(request, "add_zones.html")
+        
+        #validate IP addresses
+        if start_zone in ZONE_SUBNETS and end_zone in ZONE_SUBNETS:
+            source_ip_valid = ipaddress.ip_address(source_ip) in ZONE_SUBNETS [start_zone]
+            destination_ip_valid = ipaddress.ip_address(source_ip) in ZONE_SUBNETS[destination_ip]
+
+
+        new_rule = Rule(
+            zone_name = zone_name,
+            start_zone = start_zone,
+            end_zone = end_zone,
+            source_ip = source_ip,
+            destination_ip = destination_ip,
+            source_zone = source_zone,
+            destination_zone = destination_zone
+        )
+        new_rule.save()
+        messages.success(request, "Zone Created Successfully")
+        return redirect('user')
+    else:
+        return render(request, "add_zones.html")
+
+        
+
+        
