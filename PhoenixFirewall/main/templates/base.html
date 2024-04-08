@@ -1,89 +1,23 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Phoenix {{ role }}</title>
-        <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-
-        h6 {
-            color: white;
-            text-align: right;
-        }
-
-        form {
-            max-width: 400px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            display: block;
-            margin: 10px 0;
-            color: #555;
-        }
-
-        input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
-            input[type="submit"] {
-                background-color: #ff8000;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-            }
-
-                input[type="submit"]:hover {
-                    background-color: #ff700f;
-                }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Phoenix Firewall{% endblock title %}</title>
+    {% load static %}
+    <!-- Link to your main CSS file that includes the navbar styles -->
+    <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
 </head>
 <body>
-    <header>
-        {% load static %}
-        <a href = "{% url 'home' %}">
-            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
+    <nav id="nav">
+        <!-- Your navigation bar as per the homepage -->
+        <a href="{% url 'home' %}">
+            <img id="header-title" src="{% static 'assets/css/images/phoenix_logo.png' %}" alt="Phoenix Firewall Logo">
         </a>
-        {%if username.is_superuser%}
-        <h6>Role: Superuser <br>Username: {{ username }}</h6>
-        {%else%}
-        <h6>Role: User <br>Username: {{ username }}</h6>
-        {% endif %}
-    </header>   
+    </nav>
+
+    <!-- The content block where page-specific content will be inserted -->
     {% block content %}
-    form
-    {% endblock %}
+    {% endblock content %}
 </body>
 </html>
