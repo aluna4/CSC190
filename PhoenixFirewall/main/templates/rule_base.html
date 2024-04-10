@@ -28,6 +28,11 @@
             text-align: center;
         }
 
+	h6 {
+            color: white;
+            text-align: right;
+        }
+
         form {
             max-width: 400px;
             margin: 20px auto;
@@ -123,6 +128,11 @@
         <a href = "{% url 'home' %}">
             <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
         </a>
+	{%if username.is_superuser%}
+        <h6>Role: Superuser <br>Username: {{ username }}</h6>
+        {%else%}
+        <h6>Role: User <br>Username: {{ username }}</h6>
+        {% endif %}
     </header>
 
     <h1>{{ role }}</h1>

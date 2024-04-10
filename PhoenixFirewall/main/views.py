@@ -146,7 +146,7 @@ def add_rule(request):
         # Check if the flow is allowed
         if (source_zone, destination_zone) not in ALLOWED_FLOWS:
             messages.error(request,'The specified flow is not allowed.')
-            return render(request, "AddRule.html")
+            return render(request, "add_rule.html")
 
         # Validate IP addresses
         if source_zone in ZONE_SUBNETS and destination_zone in ZONE_SUBNETS:
@@ -155,7 +155,7 @@ def add_rule(request):
 
             if not source_ip_valid or not destination_ip_valid:
                 messages.error(request, 'The IP address entered is not within the correct zone.')
-                return render(request, "AddRule.html")
+                return render(request, "add_rule.html")
                 
         new_rule = Rule(
             # Here you should add your logic to actually add the firewall rule
@@ -174,7 +174,7 @@ def add_rule(request):
         messages.success(request, "Rule created successfully")
         return redirect('user')
     else:
-        return render(request, "AddRule.html")
+        return render(request, "add_rule.html")
         
 # delete firewall rule
 def delete_rule(request):
@@ -197,7 +197,7 @@ def delete_rule(request):
                 return render(request, "delete_rule.html", {'success': 'Rule deleted successfully.'})
             else:
                 context['error'] = 'Error deleting firewall rule'
-                return render(request, "DeleteRule.html", context)
+                return render(request, "delete_rule.html", context)
         except Exception as e:
             context['error'] = str(e)
             return render(request, "delete_rule.html", context)
@@ -224,7 +224,7 @@ def commit_rule(request):
                 return render(request, "commit_rule.html", {'success': 'Configurations committed successfully.'})
             else:
                 context['error'] = 'Error committing configurations'
-                return render(request, "CommitRule.html", context)
+                return render(request, "commit_rule.html", context)
         except Exception as e:
             context['error'] = str(e)
             print(context['error'])
