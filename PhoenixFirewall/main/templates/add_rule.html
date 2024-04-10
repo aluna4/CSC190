@@ -1,16 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'rule_base.html' %}
 
 {% block content %}
-
-    <!-- display error message -->
-    {% if error %}
-        <p style="color: red; text-align: center;">{{ error }}</p>
-    {% endif %}
-
-    {% if success %}
-        <p style="color: green; text-align: center;">{{ success }}</p>
-    {% endif %}
-
     <form method="post">
         {% csrf_token %}
         <label for="rule-name">Rule Name:</label>
@@ -23,8 +13,7 @@
         <input type="text" id="source-ip" name="source_ip" value="{{ source_ip|default:'' }}">
 
         <label for="destination-zone">Destination Zone:</label>
-        <input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' 
-}}">
+        <input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:''}}">
 
         <label for="destination-ip">Destination IP:</label>
         <input type="text" id="destination-ip" name="destination_ip" value="{{ destination_ip|default:'' }}">

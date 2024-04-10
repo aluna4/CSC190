@@ -5,8 +5,8 @@ from django.core.validators import RegexValidator
 
 # Create your models here. This is where the db gets created.
 class userlogIn(models.Model):
-   first_name = models.CharField(max_length = 15) #holds employee first name
-   last_name = models.CharField(max_length = 15) #holds employee last name
+   first_name = models.CharField(max_length = 15, default = "john") #holds employee first name
+   last_name = models.CharField(max_length = 15, default = "doe") #holds employee last name
    user_name = models.CharField(max_length=100,unique=True) #holds username
    user_pswd = models.CharField(max_length=50) #holds user password
    employeeID = models.CharField(max_length=8,unique=True,validators=[RegexValidator(regex=r'^\d{8}$')]) #holds employee 8 digit ID number
