@@ -1,5 +1,5 @@
 from django.test import Client
-from PhoenixFirewall.main.tests.base import BaseTestCase
+from PhoenixFirewall.main.tests import BaseTestCase
 
 class UserRoleBasedContentTest(BaseTestCase):
     def setUp(self):
