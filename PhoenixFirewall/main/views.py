@@ -17,11 +17,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseBadRequest
 
+from django.contrib.auth import get_user_model, authenticate, login
+
+
+
 # Varibles for config
 load_dotenv(find_dotenv())
 USER=os.getenv('PHOENIX_USER')
 PASS=os.getenv('PHOENIX_PASS')
 URL=os.getenv('PAN_URL')
+User = get_user_model()
 
 def home(request):
     return render(request, 'homepage.html')
@@ -49,7 +54,7 @@ def create_user_view(request):
         employee_id = request.POST.get('employee_id')
 
         # Check if the username or employee ID already exists
-        if userlogIn.objects.filter(user_name=username).exists():
+        if userlogIn.objects.filter(username=username).exists():
              messages.error(request, "Username already exists")
              return render(request, 'create_user.html')
         if userlogIn.objects.filter(employeeID=employee_id).exists():
@@ -58,15 +63,14 @@ def create_user_view(request):
         
         # Create the user
         try:
-            new_user = userlogIn(
-            first_name=first_name.upper(),
-            last_name=last_name.upper(),
-            user_name=username,
-            user_pswd=make_password(password),
-            employeeID=employee_id,
-            create_date=timezone.now()
+            User.objects.create_user( #userlogIn(
+                username=username,
+                password=password,#make_password(password),
+                first_name=first_name.upper(),
+                last_name=last_name.upper(),
+                employeeID=employee_id
             )
-            new_user.save()
+            #new_user.save()
             messages.success(request, "User created successfully. Please log in.")
             return redirect('login')
         except ValidationError as e:
@@ -86,19 +90,29 @@ def login_view(request):
         
         try:
             # Get the userlogIn object with the given username
-            user = userlogIn.objects.get(user_name=username)
-            if user is not None and check_password(password, user.user_pswd):
-                request.session['user_id'] = user.id  # Store user's id in session
-                return render(request, 'user.html')  # Redirect to a user page after successful login
+            user = authenticate(request, username=username, password=password)#userlogIn.objects.get(user_name=username)
+            
+            if user is not None:
+                login(request,user)
+                if user.is_superuser:
+                    return redirect('admin')
+                else:
+                    return redirect('user')
             else:
                 messages.error(request, 'Invalid username or password')
-        except userlogIn.DoesNotExist:
-                user = authenticate(request, username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    return render(request, 'admin.html')
-                else:
-                    messages.error(request, 'Invalid username or password')
+            # if user is not None: #and check_password(password, user.user_pswd):
+            #     #request.session['user_id'] = user.id  # Store user's id in session
+            #     login(request,user)
+            #     return render(request, 'user.html')  # Redirect to a user page after successful login
+            # else:
+            #     messages.error(request, 'Invalid username or password')
+        except: #userlogIn.DoesNotExist:
+                # user = authenticate(request, username=username, password=password)
+                # if user is not None:
+                #     login(request, user)
+                #     return render(request, 'admin.html')
+                # else:
+                    messages.error(request, 'User does not exist')
     return render(request, 'login.html')
 
 #user page
@@ -156,12 +170,14 @@ def add_rule(request):
             if not source_ip_valid or not destination_ip_valid:
                 messages.error(request, 'The IP address entered is not within the correct zone.')
                 return render(request, "AddRule.html")
-                
+        
+        current_user = request.userlogIn
+        employee_id = current_user.employeeID
         new_rule = Rule(
             # Here you should add your logic to actually add the firewall rule
             # Assuming add_firewall_rule is a function that returns True on success
-            employeeID = userlogIn.get_employeeID,
-            rule_name = rule_name,
+            employeeID = employee_id,
+            rule_name = rule_name.upper(),
             source_zone = source_zone, 
             source_ip = source_ip, 
             destination_zone = destination_zone,
