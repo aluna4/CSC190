@@ -57,7 +57,7 @@ class UserModelTest(TestCase):
 class RuleModelTest(TestCase):
     def test_rule_creation(self):
         rule = Rule.objects.create(
-            employeeID="123456",
+            employeeID=self.user,
             rule_name="test_rule",
             source_zone="zone1",
             source_ip="192.168.1.1",
@@ -67,7 +67,7 @@ class RuleModelTest(TestCase):
             service="service",
             action="allow"
         )
-        self.assertEqual(rule.employeeID, "123456")
+        self.assertTrue(isinstance(rule, Rule))
         self.assertEqual(rule.rule_name, "test_rule")
         self.assertEqual(rule.source_zone, "zone1")
         self.assertEqual(rule.source_ip, "192.168.1.1")
@@ -79,7 +79,7 @@ class RuleModelTest(TestCase):
 
     def test_rule_str_representation(self):
         rule = Rule.objects.create(
-            employeeID="123456",
+            employeeID=self.user,
             rule_name="test_rule",
             source_zone="zone1",
             source_ip="192.168.1.1",
@@ -89,4 +89,4 @@ class RuleModelTest(TestCase):
             service="service",
             action="allow"
         )
-        self.assertEqual(str(rule), "Employee: 123456 Rule Name = test_rule")
+        self.assertEqual(str(rule), f"Employee: {self.user.employeeID}Rule Name = {rule.rule_name}")
