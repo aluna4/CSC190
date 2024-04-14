@@ -1,14 +1,16 @@
+import os
 import csv
 import requests
 import unittest
 from selenium import webdriver
+from dotenv import load_dotenv, find_dotenv
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
 # Global Variables
 URL="http://127.0.0.1:8000/"
 
-class Test(unittest.TestCase):
+class EndpointTest(unittest.TestCase):
     # Setup method to initialize variables and objects
     def setUp(self):
         # Selenium options
@@ -36,14 +38,40 @@ class Test(unittest.TestCase):
             endpoint_status_code = endpoint.get_status_code(ep)
             self.assertEqual(endpoint_status_code, 200, msg=f"{ep} does not have a 200 OK")
 
-        # Authenticated Endpoint Status Code Testing
-        # TODO: Implement authentication to webapp
-        auth_endpoints = endpoint.get_autheticated_endpoints()
+class ExternalTest(unittest.TestCase):
+    # Setup method
+    def setUp(self) -> None:
+        # Varibles for config
+        load_dotenv(find_dotenv())
+        self.USER=os.getenv('PHOENIX_USER')
+        self.PASS=os.getenv('PHOENIX_PASS')
+        self.PAN_URL=os.getenv('PAN_URL')
+        self.r = requests.get(URL, verify=False)
+    
+    # Teardown method
+    def tearDown(self) -> None:
+        # There is nothing to actually clean up during this test at the time
+        pass
+    
+    # Check firewall status
+    def test_firewall_status(self) -> None:
+        self.assertEqual(self.r.status_code, 200, msg=f"{self.PAN_URL} does not have a 200 OK. Firewall down.")
+    
+    # Check firewall credentials
+    def test_firewall_credentials(self) -> None:
+        # Send POST request to check credentials in firewall
+        headers = {"Content-Type":"application/x-www-form-urlencoded"}
+        data = {"user":f"{self.USER}", "password":f"{self.PASS}"}
+        req = None
+        try:
+            req = requests.post(f"{self.PAN_URL}api/", data=data, headers=headers, verify=False)
+        except:
+            self.failIf(req = None, msg="Credential Check Failed")
 
 # Class to read csv files
 class DocumentReader():
     # Read CSV file and parse it for endpoints. Return a list of endpoints
-    def read(self, filename):
+    def read(self, filename) -> list:
         endpoints = [URL]
         with open(filename, newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
@@ -58,15 +86,15 @@ class Endpoint():
     reader = DocumentReader()
 
     # Return unauthenticated endpoints
-    def get_unauthenticated_endpoints(self):
+    def get_unauthenticated_endpoints(self) -> list:
         return self.reader.read("uEP.csv")
     
     # Return authenticated endpoints
-    def get_autheticated_endpoints(self):
+    def get_autheticated_endpoints(self) -> list:
         return self.reader.read("aEP.csv")
 
     # Return status code of given endpoint
-    def get_status_code(self, endpoint):
+    def get_status_code(self, endpoint) -> int:
         r = requests.get(endpoint, verify=False)
         return r.status_code
         
