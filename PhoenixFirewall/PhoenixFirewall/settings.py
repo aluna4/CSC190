@@ -41,6 +41,8 @@ DEBUG = True
 LIVERELOAD_HOST = '127.0.0.1'
 LIVERELOAD_PORT = '8001'
 
+AUTH_USER_MODEL = 'main.userlogIn'
+
 # Application definition
 
 INSTALLED_APPS = [
