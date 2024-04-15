@@ -71,6 +71,7 @@ input, select, textarea {
 
 	html {
 		box-sizing: border-box;
+		overflow-y: scroll;
 	}
 
 	*, *:before, *:after {
@@ -78,7 +79,7 @@ input, select, textarea {
 	}
 
 	body {
-		background: #f7f7f7 url("images/bg01.png");
+		background: #333 url("images/bg01.png");
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -91,7 +92,7 @@ input, select, textarea {
 		}
 
 	body, input, select, textarea {
-		color: #474747;
+		color: #ffffff;
 		font-family: 'Source Sans Pro', sans-serif;
 		font-size: 16pt;
 		font-weight: 300;
@@ -102,13 +103,13 @@ input, select, textarea {
 		-moz-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
 		-webkit-transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
 		transition: color 0.2s ease-in-out, border-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
-		color: #37c0fb;
+		color: #333;
 		text-decoration: none;
 		border-bottom: dotted 1px;
 	}
 
 		a:hover {
-			color: #37c0fb;
+			color: #333;
 			border-bottom-color: transparent;
 		}
 
@@ -121,7 +122,7 @@ input, select, textarea {
 	}
 
 	p, ul, ol, dl, table, blockquote {
-		margin: 0 0 2em 0;
+		font-size: 1em;
 	}
 
 	h1, h2, h3, h4, h5, h6 {
@@ -147,7 +148,7 @@ input, select, textarea {
 	}
 
 	h3 {
-		font-size: 1.2em;
+		font-size: 3em;
 		letter-spacing: -0.025em;
 	}
 
@@ -173,6 +174,16 @@ input, select, textarea {
 		border-left: solid 0.5em #e0e0e0;
 		font-style: italic;
 		padding: 1em 0 1em 2em;
+	}
+
+	/* Reduce the space below the h3 headings within the .highlight class */
+	.highlight h3 {
+		margin-bottom: 0em; /* Half the default space */
+	}
+
+	/* Reduce the space above the paragraphs within the .highlight class */
+	.highlight p {
+		margin-top: 0em; /* Half the default space, or whatever you find visually pleasing */
 	}
 
 /* Container */
@@ -527,6 +538,36 @@ input, select, textarea {
 		position: relative;
 		text-decoration: none;
 	}
+	.tooltip-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-group .tooltip-icon:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .form-group .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip text */
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -60px;
+
+            /* Fade in tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
 		.icon:before {
 			-moz-osx-font-smoothing: grayscale;
@@ -560,11 +601,7 @@ input, select, textarea {
 		.icon.major {
 			text-align: center;
 			cursor: default;
-			background-color: #37c0fb;
-			background-image: -moz-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
-			background-image: -webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
-			background-image: -ms-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
-			background-image: linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
+			background-color: #FF7144;
 			color: #fff;
 			border-radius: 100%;
 			display: inline-block;
@@ -572,7 +609,8 @@ input, select, textarea {
 			height: 5em;
 			line-height: 5em;
 			box-shadow: 0 0 0 7px white, 0 0 0 8px #e0e0e0;
-			margin: 0 0 2em 0;
+			margin: 0 0 0em 0;
+			margin-top: 0em; /* Adjust this value as needed to reduce the space */
 		}
 
 			.icon.major:before {
@@ -580,6 +618,49 @@ input, select, textarea {
 			}
 
 
+/* tooltip logic */
+.form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    margin: 0 0 5px 0;
+    color: #555;
+}
+
+.tooltip-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.form-group .tooltip-icon:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
 /* Icons */
 
 	ul.icons {
@@ -676,10 +757,10 @@ input, select, textarea {
 		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
 		background-image: -ms-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
 		background-image: linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
-		background-color: #37c0fb;
+		background-color: #FF7144;
 		border-radius: 5px;
 		border: 0;
-		color: #fff;
+		color: #fff !important;
 		cursor: pointer;
 		display: inline-block;
 		padding: 0 1.5em;
@@ -696,8 +777,8 @@ input, select, textarea {
 		input[type="button"]:hover,
 		button:hover,
 		.button:hover {
-			background-color: #50c8fc;
-			color: #fff !important;
+			background: #eb5c30; /* Background color on hover */
+			color: #fff !important; /* Text color on hover */
 		}
 
 		input[type="submit"]:active,
@@ -705,8 +786,8 @@ input, select, textarea {
 		input[type="button"]:active,
 		button:active,
 		.button:active {
-			background-color: #1eb8fb;
-			color: #fff;
+			background-color: #FF7144;
+			color: #fff !important;
 		}
 
 		input[type="submit"].alt,
@@ -715,7 +796,7 @@ input, select, textarea {
 		button.alt,
 		.button.alt {
 			background-color: #555555;
-			color: #fff;
+			color: #fff !important;
 		}
 
 			input[type="submit"].alt:hover,
@@ -766,7 +847,6 @@ input, select, textarea {
 
 	.box.post {
 		position: relative;
-		margin: 0 0 2em 0;
 	}
 
 		.box.post:after {
@@ -811,86 +891,116 @@ input, select, textarea {
 				border: 0;
 			}
 
-	#nav {
-		cursor: default;
-		background-color: #333;
-		background-image: -moz-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.3)), url("images/bg01.png");
-		background-image: -webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.3)), url("images/bg01.png");
-		background-image: linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.3)), url("images/bg01.png");
-		padding: 0;
-	}
-
-		#nav:after {
-			content: '';
-			display: block;
-			width: 100%;
-			height: 0.75em;
-			background-color: #37c0fb;
-			background-image: url("images/bg01.png");
-		}
-
-		#nav > ul {
-			margin: 0;
-		}
-
+			#nav {
+				cursor: default;
+				background-color: #333;
+				display: flex;
+				align-items: center; /* Vertically center the items in the navbar */
+				justify-content: center; /* This will center the title in the nav bar */
+				padding: 3em 0; /* Increase the vertical padding */
+    			position: relative;
+			}
+			
+			
+			#nav > ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+				display: flex;
+				position: absolute; /* Absolute position to remove it from the flow and let the title center */
+				right: 0; /* Align it to the right */
+				top: 50%;
+    			transform: translateY(-50%);
+			}
+			
+			/* Center the logo inside the nav bar */
+			#nav #header-title {
+				max-height: 35%; /* Make sure the logo is not bigger than the navbar */
+				max-width: 50%; /* Ensures the logo width does not exceed the navbar width */
+				height: auto; /* Maintain aspect ratio */
+				position: relative; /* Relative to the nav bar */
+			}
+			
 			#nav > ul > li {
-				position: relative;
-				display: inline-block;
-				margin-left: 1em;
+				margin-right: 1em; /* Spacing between menu items */
+				margin-left: 1em; /* Ensure spacing on both sides for symmetry */
+			}
+			
+			#nav > ul > li a {
+				color: #c0c0c0;
+				text-decoration: none;
+				border: 0;
+				padding: 1.5em 0.5em 1.35em 0.5em;
+				display: block;
+			}
+			
+			#nav > ul > li:hover a {
+				color: #fff;
+			}
+			
+			#nav > ul > li.current {
+				font-weight: 600;
+			}
+			
+			#nav > ul > li.current:before {
+				-moz-transform: rotateZ(45deg);
+				-webkit-transform: rotateZ(45deg);
+				-ms-transform: rotateZ(45deg);
+				transform: rotateZ(45deg);
+				width: 0.75em;
+				height: 0.75em;
+				content: '';
+				display: block;
+				position: absolute;
+				bottom: -0.5em;
+				left: 50%;
+				margin-left: -0.375em;
+				background-color: #FF7144;
+				background-image: url("images/bg01.png");
 			}
 
-				#nav > ul > li a {
-					color: #c0c0c0;
-					text-decoration: none;
-					border: 0;
-					display: block;
-					padding: 1.5em 0.5em 1.35em 0.5em;
-				}
+			.button.login-button {
+				padding: 0.35em 1em; /* Less vertical padding */
+				font-size: 0.8em; /* Smaller text */
+				background-color: #FF7144; /* Button color */
+				color: white; /* Text color */
+				border-radius: 10px; /* Corner radius */
+				border: none; /* No border */
+				display: inline-block; /* Aligns with other elements correctly */
+				line-height: normal; /* Adjust line height to suit the new padding */
+				vertical-align: middle; /* Aligns the button correctly in line with other inline or inline-block elements */
+				text-align: center; /* Center the text */
+				cursor: pointer; /* Change cursor to indicate button */
+				text-decoration: none; /* Remove underlines if it's an anchor tag */
+				-moz-appearance: none; /* Remove default styles for button in Firefox */
+				-webkit-appearance: none; /* Remove default styles for button in Safari */
+				-ms-appearance: none; /* Remove default styles for button in IE */
+				appearance: none; /* Remove default styles for button in modern browsers */
+				box-shadow: 0px 0px 0px transparent; /* Remove box-shadow if there was any */
+				border: 0 solid transparent; /* Ensuring the border doesn't take up space */
+				transition: background-color 0.2s, color 0.2s; /* Smooth transition for hover effects */
+			}
+			
+			
+			
 
-				#nav > ul > li:first-child {
-					margin-left: 0;
-				}
-
-				#nav > ul > li:hover a {
-					color: #fff;
-				}
-
-				#nav > ul > li.current {
-					font-weight: 600;
-				}
-
-					#nav > ul > li.current:before {
-						-moz-transform: rotateZ(45deg);
-						-webkit-transform: rotateZ(45deg);
-						-ms-transform: rotateZ(45deg);
-						transform: rotateZ(45deg);
-						width: 0.75em;
-						height: 0.75em;
-						content: '';
-						display: block;
-						position: absolute;
-						bottom: -0.5em;
-						left: 50%;
-						margin-left: -0.375em;
-						background-color: #37c0fb;
-						background-image: url("images/bg01.png");
-					}
-
-					#nav > ul > li.current a {
-						color: #fff;
-					}
-
-				#nav > ul > li.active a {
-					color: #fff;
-				}
-
-				#nav > ul > li.active.current:before {
-					opacity: 0;
-				}
-
-				#nav > ul > li > ul {
-					display: none;
-				}
+			#nav > ul > li.current a {
+				color: #fff;
+			}
+			
+			#nav > ul > li.active a {
+				color: #fff;
+			}
+			
+			#nav > ul > li.active.current:before {
+				opacity: 0;
+			}
+			
+			#nav > ul > li > ul {
+				display: none;
+			}
+			
+			
 
 
 /* Banner */
@@ -946,11 +1056,11 @@ input, select, textarea {
 	}
 
 		.wrapper.style1 {
-			background: #fff;
+			background: #333;
 		}
 
 		.wrapper.style2 {
-			background-color: #fff;
+			background-color: #333;
 			background-image: url("images/bg02.png"), url("images/bg03.png"), url("images/bg01.png");
 			background-position: top left,						bottom left,					top left;
 			background-size: 100% 6em,						100% 6em,						auto;
@@ -958,7 +1068,7 @@ input, select, textarea {
 		}
 
 		.wrapper.style3 {
-			background-color: #ff8000;
+			background-color: #FF7144;
 			background-image: -moz-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
 			background-image: -webkit-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
 			background-image: -ms-linear-gradient(top, rgba(0,0,0,0), rgba(0,0,0,0.15)), url("images/bg01.png");
@@ -966,13 +1076,18 @@ input, select, textarea {
 			color: #fff;
 		}
 
+		.wrapper.style2 .major p {
+			color: #FFFFFF; /* Sets the paragraph text to white */
+		}
+
 			.wrapper.style3 .button {
-				background: #fff;
-				color: #474747;
+				background: #424242;
+				color: #333;
 			}
 
 				.wrapper.style3 .button:hover {
-					color: #ff8000 !important;
+					background: #575757; /* Background color on hover */
+					color: #fff; /* Text color on hover */
 				}
 
 /* CTA */
@@ -996,7 +1111,7 @@ input, select, textarea {
 /* Footer */
 
 	#footer {
-		padding: 4em 0 8em 0;
+		padding: 2em 0 1em 0;
 	}
 
 		#footer a {
@@ -1028,7 +1143,7 @@ input, select, textarea {
 
 		#footer .copyright {
 			color: #999;
-			margin-top: 1.5em;
+			margin-top: 0em;
 			text-align: center;
 			font-size: 0.9em;
 		}
@@ -1041,3 +1156,69 @@ input, select, textarea {
 		display: none;
 	}
 
+/* Reset any specific styles that may interfere */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Navigation Bar */
+#nav {
+  background: #333; /* Set the background color to match your theme */
+  color: white;
+  padding: 1em 0; /* Adjust as needed */
+  text-align: center; /* This centers the content in the nav bar */
+}
+
+/* Login Container */
+.login-container {
+  max-width: 400px;
+  margin: 2em auto; /* This centers the login form on the page and adds spacing from the top */
+  padding: 2em;
+  background: #222; /* Or any other color */
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  margin-top: 120px; /* This value should be at least equal to the height of the nav bar */
+}
+
+/* Inputs and Buttons */
+.form-group {
+  margin-bottom: 1em;
+}
+
+.form-group label {
+  color: white;
+  display: block;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc; /* Light grey border */
+  background: #333; /* Slightly lighter than the container for contrast */
+  color: white;
+}
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;    
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  color: black;
+}
+.button {
+  display: block; /* Block level makes the button extend full width of the container */
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #FF7144; /* Your theme's button color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

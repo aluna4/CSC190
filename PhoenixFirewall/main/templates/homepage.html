@@ -12,22 +12,20 @@
 <body class="is-preload">
     <div id="page-wrapper">
 
-        <!-- Header -->
-        <div id="header">
+        <!-- Nav -->
+        <nav id="nav">
+            <!-- Replace this div with your logo image -->
+            <a href="{% url 'home' %}">
+                <img id="header-title" src="{% static 'assets/css/images/phoenix_logo.png' %}" alt="Phoenix Firewall Logo">
+            </a>
+            <ul>
+                <li>
+                    <a href="{% url 'login' %}" class="button login-button">Login</a>
+                </li>
+                <!-- Add other list items for other buttons or elements here if necessary -->
+            </ul>
+        </nav>
 
-            <!-- Logo -->
-            <h1><a href="" id="logo">Phoenix <em>Firewall Application</em></a></h1>
-            {% load static %}
-            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
-
-            <!-- Nav -->
-            <nav id="nav">
-                <ul>
-                    <li class="current"><a href="">Home</a></li>
-                    <li><a href="{% url 'login' %}">Log In</a></li>
-                    <li><a href="{% url 'login' %}">Firewall Status</a></li>
-                </ul>
-            </nav>
 
         </div>
 
@@ -48,21 +46,21 @@
                         <div class="box highlight">
                             <i class="icon solid major fa-users"></i>
                             <h3>User Friendly</h3>
-                            <p>Enhance efficiency</p>
+                            <p>Enhance Firewall Efficiency</p>
                         </div>
                     </section>
                     <section class="col-4 col-12-narrower">
                         <div class="box highlight">
                             <i class="icon solid major fa-lock"></i>
                             <h3>Secure</h3>
-                            <p>Quicker response time to threats</p>
+                            <p>Quickly Secure Networks</p>
                         </div>
                     </section>
                     <section class="col-4 col-12-narrower">
                         <div class="box highlight">
                             <i class="icon solid major fa-laptop-code"></i>
-                            <h3>Automation</h3>
-                            <p>Minimize manual oversight</p>
+                            <h3>Remote</h3>
+                            <p>Remote Firewall Configuration</p>
                         </div>
                     </section>
                 </div>
@@ -96,9 +94,7 @@
 
             <!-- Icons -->
             <ul class="icons">
-                <li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-                <li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-                
+                <li><a href="https://github.com/aluna4/CSC190" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
             </ul>
 
         </div>

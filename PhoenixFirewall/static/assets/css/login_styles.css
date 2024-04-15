@@ -1,0 +1,107 @@
+/* login_styles.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #333; /* Change background color */
+    font-family: 'Arial', sans-serif;
+}
+
+.navbar {
+    width: 100%;
+    background-color: #222; /* Dark background for navbar */
+    overflow: hidden;
+}
+
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.navbar-logo img {
+    height: 60px; /* Logo height */
+}
+
+.navbar-menu {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-item {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    transition: background 0.3s ease;
+}
+
+.navbar-item:hover {
+    background-color: #3498db; /* Change color on hover */
+}
+
+.login-container {
+    background: #FF7144; /* White background for the form */
+    padding: 40px;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 300px; /* Fixed width */
+    margin-top: 80px; /* Push down the form so it does not overlap the nav */
+}
+
+.login-container h1 {
+    color: #333;
+    margin-bottom: 20px; /* More space under the title */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Reduced bottom margin for form groups */
+}
+
+.form-group label {
+    display: block;
+    color: #333;
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+.form-group input {
+    width: calc(100% - 20px); /* Full width minus padding */
+    padding: 10px;
+    margin-bottom: 10px; /* Space between inputs */
+    border-radius: 3px;
+    border: 1px solid #ddd; /* Light grey border */
+    box-sizing: border-box;
+}
+
+.form-group.action {
+    margin-top: 20px; /* Space above the button */
+    text-align: right; /* Align button to the right */
+}
+
+.button {
+    background-color: #3498db; /* Button color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #2980b9; /* Darker color on hover */
+}
+
+/* Additional styling for alert messages if needed */
+.alert {
+    padding: 10px;
+    color: white;
+    background-color: red; /* For error messages */
+    margin-bottom: 20px;
+    border-radius: 3px;
+    text-align: center;
+}

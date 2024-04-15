@@ -1,20 +1,51 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-       <label for="rule-name">Rule Name:</label>
-        <input type="text" id="rule-name" name="rule_name">
+<body class="login-page">
+    <div class="login-container">
+        <h1>Delete Rule</h1>    
+		<form method="post">
+    	    {% csrf_token %}
+			<div class="form-group">
+        	    <label for="rule-name">Rule Name:
+            	    <abbr class="tooltip-icon">
+                	    <img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                    	<span class="tooltiptext">Enter the name of an existing firewall rule to be deleted</span>
+	                </abbr>
+    	        </label>
+        	    <input type="text" id="rule-name" name="rule_name" value="{{ rule_name|default:'' }}">
+        	</div>
 
-        <label for="ip">IP:</label>
-        <input type="text" id="ip" name="ip">
+			<div class="form-group">
+        	    <label for="ip">IP:
+            	    <abbr class="tooltip-icon">
+                	    <img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                    	<span class="tooltiptext">Enter an IP in the format X.X.X.X</span>
+            	    </abbr>
+        	    </label>
+    	        <input type="text" id="ip" name="ip" value="{{ ip|default:'' }}">
+	        </div>	
+	
+			<div class="form-group">
+    	        <label for="service">Port:
+        	        <abbr class="tooltip-icon">
+            	        <img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                	    <span class="tooltiptext">Enter an allowed port (ex. 12345)</span>
+            	    </abbr>
+        	    </label>
+    	        <input type="text" id="service" name="service" value="{{ service|default:'' }}">
+	        </div>
 
-        <label for="port">Port (Use 12345):</label>
-        <input type="text" id="port" name="port">
-
-        <input type="submit" id= "submit" value= "Delete Rule">
-        <a href="{% url 'user' %}">
-            <input type="button" name="Back" value="Back">
-        </a>
-    </form>
+			<div class="button" style="display: flex; flex-direction: column; padding: 0px;">
+				<input type="submit" id= "submit" value= "Delete Rule">
+			</div>
+			
+			<div class="button" style="display: flex; flex-direction: column; padding: 0px;"
+				<a href="{% url 'user' %}">
+					<input type="button" name="Back" value="Back">
+				</a>
+			</div>
+	    </form>
+	</div>
+</body>
 {% endblock %}

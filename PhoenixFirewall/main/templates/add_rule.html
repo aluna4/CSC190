@@ -1,49 +1,99 @@
 {% extends 'base.html' %}
-
+{% load static%}
 {% block content %}
+<body class="login-page">
+    <div class="login-container">
+        <h1>Add Rule</h1>
+    	<form method="post">
+    		{% csrf_token %}
+        	<div class="form-group">
+        		<label for="rule-name">Rule Name:
+            		<abbr class="tooltip-icon">
+                		<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                    	<span class="tooltiptext">Enter a unique name for the firewall rule</span>
+                	</abbr>
+            	</label>
+            	<input type="text" id="rule-name" name="rule_name" value="{{ rule_name|default:'' }}">
+        	</div>        
+        
+        	<div class="form-group">
+        		<label for="source-zone">Source Zone:
+            		<abbr class="tooltip-icon">
+                		<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                    	<span class="tooltiptext">Source Zones: Internal, DMZ, Internet</span>
+                	</abbr>
+            	</label>
+            	<input type="text" id="source-zone" name="source_zone" value="{{ source_zone|default:'' }}">
+        	</div>   
 
-    <!-- display error message -->
-    {% if error %}
-        <p style="color: red; text-align: center;">{{ error }}</p>
-    {% endif %}
+        	<div class="form-group">
+        		<label for="source-ip">Source IP:
+            		<abbr class="tooltip-icon">
+                		<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                    	<span class="tooltiptext">Enter an IP in the format X.X.X.X</span>
+                	</abbr>
+            	</label>
+            	<input type="text" id="source-ip" name="source_ip" value="{{ source_ip|default:'' }}">
+        	</div> 
 
-    {% if success %}
-        <p style="color: green; text-align: center;">{{ success }}</p>
-    {% endif %}
+        	<div class="form-group">
+        		<label for="destination-zone">Destination Zone:
+            		<abbr class="tooltip-icon">
+                		<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                	    <span class="tooltiptext">Destination Zones: Internal, DMZ, Internet</span>
+            	    </abbr>
+            	</label>
+            	<input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' }}">
+        	</div> 
 
-    <form method="post">
-        {% csrf_token %}
-        <label for="rule-name">Rule Name:</label>
-        <input type="text" id="rule-name" name="rule_name" value="{{ rule_name|default:'' }}">
+        	<div class="form-group">
+        		<label for="destination-ip">Destination IP:
+            		<abbr class="tooltip-icon">
+                    	<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                    	<span class="tooltiptext">Enter an IP in the format X.X.X.X</span>
+                	</abbr>
+            	</label>
+            	<input type="text" id="destination-ip" name="destination_ip" value="{{ destination_ip|default:'' }}">
+        	</div> 
+        
+        	<div class="form-group">
+            	<label for="application">Protocol:
+            	    <abbr class="tooltip-icon">
+            	        <img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+            	        <span class="tooltiptext">Enter a protocol (ex. SSH)</span>
+            	    </abbr>
+            	</label>
+            	<input type="text" id="application" name="application" value="{{ application|default:'' }}">
+        	</div> 
+        
+        	<div class="form-group">
+            	<label for="service">Port:
+                	<abbr class="tooltip-icon">
+                    	<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
+                    	<span class="tooltiptext">Enter an allowed port (ex. 12345)</span>
+                	</abbr>
+            	</label>
+            	<input type="text" id="service" name="service" value="{{ service|default:'' }}">
+        	</div> 
 
-        <label for="source-zone">Source Zone:</label>
-        <input type="text" id="source-zone" name="source_zone" value="{{ source_zone|default:'' }}">
+			<div class="form-group">
+        		<label for="action">Action:</label>
+        		<select id="action" name="action" color="black">
+            		<option value="allow" {% if action == 'allow' %}selected{% endif %}>Allow</option>
+            		<option value="deny" {% if action == 'deny' %}selected{% endif %}>Deny</option>
+        		</select>
+			</div>
 
-        <label for="source-ip">Source IP:</label>
-        <input type="text" id="source-ip" name="source_ip" value="{{ source_ip|default:'' }}">
+			<div class="button" style="display: flex; flex-direction: column; padding: 0px;">
+        		<input type="submit" value="Add Rule">
+			</div>
 
-        <label for="destination-zone">Destination Zone:</label>
-        <input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' 
-}}">
-
-        <label for="destination-ip">Destination IP:</label>
-        <input type="text" id="destination-ip" name="destination_ip" value="{{ destination_ip|default:'' }}">
-
-        <label for="application">Application:</label>
-        <input type="text" id="application" name="application" value="{{ application|default:'' }}">
-
-        <label for="service">Service:</label>
-        <input type="text" id="service" name="service" value="{{ service|default:'' }}">
-
-        <label for="action">Action:</label>
-        <select id="action" name="action">
-            <option value="allow" {% if action == 'allow' %}selected{% endif %}>Allow</option>
-            <option value="deny" {% if action == 'deny' %}selected{% endif %}>Deny</option>
-        </select>
-
-        <input type="submit" value="Add Rule">
-        <a href="{% url 'user' %}">
-            <input type="button" name="Back" value="Back">
-        </a>
-    </form>
+			<div class="button" style="display: flex; flex-direction: column; padding: 0px">
+        		<a href="{% url 'user' %}">
+            		<input type="button" name="Back" value="Back">
+        		</a>
+			</div>
+    	</form>
+	</div>
+</body>
 {% endblock %}

@@ -29,7 +29,7 @@ class AddRuleViewTest(TestCase):
     def test_get_add_rule(self):
         response = self.client.get(self.add_rule_url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'AddRule.html')
+        self.assertTemplateUsed(response, 'add_rule.html')
 
     @patch('main.views.add_rule')  # patch add_firewall_rule method
     def test_post_add_rule_invalid_data(self, mock_add_rule):

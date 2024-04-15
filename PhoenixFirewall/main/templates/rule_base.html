@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phoenix {{ role }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #808080;
+            color: white;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+	h6 {
+            color: white;
+            text-align: right;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+		.form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin: 0 0 5px 0;
+            color: #555;
+        }
+
+        .tooltip-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-group .tooltip-icon:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .form-group .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip text */
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -60px;
+
+            /* Fade in tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+
+        input[type="submit"] {
+            background-color: #ff8000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ff700f;
+        }
+
+        input[type="button"] {
+            background-color: #cccccc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="button"]:hover {
+            background-color: #bbbbbb;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        {% load static %}
+        <a href = "{% url 'home' %}">
+            <img src="{% static 'logo.png' %}" alt="Logo" style="width: 100px; height: auto">
+        </a>
+	{%if username.is_superuser%}
+        <h6>Role: Superuser <br>Username: {{ username }}</h6>
+        {%else%}
+        <h6>Role: User <br>Username: {{ username }}</h6>
+        {% endif %}
+    </header>
+
+    <h1>{{ role }}</h1>
+
+    <!-- display error message -->
+    {% if error %}
+        <p style="color: red; text-align: center;">{{ error }}</p>
+    {% endif %}
+
+    {% if success %}
+        <p style="color: green; text-align: center;">{{ success }}</p>
+    {% endif %}
+    {% block content %}
+    form
+    {% endblock %}
+</body>
+</html>
