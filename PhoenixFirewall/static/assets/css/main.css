@@ -538,6 +538,36 @@ input, select, textarea {
 		position: relative;
 		text-decoration: none;
 	}
+	.tooltip-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .form-group .tooltip-icon:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .form-group .tooltiptext {
+            visibility: hidden;
+            width: 120px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+
+            /* Position the tooltip text */
+            position: absolute;
+            z-index: 1;
+            bottom: 150%;
+            left: 50%;
+            margin-left: -60px;
+
+            /* Fade in tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
 
 		.icon:before {
 			-moz-osx-font-smoothing: grayscale;
@@ -588,6 +618,49 @@ input, select, textarea {
 			}
 
 
+/* tooltip logic */
+.form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    margin: 0 0 5px 0;
+    color: #555;
+}
+
+.tooltip-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.form-group .tooltip-icon:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
 /* Icons */
 
 	ul.icons {
@@ -1129,7 +1202,15 @@ input, select, textarea {
   background: #333; /* Slightly lighter than the container for contrast */
   color: white;
 }
-
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;    
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  color: black;
+}
 .button {
   display: block; /* Block level makes the button extend full width of the container */
   width: 100%;
