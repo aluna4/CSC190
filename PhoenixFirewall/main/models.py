@@ -62,9 +62,6 @@ class userlogIn(AbstractBaseUser, PermissionsMixin):
    def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
-
-#    def get_employeeID(self):
-#       return self.employeeID
    
    def __str__(self):
       return f"Employee: {self.employeeID}, Username = {self.username}"

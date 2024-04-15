@@ -5,8 +5,7 @@ import ipaddress
 from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse
 from .models import userlogIn
-from .models import AddRule
-from .models import DeleteRule
+from .models import Rule
 from .forms import SecurityConfUpload
 from django.core.exceptions import ValidationError
 from django.contrib import messages

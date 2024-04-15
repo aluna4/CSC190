@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from main.models import AddRule
+from main.models import Rule
 
 class AddRuleViewTest(TestCase):
     def test_add_rule_success(self):
@@ -19,7 +19,7 @@ class AddRuleViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        self.assertTrue(AddRule.objects.filter(rule_name='Test Rule').exists())
+        self.assertTrue(Rule.objects.filter(rule_name='Test Rule').exists())
 
     def test_add_rule_validation_error(self):
         data = {
