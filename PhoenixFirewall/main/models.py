@@ -69,7 +69,7 @@ class userlogIn(AbstractBaseUser, PermissionsMixin):
    def __str__(self):
       return f"Employee: {self.employeeID}, Username = {self.username}"
 
-class Rule(models.Model):
+class AddRule(models.Model):
    employeeID = models.CharField(max_length=10)
    rule_name = models.CharField(max_length=50)
    source_zone = models.CharField(max_length=50)
@@ -82,3 +82,13 @@ class Rule(models.Model):
 
    def __str__(self):
       return f"Employee: {self.employeeID} Rule Name = {self.rule_name}"
+   
+class DeleteRule(models.Model):
+    employeeID = models.CharField(max_length=10)
+    rule_name = models.CharField(max_length=50)
+    source_ip = models.CharField(max_length=50)
+    port = models.CharField(max_length=5)
+    state = models.CharField(max_length=10)
+
+    def __str__(self):
+        return f"Employee: {self.employeeID} has deleted Rule Name = {self.rule_name}"
