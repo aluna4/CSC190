@@ -3,21 +3,16 @@ import requests
 import regex as re
 import ipaddress
 from dotenv import load_dotenv, find_dotenv
-from django.http import HttpResponse, Http404
-from django.contrib.auth.hashers import make_password, check_password
+from django.http import HttpResponse
 from .models import userlogIn
-from .models import AddRule
-from .models import DeleteRule
+from .models import Rule
 from .forms import SecurityConfUpload
-from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.http import HttpResponse
-from .panorama_api import add_firewall_rule
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponseBadRequest
-
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model, authenticate, login
 
 
@@ -101,19 +96,8 @@ def login_view(request):
                     return redirect('user')
             else:
                 messages.error(request, 'Invalid username or password')
-            # if user is not None: #and check_password(password, user.user_pswd):
-            #     #request.session['user_id'] = user.id  # Store user's id in session
-            #     login(request,user)
-            #     return render(request, 'user.html')  # Redirect to a user page after successful login
-            # else:
-            #     messages.error(request, 'Invalid username or password')
-        except: #userlogIn.DoesNotExist:
-                # user = authenticate(request, username=username, password=password)
-                # if user is not None:
-                #     login(request, user)
-                #     return render(request, 'admin.html')
-                # else:
-                    messages.error(request, 'User does not exist')
+        except: 
+                messages.error(request, 'User does not exist')
     return render(request, 'login.html')
 
 #user page
@@ -171,11 +155,11 @@ def add_rule(request):
             if not source_ip_valid or not destination_ip_valid:
                 messages.error(request, 'The IP address entered is not within the correct zone.')
                 return render(request, "add_rule.html")
-                
+
+        current_user = get_object_or_404(userlogIn, pk=request.user.pk)
+
         new_rule = Rule(
-            # Here you should add your logic to actually add the firewall rule
-            # Assuming add_firewall_rule is a function that returns True on success
-            employeeID = employee_id,
+            employeeID = current_user,
             rule_name = rule_name.upper(),
             source_zone = source_zone, 
             source_ip = source_ip, 

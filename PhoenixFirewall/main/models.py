@@ -62,15 +62,12 @@ class userlogIn(AbstractBaseUser, PermissionsMixin):
    def save(self, *args, **kwargs):
         self.clean()
         super().save(*args, **kwargs)
-
-#    def get_employeeID(self):
-#       return self.employeeID
    
    def __str__(self):
       return f"Employee: {self.employeeID}, Username = {self.username}"
 
-class AddRule(models.Model):
-   employeeID = models.CharField(max_length=10)
+class Rule(models.Model):
+   employeeID = models.ForeignKey(userlogIn, on_delete=models.CASCADE)
    rule_name = models.CharField(max_length=50)
    source_zone = models.CharField(max_length=50)
    source_ip = models.CharField(max_length=50)
@@ -79,16 +76,5 @@ class AddRule(models.Model):
    application = models.CharField(max_length=50)
    service = models.CharField(max_length=50)
    action = models.CharField(max_length=50)
-
    def __str__(self):
-      return f"Employee: {self.employeeID} Rule Name = {self.rule_name}"
-   
-class DeleteRule(models.Model):
-    employeeID = models.CharField(max_length=10)
-    rule_name = models.CharField(max_length=50)
-    source_ip = models.CharField(max_length=50)
-    port = models.CharField(max_length=5)
-    state = models.CharField(max_length=10)
-
-    def __str__(self):
-        return f"Employee: {self.employeeID} has deleted Rule Name = {self.rule_name}"
+      return f"Employee: {self.employeeID.employeeID} Rule Name = {self.rule_name}"
