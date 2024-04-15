@@ -36,7 +36,7 @@ class userlogIn(AbstractBaseUser, PermissionsMixin):
    first_name = models.CharField(max_length = 15, default = "emp_FirstName") #holds employee first name
    last_name = models.CharField(max_length = 15, default = "emp_LastName") #holds employee last name
    username = models.CharField(max_length=100,unique=True) #holds username
-   password = models.CharField(max_length=50) #holds user password
+   password = models.CharField(max_length=250) #holds user password
    employeeID = models.CharField(max_length=8,unique=True,validators=[RegexValidator(regex=r'^\d{8}$')]) #holds employee 8 digit ID number
    create_date = models.DateTimeField("date created",auto_now_add=True) #holds date of user created
    zones = models.JSONField(default=list)

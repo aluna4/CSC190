@@ -12,9 +12,8 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model, authenticate, login
-
+from django.contrib.auth.decorators import login_required
 
 
 # Varibles for config
@@ -130,6 +129,7 @@ ZONE_SUBNETS = {
 }
 
 # add firewall rule
+@login_required #Ensure that only logged-in users can add rules
 def add_rule(request):
     if request.method == "POST":
         rule_name = request.POST.get("rule_name")
@@ -141,10 +141,12 @@ def add_rule(request):
         service = request.POST.get("service")
         action = request.POST.get("action")
 
-        
+        current_user = request.user
+
         # Check if the flow is allowed
-        if (source_zone, destination_zone) not in ALLOWED_FLOWS:
-            messages.error(request,'The specified flow is not allowed.')
+        user_zones = current_user.zones
+        if source_zone not in user_zones or destination_zone not in user_zones:#ALLOWED_FLOWS:
+            messages.error(request,'The specified flow is not allowed. You do not have access to a zone')
             return render(request, "add_rule.html")
 
         # Validate IP addresses
@@ -156,7 +158,6 @@ def add_rule(request):
                 messages.error(request, 'The IP address entered is not within the correct zone.')
                 return render(request, "add_rule.html")
 
-        current_user = get_object_or_404(userlogIn, pk=request.user.pk)
 
         new_rule = Rule(
             employeeID = current_user,
