@@ -6,7 +6,8 @@ from dotenv import load_dotenv, find_dotenv
 from django.http import HttpResponse, Http404
 from django.contrib.auth.hashers import make_password, check_password
 from .models import userlogIn
-from .models import Rule
+from .models import AddRule
+from .models import DeleteRule
 from .forms import SecurityConfUpload
 from django.utils import timezone
 from django.core.exceptions import ValidationError

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from PhoenixFirewall.main.models import FirewallRule
+from main.models import AddRule
 
 class AddRuleViewTest(TestCase):
     def test_add_rule_success(self):
@@ -19,7 +19,7 @@ class AddRuleViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        self.assertTrue(FirewallRule.objects.filter(rule_name='Test Rule').exists())
+        self.assertTrue(AddRule.objects.filter(rule_name='Test Rule').exists())
 
     def test_add_rule_validation_error(self):
         data = {
