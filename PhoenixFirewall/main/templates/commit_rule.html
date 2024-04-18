@@ -36,14 +36,16 @@
             	<input type="text" id="service" name="service" value="{{ service|default:'' }}">
         	</div>
 
-			<div class="button" style="display: flex; flex-direction: column; padding: 0px;">
-				<input type="submit" value="Commit Rule">
+			<div class="form-group action">
+                <button type="submit" class="button">Commit Rule</button>
 			</div>
 
 			<div class="button" style="display: flex; flex-direction: column; padding: 0px;">
-				<a href="{% url 'user' %}">
-					<input type="button" name="Back" value="Back">
-				</a>
+				{% if request.user.is_superuser %}
+				<button type="button" class="button" onclick="location.href='{% url 'custom_admin' %}'">Back</button>
+				{% else %}
+				<button type="button" class="button" onclick="location.href='{% url 'user' %}'">Back</button>
+				{% endif %}
 			</div>
 		</form>
 	</div>

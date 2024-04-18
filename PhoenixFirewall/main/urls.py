@@ -17,7 +17,7 @@ urlpatterns = [
     #user url
     path("user/", views.user_view, name="user"),
     # admin url
-    path("admin/", views.admin_view, name="admin"),
+    path("custom-admin/", views.custom_admin_view, name="custom_admin"),
     #download config
     path("get_pan_security_config/", views.get_pan_security_config, name="get_pan_security_config"),
     path("upload/", views.upload, name="upload"),

@@ -1173,6 +1173,8 @@ input, select, textarea {
 
 /* Login Container */
 .login-container {
+	text-align: center;
+	font-size: 20pt;
   max-width: 400px;
   margin: 2em auto; /* This centers the login form on the page and adds spacing from the top */
   padding: 2em;
@@ -1180,7 +1182,7 @@ input, select, textarea {
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   max-width: 400px;
-  margin-top: 120px; /* This value should be at least equal to the height of the nav bar */
+  margin-top: 100px; /* This value should be at least equal to the height of the nav bar */
 }
 
 /* Inputs and Buttons */
@@ -1189,13 +1191,16 @@ input, select, textarea {
 }
 
 .form-group label {
+	text-align: left;
+	font-size: large;
   color: white;
   display: block;
 }
 
 .form-group input {
+	font-size: large;
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   margin-top: 5px;
   border-radius: 5px;
   border: 1px solid #ccc; /* Light grey border */
@@ -1203,6 +1208,7 @@ input, select, textarea {
   color: white;
 }
 select {
+	font-size: large;
   width: 100%;
   padding: 10px;
   margin-top: 5px;    
@@ -1214,11 +1220,48 @@ select {
 .button {
   display: block; /* Block level makes the button extend full width of the container */
   width: 100%;
-  padding: 10px;
+  padding: 8px;
   margin-top: 10px;
   background-color: #FF7144; /* Your theme's button color */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 12pt;
 }
+
+.create-user-container {
+	text-align: center;
+	max-width: 400px;
+	margin: 2em auto; /* This centers the login form on the page and adds spacing from the top */
+	padding: 2em;
+	background: #222; /* Or any other color */
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	max-width: 400px;
+	margin-top: 120px; /* This value should be at least equal to the height of the nav bar */
+  }
+
+.message {
+	padding: 10px;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	text-align: center;
+	font-size: 1em;
+  }
+  
+  .success {
+	font-size: 16pt;
+	text-align: center;
+	color: #3c763d;
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
+  }
+  
+  .error{
+	font-size: 16pt;
+	font-weight: bold;
+	text-align: center;
+	color: #c51916;
+	background-color: rgba(250, 199, 199, 0.702);
+  }

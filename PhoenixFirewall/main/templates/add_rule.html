@@ -6,6 +6,11 @@
         <h1>Add Rule</h1>
     	<form method="post">
     		{% csrf_token %}
+			{% if messages %}
+                {% for message in messages %}
+                    <div class="{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
         	<div class="form-group">
         		<label for="rule-name">Rule Name:
             		<abbr class="tooltip-icon">
@@ -84,14 +89,16 @@
         		</select>
 			</div>
 
-			<div class="button" style="display: flex; flex-direction: column; padding: 0px;">
-        		<input type="submit" value="Add Rule">
+			<div class="form-group action">
+                <button type="submit" class="button">Add Rule</button>
 			</div>
 
-			<div class="button" style="display: flex; flex-direction: column; padding: 0px">
-        		<a href="{% url 'user' %}">
-            		<input type="button" name="Back" value="Back">
-        		</a>
+			<div class="form-group action">
+				{% if request.user.is_superuser %}
+				<button type="button" class="button" onclick="location.href='{% url 'custom_admin' %}'">Back</button>
+				{% else %}
+				<button type="button" class="button" onclick="location.href='{% url 'user' %}'">Back</button>
+				{% endif %}
 			</div>
     	</form>
 	</div>
