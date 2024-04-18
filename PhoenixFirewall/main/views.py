@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import get_user_model, authenticate, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 
 # Varibles for config
@@ -55,6 +55,9 @@ def create_user_view(request):
         if userlogIn.objects.filter(employeeID=employee_id).exists():
             messages.error(request, "Employee ID already exists")
             return render(request, 'create_user.html')
+        if username.lower() in password.lower():
+            messages.error(request, "Password cannot be similar to username")
+            return render(request, 'create_user.html')
         
         # Create the user
         try:
@@ -65,7 +68,6 @@ def create_user_view(request):
                 last_name=last_name.upper(),
                 employeeID=employee_id
             )
-            #new_user.save()
             messages.success(request, "User created successfully. Please log in.")
             return redirect('login')
         except ValidationError as e:
@@ -90,7 +92,7 @@ def login_view(request):
             if user is not None:
                 login(request,user)
                 if user.is_superuser:
-                    return redirect('admin')
+                    return redirect('custom_admin')
                 else:
                     return redirect('user')
             else:
@@ -107,7 +109,9 @@ def user_view(request):
     return render(request, 'user.html', context)
 
 # admin page
-def admin_view(request):
+@login_required
+@user_passes_test(lambda u: u.is_superuser)
+def custom_admin_view(request):
     context = {
         'username': request.user
     }

@@ -10,7 +10,7 @@
             {% csrf_token %}
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert {{ message.tags }}">{{ message }}</div>
+                    <div class="{{ message.tags }}">{{ message }}</div>
                 {% endfor %}
             {% endif %}
             <div class="form-group">
@@ -23,6 +23,9 @@
             </div>
             <div class="form-group action">
                 <button type="submit" class="button">Log in</button>
+            </div>
+            <div class="form-group action">
+                <button type="button" onclick="location.href='{% url 'home' %}' " class="button">Home</button>
             </div>
         </form>
     </div>

@@ -1,107 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create User</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-    }
+{% extends 'base.html' %}
 
-    .create-user-form {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        width: 300px;
-    }
-
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    input[type="submit"],
-    button {
-        width: 100%;
-        padding: 10px;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
-
-    input[type="submit"],
-    button {
-        background-color: #ffa500;
-        color: white;
-        border: none;
-        cursor: pointer;
-        margin-bottom: 0; /* Remove the margin for the last element */
-    }
-
-    input[type="submit"]:hover,
-    button:hover {
-        background-color: #cc8400;
-    }
-
-    button {
-        background-color: #ffffff;
-        color: #ffa500;
-        border: 1px solid #ffa500;
-    }
-
-    button:hover {
-        background-color: #ffe5b4;
-        color: #cc8400;
-    }
-    .message {
-    color: red;
-    font-size: 0.875rem; /* Adjust this value as needed */
-  }
-  
-  /* If using specific message tags */
-  .message.error {
-    color: red;
-    font-size: 0.875rem;
-  }
-
-</style>
-</head>
-<body>
-
-<div class="create-user-form">
+{% block title %}CreateUser{% endblock title %}
+    
+{% block content %}
+<body class="create-user-page">
+<div class="create-user-container">
     <h2>Create User</h2>
     <form action="/create_user/" method="post">
         {% csrf_token %}
-
         {% if messages %}
-        <div class="messages">
-          {% for message in messages %}
-          <div {% if message.tags %}class="{{ message.tags }}"{% endif %}>
-            {{ message }}
-          </div>
-          {% endfor %}
-        </div>
+            {% for message in messages %}
+                <div class="{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
         {% endif %}
 
 
@@ -125,14 +35,14 @@
             <label for="employee-id">Employee ID:</label>
             <input type="text" id="employeeId" name="employee_id" required placeholder="12345678" pattern=".{8,8}" title="Employee ID must be exactly 8 characters.">
         </div>
-        <div class="form-group">
-            <input type="submit" value="Create Account">
+        <div class="form-group action">
+            <button type="submit" class="button">Create Account</button>
         </div>
-        <div class="form-group">
-            <button type="button" onclick="location.href='{% url 'home' %}' ">Home</button>
+        <div class="form-group action">
+            <button type="button" onclick="location.href='{% url 'home' %}' " class="button">Home</button>
         </div>
     </form>
 </div>
 
 </body>
-</html>
+{% endblock content %}
