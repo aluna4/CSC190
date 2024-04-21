@@ -1293,6 +1293,7 @@ select {
     text-decoration: none;
     padding: 10px;
     margin: 0 10px;
+	border-bottom-color: transparent;
 }
 
 /* Main content area on admin page */
