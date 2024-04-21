@@ -1165,7 +1165,7 @@ input, select, textarea {
 
 /* Navigation Bar */
 #nav {
-  background: #333; /* Set the background color to match your theme */
+  background: #333;
   color: white;
   padding: 1em 0; /* Adjust as needed */
   text-align: center; /* This centers the content in the nav bar */

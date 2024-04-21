@@ -1,10 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
-from .models import userlogIn
-from .models import Rule
-# from .models import DeleteRule
+from .models import userlogIn  # import the userlogIn model
+from .models import Rule  # import the Rule model
 
-admin.site.register(userlogIn)
-admin.site.register(Rule)
-# admin.site.register(DeleteRule)
+admin.site.register(userlogIn)  # register the userlogIn model with the admin site
+admin.site.register(Rule)  # register the Rule model with the admin site

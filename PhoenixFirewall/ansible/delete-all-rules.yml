@@ -6,7 +6,6 @@
     - nic_vault.txt
 
   vars:
-    ansible_python_interpreter: "/home/malk/CSC190/venv/bin/python3"
     device:
       ip_address: "{{ ip_address }}"
       username: "{{ username }}"

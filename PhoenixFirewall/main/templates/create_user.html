@@ -14,30 +14,36 @@
             {% endfor %}
         {% endif %}
 
-
+        <!-- first name input -->
         <div class="form-group">
             <label for="first-name">First Name:</label>
             <input type="text" id="first_name" name="first_name" required placeholder="John">
         </div>
+        <!-- last name input -->
         <div class="form-group">
             <label for="last-name">Last Name:</label>
             <input type="text" id="last_name" name="last_name" required placeholder="Doe">
         </div>
+        <!-- username input -->
         <div class="form-group">
             <label for="username">Username:</label>
             <input type="text" id="user_name" name="username" required placeholder="johndoe123">
         </div>
+        <!-- password input -->
         <div class="form-group">
             <label for="password">Password:</label>
             <input type="password" id="user_pswd" name="password" required placeholder="••••••••" pattern=".{8,}" title="Password must be at least 8 characters long.">
         </div>
+        <!-- employee ID input -->
         <div class="form-group">
             <label for="employee-id">Employee ID:</label>
             <input type="text" id="employeeId" name="employee_id" required placeholder="12345678" pattern=".{8,8}" title="Employee ID must be exactly 8 characters.">
         </div>
+        <!-- create account button -->
         <div class="form-group action">
             <button type="submit" class="button">Create Account</button>
         </div>
+        <!-- home button -->
         <div class="form-group action">
             <button type="button" onclick="location.href='{% url 'home' %}' " class="button">Home</button>
         </div>

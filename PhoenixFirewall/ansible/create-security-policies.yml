@@ -7,7 +7,6 @@
     - nic_vault.txt
 
   vars:
-    ansible_python_interpreter: "/home/nic/nic_190/CSC190/venv/bin/python3"
     device:
       ip_address: "{{ ip_address }}"
       username: "{{ username }}"
@@ -20,12 +19,12 @@
     - name: Add rule
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{ device }}"
-        rule_name: "nic_rule22"
-        source_zone: ["Internet"]
-        source_ip: ["10.0.0.129"]
-        destination_zone: ["DMZ"]
-        destination_ip: ["10.0.0.65"]
+        rule_name: "nic_rule243"
+        source_zone: ["Internal"]
+        source_ip: ["10.0.0.1"]
+        destination_zone: ["Internet"]
+        destination_ip: ["10.0.0.128"]
         application: ["ssh"]
         service: ["any"]
         action: "allow"
-    
+  

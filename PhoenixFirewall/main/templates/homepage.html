@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 <head>
     <title>Homepage</title>
@@ -7,14 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     {% load static %}
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
-
 </head>
 <body class="is-preload">
     <div id="page-wrapper">
-
-        <!-- Nav -->
+        <!-- navigation -->
         <nav id="nav">
-            <!-- Replace this div with your logo image -->
             <a href="{% url 'home' %}">
                 <img id="header-title" src="{% static 'assets/css/images/phoenix_logo.png' %}" alt="Phoenix Firewall Logo">
             </a>
@@ -22,84 +18,70 @@
                 <li>
                     <a href="{% url 'login' %}" class="button login-button">Login</a>
                 </li>
-                <!-- Add other list items for other buttons or elements here if necessary -->
             </ul>
         </nav>
-
-
-        </div>
-
-        <!-- Banner -->
-        <section id="banner">
-
-            <header>
-                <h2>Don't have an account?</h2>
-                <a href="{% url 'create_user' %}" class="button">Create User</a>
-            </header>
-        </section>
-
-        <!-- Highlights -->
-        <section class="wrapper style1">
-            <div class="container">
-                <div class="row gtr-200">
-                    <section class="col-4 col-12-narrower">
-                        <div class="box highlight">
-                            <i class="icon solid major fa-users"></i>
-                            <h3>User Friendly</h3>
-                            <p>Enhance Firewall Efficiency</p>
-                        </div>
-                    </section>
-                    <section class="col-4 col-12-narrower">
-                        <div class="box highlight">
-                            <i class="icon solid major fa-lock"></i>
-                            <h3>Secure</h3>
-                            <p>Quickly Secure Networks</p>
-                        </div>
-                    </section>
-                    <section class="col-4 col-12-narrower">
-                        <div class="box highlight">
-                            <i class="icon solid major fa-laptop-code"></i>
-                            <h3>Remote</h3>
-                            <p>Remote Firewall Configuration</p>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </section>
-
-        <!-- Gigantic Heading -->
-        <section class="wrapper style2">
-            <div class="container">
-                <header class="major">
-                    <h2>Phoenix Firewall Application</h2>
-                    <p>Our application features comprehensive user access control, implementing checks and balances to prevent error-prone rule implementations that could compromise network integrity</p>
-                </header>
-            </div>
-        </section>
-
-
-        <!-- CTA -->
-        <section id="cta" class="wrapper style3">
-            <div class="container">
-                <header>
-                    <h2>Are you ready to control your network?</h2>
-                    <a href="{% url 'login' %}" class="button">Log In</a>
-                </header>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <div id="footer">
-            
-
-            <!-- Icons -->
-            <ul class="icons">
-                <li><a href="https://github.com/aluna4/CSC190" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-            </ul>
-
-        </div>
-
     </div>
-
+    <!-- banner section -->
+    <section id="banner">
+        <header>
+            <h2>Don't have an account?</h2>
+            <a href="{% url 'create_user' %}" class="button">Create User</a>
+        </header>
+    </section>
+    <!-- wrapper section -->
+    <section class="wrapper style1">
+        <div class="container">
+            <div class="row gtr-200">
+                <!-- user friendly box -->
+                <section class="col-4 col-12-narrower">
+                    <div class="box highlight">
+                        <i class="icon solid major fa-users"></i>
+                        <h3>User Friendly</h3>
+                        <p>Enhance Firewall Efficiency</p>
+                    </div>
+                </section>
+                <!-- secure box -->
+                <section class="col-4 col-12-narrower">
+                    <div class="box highlight">
+                        <i class="icon solid major fa-lock"></i>
+                        <h3>Secure</h3>
+                        <p>Quickly Secure Networks</p>
+                    </div>
+                </section>
+                <!-- remote box -->
+                <section class="col-4 col-12-narrower">
+                    <div class="box highlight">
+                        <i class="icon solid major fa-laptop-code"></i>
+                        <h3>Remote</h3>
+                        <p>Remote Firewall Configuration</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+    <!-- wrapper section 2 -->
+    <section class="wrapper style2">
+        <div class="container">
+            <header class="major">
+                <h2>Phoenix Firewall Application</h2>
+                <p>Our application features comprehensive user access control, implementing checks and balances to prevent error-prone rule implementations that could compromise network integrity</p>
+            </header>
+        </div>
+    </section>
+    <!-- call to action section -->
+    <section id="cta" class="wrapper style3">
+        <div class="container">
+            <header>
+                <h2>Are you ready to control your network?</h2>
+                <a href="{% url 'login' %}" class="button">Log In</a>
+            </header>
+        </div>
+    </section>
+    <!-- footer section -->
+    <div id="footer">
+        <ul class="icons">
+            <li><a href="https://github.com/aluna4/CSC190" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+        </ul>
+    </div>
 </body>
 </html>
