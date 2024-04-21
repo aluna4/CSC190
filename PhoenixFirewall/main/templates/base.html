@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Phoenix Firewall{% endblock title %}</title>
+    <!-- load static files -->
     {% load static %}
-    <!-- Link to your main CSS file that includes the navbar styles -->
+    <!-- link to main.css -->
     <link rel="stylesheet" href="{% static 'assets/css/main.css' %}">
 </head>
 <body>
     <nav id="nav">
-        <!-- Your navigation bar as per the homepage -->
         <a href="{% url 'home' %}">
+            <!-- display Phoenix Firewall logo -->
             <img id="header-title" src="{% static 'assets/css/images/phoenix_logo.png' %}" alt="Phoenix Firewall Logo">
         </a>
     </nav>
-
-    <!-- The content block where page-specific content will be inserted -->
+    <!-- content block -->
     {% block content %}
     {% endblock content %}
 </body>

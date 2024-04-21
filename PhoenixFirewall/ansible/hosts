@@ -1,2 +1,2 @@
 [phoenix_firewall]
-13.93.160.223
+13.93.160.223 ansible_python_interpreter="{{ lookup('env', 'PROJECT_ROOT') }}/CSC190/venv/bin/python3"

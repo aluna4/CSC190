@@ -14,20 +14,25 @@ User = get_user_model()
 
 
 class BaseTestCase(TestCase):
+	"""
+	This class serves as the base test case for all test cases in the 'main.tests' module.
+	It provides setup and utility methods that can be used by the derived test cases.
+	"""
+
 	def setUp(self):
-		# The default password
+		# the default password
 		self.password = '123'
 
-		# Create superuser
+		# create superuser
 		self.superuser = User.objects.create_superuser(username='Admin', password=self.password)
 		self.superuser_password = self.password
 
-		# Create regular users
+		# create regular users
 		self.user1 = User.objects.create_user(username='User 1', password=self.password)
 		self.user1_password = self.password
 		self.user2 = User.objects.create_user(username='User 2', password=self.password)
 
-		# The site's domain name, ex: example.com.
+		# the site's domain name, ex: example.com.
 		self.domain = Site.objects.get(pk=settings.SITE_ID).domain
-		# The site's protocol, ex: http or https
+		# the site's protocol, ex: http or https
 		self.protocol = 'https' if settings.USE_HTTPS else 'http'
