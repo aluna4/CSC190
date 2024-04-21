@@ -79,7 +79,7 @@ input, select, textarea {
 	}
 
 	body {
-		background: #333 url("images/bg01.png");
+		background: #444343 url("images/bg01.png");
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -1265,3 +1265,61 @@ select {
 	color: #c51916;
 	background-color: rgba(250, 199, 199, 0.702);
   }
+
+  /* Admin/user pages */
+
+.user-page{
+	background-color:#f4f4f4;
+	color: #333; /*dark grey text*/
+}
+
+.user-page header{
+	background-color: #b6b5b5; /* Dark header */
+    color: rgb(9, 8, 8); /* White text */
+    padding: 20px 0;
+    text-align: center;
+}
+
+  /* Nav styles specific to admin page */
+.user-page nav {
+    background-color: #838181; /* Darker grey for nav */
+    padding: 10px;
+    text-align: center;
+}
+
+/* Anchor styles within nav on admin page */
+.user-page nav a {
+    color: rgb(227, 225, 225);
+    text-decoration: none;
+    padding: 10px;
+    margin: 0 10px;
+}
+
+/* Main content area on admin page */
+.user-page main {
+	text-align: center;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff; /* White background for contrast */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Admin page button styles */
+.user-page .action-btn {
+    background-color: #ff8000; /* Brand color for action buttons */
+    color: white;
+	border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+/* Admin page specific button hover effects */
+.user-page .action-btn:hover {
+    background-color: #ff9933; /* Lighter orange on hover */
+}
