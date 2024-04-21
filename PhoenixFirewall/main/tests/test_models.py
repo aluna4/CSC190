@@ -3,8 +3,9 @@ from main.models import userlogIn, Rule
 from django.utils import timezone
 
 class UserModelTest(TestCase):
-    #tests the creation of a user
+    # tests the creation of a user
     def test_user_creation(self):
+        # create a user
         user = userlogIn.objects.create(
             first_name="John",
             last_name="Doe",
@@ -14,6 +15,7 @@ class UserModelTest(TestCase):
             create_date=timezone.now(),
             zones=[]
         )
+        # assert the user attributes
         self.assertEqual(user.first_name, "John")
         self.assertEqual(user.last_name, "Doe")
         self.assertEqual(user.user_name, "johndoe")
@@ -22,6 +24,7 @@ class UserModelTest(TestCase):
         self.assertIsNotNone(user.create_date)
     
     def test_user_str_representation(self):
+        # create a user
         user = userlogIn.objects.create(
             first_name="Jane",
             last_name="Smith",
@@ -31,9 +34,11 @@ class UserModelTest(TestCase):
             create_date=timezone.now(),
             zones=[]
         )
+        # assert the string representation of the user
         self.assertEqual(str(user), "Employee: 789012, Username = janesmith")
 
     def test_user_unique_constraint(self):
+        # create a user with the same username as user1
         user1 = userlogIn.objects.create(
             first_name="John",
             last_name="Doe",
@@ -43,11 +48,12 @@ class UserModelTest(TestCase):
             create_date=timezone.now(),
             zones=[]
         )
+        # assert that creating user2 with the same username raises an exception
         with self.assertRaises(Exception):
             user2 = userlogIn.objects.create(
                 first_name="Jane",
                 last_name="Smith",
-                user_name="johndoe",  # Trying to use same username
+                user_name="johndoe",  # trying to use same username
                 user_pswd="password",
                 employeeID="789012",
                 create_date=timezone.now(),
@@ -56,6 +62,7 @@ class UserModelTest(TestCase):
 
 class RuleModelTest(TestCase):
     def test_rule_creation(self):
+        # create a rule
         rule = Rule.objects.create(
             employeeID=self.user,
             rule_name="test_rule",
@@ -67,6 +74,7 @@ class RuleModelTest(TestCase):
             service="service",
             action="allow"
         )
+        # assert the rule attributes
         self.assertTrue(isinstance(rule, Rule))
         self.assertEqual(rule.rule_name, "test_rule")
         self.assertEqual(rule.source_zone, "zone1")
@@ -78,6 +86,7 @@ class RuleModelTest(TestCase):
         self.assertEqual(rule.action, "allow")
 
     def test_rule_str_representation(self):
+        # create a rule
         rule = Rule.objects.create(
             employeeID=self.user,
             rule_name="test_rule",
@@ -89,4 +98,5 @@ class RuleModelTest(TestCase):
             service="service",
             action="allow"
         )
+        # assert the string representation of the rule
         self.assertEqual(str(rule), f"Employee: {self.user.employeeID}Rule Name = {rule.rule_name}")

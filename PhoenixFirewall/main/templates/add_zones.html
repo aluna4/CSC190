@@ -4,12 +4,15 @@
 
 <form method="post">
     {% csrf_token %}
+    <!-- zone name -->
     <label for="zone-name">Zone Name:</label>
     <input type="text" id="zone-name" name="zone_name" value="{{ zone_name|default:'' }}">
 
+    <!-- start zone -->
     <label for="start-zone">Start Zone:</label>
     <input type="text" id="start-zone" name="start_zone" value="{{ start_zone|default:'' }}">
 
+    <!-- end zone -->
     <label for="end-zone">End Zone:</label>
     <input type="text" id="end-zone" name="end_zone" value="{{ end_zone|default:'' }}">
 

@@ -10,20 +10,25 @@
             {% csrf_token %}
             {% if messages %}
                 {% for message in messages %}
+                    <!-- display messages -->
                     <div class="{{ message.tags }}">{{ message }}</div>
                 {% endfor %}
             {% endif %}
+             <!-- input field for username -->
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
             </div>
+            <!-- input field for password -->
             <div class="form-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
             </div>
+             <!-- login button -->
             <div class="form-group action">
                 <button type="submit" class="button">Log in</button>
             </div>
+            <!-- home button -->
             <div class="form-group action">
                 <button type="button" onclick="location.href='{% url 'home' %}' " class="button">Home</button>
             </div>
