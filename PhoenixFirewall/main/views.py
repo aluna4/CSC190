@@ -176,7 +176,10 @@ def add_rule(request):
         )
         new_rule.save()
         messages.success(request, "Rule created successfully")
-        return redirect('user')
+        if request.user.is_superuser:
+            return redirect('custom_admin')
+        else:
+            return redirect('user')
     else:
         return render(request, "add_rule.html")
         
