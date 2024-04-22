@@ -148,7 +148,7 @@ input, select, textarea {
 	}
 
 	h3 {
-		font-size: 3em;
+		font-size: 2em;
 		letter-spacing: -0.025em;
 	}
 
@@ -191,7 +191,7 @@ input, select, textarea {
 	.container {
 		margin: 0 auto;
 		max-width: 100%;
-		width: 1400px;
+		width: 1200px;
 	}
 
 
@@ -455,7 +455,7 @@ input, select, textarea {
 
 	header.major {
 		text-align: center;
-		margin: 0 0 2em 0;
+		margin: 0 0 0 0;
 	}
 
 		header.major h2 {
@@ -597,7 +597,7 @@ input, select, textarea {
 		.icon.brands:before {
 			font-family: 'Font Awesome 5 Brands';
 		}
-
+		/* Styles the icons */
 		.icon.major {
 			text-align: center;
 			cursor: default;
@@ -901,10 +901,10 @@ input, select, textarea {
     			position: relative;
 			}
 			
-			
+			/* This styles the login button */
 			#nav > ul {
 				list-style: none;
-				padding: 0;
+				padding: 60px;
 				margin: 0;
 				display: flex;
 				position: absolute; /* Absolute position to remove it from the flow and let the title center */
@@ -930,7 +930,8 @@ input, select, textarea {
 				color: #c0c0c0;
 				text-decoration: none;
 				border: 0;
-				padding: 1.5em 0.5em 1.35em 0.5em;
+				padding: 4px 8px;
+				/* padding: 1.5em 0.5em 1.35em 0.5em; */
 				display: block;
 			}
 			
@@ -960,30 +961,18 @@ input, select, textarea {
 			}
 
 			.button.login-button {
-				padding: 0.35em 1em; /* Less vertical padding */
-				font-size: 0.8em; /* Smaller text */
-				background-color: #FF7144; /* Button color */
-				color: white; /* Text color */
-				border-radius: 10px; /* Corner radius */
-				border: none; /* No border */
-				display: inline-block; /* Aligns with other elements correctly */
-				line-height: normal; /* Adjust line height to suit the new padding */
-				vertical-align: middle; /* Aligns the button correctly in line with other inline or inline-block elements */
-				text-align: center; /* Center the text */
-				cursor: pointer; /* Change cursor to indicate button */
-				text-decoration: none; /* Remove underlines if it's an anchor tag */
-				-moz-appearance: none; /* Remove default styles for button in Firefox */
-				-webkit-appearance: none; /* Remove default styles for button in Safari */
-				-ms-appearance: none; /* Remove default styles for button in IE */
-				appearance: none; /* Remove default styles for button in modern browsers */
-				box-shadow: 0px 0px 0px transparent; /* Remove box-shadow if there was any */
-				border: 0 solid transparent; /* Ensuring the border doesn't take up space */
-				transition: background-color 0.2s, color 0.2s; /* Smooth transition for hover effects */
+				display: block; /*Block level makes the button extend full width of the container */
+				width: 100%;
+				padding: 8px;
+				margin-top: 6px;
+				background-color: #FF7144; /* Your theme's button color */
+				color: white;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+				font-size: 14pt;
 			}
 			
-			
-			
-
 			#nav > ul > li.current a {
 				color: #fff;
 			}
@@ -1045,8 +1034,9 @@ input, select, textarea {
 					}
 
 			#banner header .button {
+				display: inline-block;
 				vertical-align: middle;
-				margin-left: 1em;
+				font-size: 14pt;
 			}
 
 /* Wrapper */
@@ -1097,7 +1087,7 @@ input, select, textarea {
 		padding: 3.5em 0;
 	}
 
-		#cta header h2 {
+		#cta  h2 {
 			display: inline-block;
 			vertical-align: middle;
 			margin: 0;
@@ -1105,7 +1095,7 @@ input, select, textarea {
 
 		#cta header .button {
 			vertical-align: middle;
-			margin-left: 1em;
+			font-size: 14pt;
 		}
 
 /* Footer */
@@ -1175,14 +1165,14 @@ input, select, textarea {
 .login-container {
 	text-align: center;
 	font-size: 20pt;
-  max-width: 400px;
-  margin: 2em auto; /* This centers the login form on the page and adds spacing from the top */
-  padding: 2em;
-  background: #222; /* Or any other color */
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-  max-width: 400px;
-  margin-top: 100px; /* This value should be at least equal to the height of the nav bar */
+	max-width: 400px;
+	margin: 2em auto; /* This centers the login form on the page and adds spacing from the top */
+	padding: 2em;
+	background: #222; /* Or any other color */
+	border-radius: 5px;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+	max-width: 400px;
+	margin-top: 100px; /* This value should be at least equal to the height of the nav bar */
 }
 
 /* Inputs and Buttons */

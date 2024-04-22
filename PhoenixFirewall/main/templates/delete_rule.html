@@ -49,7 +49,7 @@
 			</div>
 			
 			<!-- back button -->
-			<div class="button" style="display: flex; flex-direction: column; padding: 0px;">
+			<div class="form-group action">
 				{% if request.user.is_superuser %}
 				<button type="button" class="button" onclick="location.href='{% url 'custom_admin' %}'">Back</button>
 				{% else %}

@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib import admin
 
 # list of URL patterns for mapping URLs to view functions
 urlpatterns = [
@@ -18,6 +19,7 @@ urlpatterns = [
     # user url
     path("user/", views.user_view, name="user"),
     # admin url
+    path('admin/', admin.site.urls),
     path("custom-admin/", views.custom_admin_view, name="custom_admin"),
     # download config url
     path("get_pan_security_config/", views.get_pan_security_config, name="get_pan_security_config"),

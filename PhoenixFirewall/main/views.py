@@ -109,6 +109,7 @@ def login_view(request):
     return render(request, 'login.html')
 
 # user page
+@login_required
 def user_view(request):
     context = {
         'username': request.user
@@ -231,7 +232,10 @@ def delete_rule(request):
             # call panorama_api function
             success = delete_firewall_rule(context['rule_name'], context['source_ip'], context['port'])
             if success:
-                return render(request, "delete_rule.html", {'success': 'Rule deleted successfully.'})
+                if request.user.is_superuser:
+                    return render(request, "admin.html", {'success': 'Rule deleted successfully.'})
+                else:
+                    return render(request, "user.html", {'success': 'Rule deleted successfully.'})
             else:
                 context['error'] = 'Error deleting firewall rule'
                 return render(request, "delete_rule.html", context)
@@ -258,7 +262,10 @@ def commit_rule(request):
             # call panorama_api function
             success = commit_firewall_rule(context['rule_name'], context['destination_zone'], context['port'])
             if success:
-                return render(request, "commit_rule.html", {'success': 'Configurations committed successfully.'})
+                if request.user.is_superuser:
+                    return render(request, "admin.html", {'success': 'Rule committed successfully.'})
+                else:
+                    return render(request, "user.html", {'success': 'Rule committed successfully.'})
             else:
                 context['error'] = 'Error committing configurations'
                 return render(request, "commit_rule.html", context)
