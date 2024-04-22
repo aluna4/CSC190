@@ -1279,7 +1279,7 @@ select {
 
 /* Anchor styles within nav on admin page */
 .user-page nav a {
-    color: rgb(227, 225, 225);
+    color: rgb(240, 239, 239);
     text-decoration: none;
     padding: 10px;
     margin: 0 10px;
