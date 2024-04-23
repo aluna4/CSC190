@@ -2,14 +2,19 @@
 {% load static %}
 {% block content %}
 <body class="login-page">
-	<div class="login-container"></div>
+	<div class="login-container">
 		<h1>Commit Rule</h1>
 		<form method="post">
 			{% csrf_token %}
+			{% if messages %}
+				{% for message in messages %}
+					<div class="{{ message.tags }}">{{ message }}</div>
+				{% endfor %}
+			{% endif %}
 			<!-- rule name -->
 			<div class="form-group">
 				<label for="rule-name">Rule Name:
-					<abbr class="tooltip-icon"></abbr>
+					<abbr class="tooltip-icon">
 						<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
 						<span class="tooltiptext">Enter the name of an existing firewall rule to be commited</span>
 					</abbr>
@@ -45,7 +50,7 @@
 			</div>
 
 			<!-- back button -->
-			<div class="button" style="display: flex; flex-direction: column; padding: 0px;">
+			<div class="form-group action">
 				{% if request.user.is_superuser %}
 				<button type="button" class="button" onclick="location.href='{% url 'custom_admin' %}'">Back</button>
 				{% else %}
