@@ -79,10 +79,10 @@
 		
 			<div class="form-group">
 				<!-- port -->
-				<label for="service">Port:
+				<label for="service">Service:
 					<abbr class="tooltip-icon">
 						<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
-						<span class="tooltiptext">Enter an allowed port (ex. 12345)</span>
+						<span class="tooltiptext">Enter an allowed service (ex. tcp-22)</span>
 					</abbr>
 				</label>
 				<input type="text" id="service" name="service" value="{{ service|default:'' }}">

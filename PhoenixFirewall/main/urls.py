@@ -26,4 +26,6 @@ urlpatterns = [
     path("upload/", views.upload, name="upload"),
     # create user url
     path("create_user/", views.create_user_view, name="create_user"),
+    # add service
+    path("add_service/", views.add_service, name="add_service")
 ]

@@ -16,6 +16,8 @@ from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .panorama_api import add_firewall_rule
 from .panorama_api import delete_firewall_rule
+from .panorama_api import add_firewall_service
+from .panorama_api import commit_firewall_rules
 
 
 # variables for config
@@ -141,6 +143,7 @@ ZONE_SUBNETS = {
 }
 
 # add firewall rule
+@login_required
 def add_rule(request):
     if request.method == "POST":
         rule_name = request.POST.get("rule_name")
@@ -213,77 +216,71 @@ def add_rule(request):
             return render(request, "add_rule.html")
     else:
         return render(request, "add_rule.html")
-        
+
 # delete firewall rule
+@login_required
 def delete_rule(request):
-    context = {
-        'username': request.user, 
-        'rule_name': '',
-        'source_ip':'',
-        'port': '',
-    }
     if request.method == "POST":
-        context['rule_name'] = request.POST.get("rule_name")
-        context['source_ip'] = request.POST.get("ip")
-        context['port'] = request.POST.get("port")
-
+        rule_name = request.POST.get("rule_name")
+        application = request.POST.get("application")
+        service = request.POST.get("service")
 
         try:
-            # call panorama_api function
-            success = delete_firewall_rule(context['rule_name'], context['source_ip'], context['port'])
+            # Call panorama_api function to delete the firewall rule
+            success = delete_firewall_rule(rule_name, application, service)
             if success:
-                if request.user.is_superuser:
-                    return render(request, "admin.html", {'success': 'Rule deleted successfully.'})
-                else:
-                    return render(request, "user.html", {'success': 'Rule deleted successfully.'})
+                messages.success(request, 'Rule deleted successfully.')
             else:
-                context['error'] = 'Error deleting firewall rule'
-                return render(request, "delete_rule.html", context)
+                messages.error(request, 'Error deleting firewall rule.')
+
         except Exception as e:
-            context['error'] = str(e)
-            return render(request, "delete_rule.html", context)
+            messages.error(request, f'Error deleting firewall rule: {str(e)}')
+
+        # Redirect after POST to avoid resubmitting the form
+        if request.user.is_superuser:
+            return redirect('custom_admin')
+        else:
+            return redirect('user')
+
     else:
-        # if not POST then for now just show addrule.html
-        return render(request, "delete_rule.html", context)
+        # If not POST, then just show the delete_rule.html template
+        return render(request, "delete_rule.html")
 
+# send commit to firewall
+@login_required
 def commit_rule(request):
-    context = {
-        'username': request.user,
-        'rule_name': '',
-        'destination_zone': '',
-        'port': '',
-    }
     if request.method == "POST":
-        context['rule_name'] = request.POST.get("rule_name")
-        context['destination_zone'] = request.POST.get('destination_zone')
-        context['port'] = request.POST.get("port")
-
         try:
-            # call panorama_api function
-            success = commit_firewall_rule(context['rule_name'], context['destination_zone'], context['port'])
+            # call panorama_api function to commit firewall rules
+            success = commit_firewall_rules()
             if success:
                 if request.user.is_superuser:
-                    return render(request, "admin.html", {'success': 'Rule committed successfully.'})
+                    messages.success(request, 'Firewall rules committed successfully.')
+                    return render(request, "admin.html")
                 else:
-                    return render(request, "user.html", {'success': 'Rule committed successfully.'})
+                    messages.success(request, 'Firewall rules committed successfully.')
+                    return render(request, "user.html")
             else:
-                context['error'] = 'Error committing configurations'
+                context = {'error': 'Error committing firewall rules'}
                 return render(request, "commit_rule.html", context)
         except Exception as e:
-            context['error'] = str(e)
+            context = {'error': str(e)}
             print(context['error'])
             return render(request, "commit_rule.html", context)
     else:
-        # if not POST then for now just show addrule.html
-        return render(request, "commit_rule.html", context)
+        # if not POST then for now just show commit_rule.html
+        return render(request, "commit_rule.html")
 
 
 # handle upload file
-def handle_uploaded_file(f):
+@login_required
+def handle_uploaded_file(request):
+    f = request.FILES['file']
     with open("/tmp/upl_security_config.txt", "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
+@login_required
 def _get_api_key(request):
     # send POST request to get headers form 
     headers = {"Content-Type":"application/x-www-form-urlencoded"}
@@ -296,8 +293,8 @@ def _get_api_key(request):
     # return key from function
     return(key.group(1))
 
-
 # function to get Django to download the file
+@login_required
 def _download_config(request):
     file_path = '/tmp/security_policies.txt'
     # open the file in binary mode
@@ -307,7 +304,8 @@ def _download_config(request):
         # set the Content-Disposition header to attach the file as a download
         response['Content-Disposition'] = 'attachment; filename="security_policies.txt"'
         return response
-
+        
+@login_required
 # function to grab config from PAN
 def get_pan_security_config(request):
     # generate API key for authentication
@@ -331,6 +329,7 @@ def get_pan_security_config(request):
 # function to set security config rules on PAN
 # note, this will change the default rulesets
 # documentation for API: https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-panorama-api/pan-os-xml-api-request-types/configuration-api/set-configuration#id52c0a29e-5573-4a40-bccf-5585fee352f3
+@login_required
 def _set_pan_security_config(request, file):
     # generate API key
     key = _get_api_key(request)
@@ -338,17 +337,46 @@ def _set_pan_security_config(request, file):
     # upload config rules via API
     headers = {"X-PAN-KEY":key}
     requests.post(f"{URL}/api/?type=config&action=set&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules/entry[@name='vsys1']&element={file}", headers=headers, verify=False)
-    
+
 # function used to handle file uploads from upload template
+@login_required
 def upload(request):  
     if request.method == 'POST':  
         file = SecurityConfUpload(request.POST, request.FILES)  
         if file.is_valid():  
-            handle_uploaded_file(request.FILES['file'])
+            handle_uploaded_file(request)  # pass the request object instead of request.FILES['file']
 
             # this requires further testing to get the xml correct
             # _set_pan_security_config(request, request.FILES['/tmp/upl_security_config.txt'])  
-            return HttpResponse("File uploaded successfully")  
+            return config_sucess_resp(request)  # return success response for uploading a security config
     else:  
         upload = SecurityConfUpload()  
         return render(request,"upload.html",{'form':upload})
+
+# add service to firewall
+@login_required
+def add_service(request):
+    if request.method == "POST":
+        service_name = request.POST.get("service_name")
+        protocol = request.POST.get("protocol")
+        port = request.POST.get("port")
+
+        current_user = request.user
+
+        try:
+            # call panorama_api function to add the firewall rule
+            success = add_firewall_service(service_name=service_name, protocol=protocol, port=port)
+            if success:
+                messages.success(request, "Service created successfully")
+                if request.user.is_superuser:
+                    return redirect('custom_admin')
+                else:
+                    return redirect('user')
+            else:
+                messages.error(request, 'Failed to add service rule via API.')
+                return render(request, "add_service.html")
+        except Exception as e:
+            messages.error(request, f'Error adding service: {str(e)}')
+            return render(request, "add_service.html")
+    else:
+        return render(request, "add_service.html")

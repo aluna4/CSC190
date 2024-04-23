@@ -3,36 +3,34 @@
 {% block title %}Login{% endblock title %}
 
 {% block content %}
-<body class="login-page">
-    <div class="login-container">
-        <h1>Login</h1>
-        <form method="post" action="/login/">
-            {% csrf_token %}
-            {% if messages %}
-                {% for message in messages %}
-                    <!-- display messages -->
-                    <div class="{{ message.tags }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-             <!-- input field for username -->
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-            </div>
-            <!-- input field for password -->
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-             <!-- login button -->
-            <div class="form-group action">
-                <button type="submit" class="button">Login</button>
-            </div>
-            <!-- home button -->
-            <div class="form-group action">
-                <button type="button" onclick="location.href='{% url 'home' %}' " class="button">Home</button>
-            </div>
-        </form>
-    </div>
-</body>
+<div class="login-container">
+    <h1>Login</h1>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        {% if messages %}
+            {% for message in messages %}
+                <!-- display messages -->
+                <div class="{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <!-- input field for username -->
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <!-- input field for password -->
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <!-- login button -->
+        <div class="form-group action">
+            <button type="submit" class="button">Login</button>
+        </div>
+        <!-- home button -->
+        <div class="form-group action">
+            <button type="button" onclick="location.href='{% url 'home' %}' " class="button">Home</button>
+        </div>
+    </form>
+</div>
 {% endblock content %}
