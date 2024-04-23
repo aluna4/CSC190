@@ -19,6 +19,7 @@ PhoenixFirewall is meant to streamline the process of firewall amendment request
    SECRET_KEY="django-insecure-u2&7**ao7+($5*y$_o*xpy(al94(ls@)hd5_k#%m#nkul+7@(%"
    PAN_URL="YOUR PALO ALTO FIREWALL URL HERE"
    PROJECT_ROOT="/home/user/"
+   VAULT_PASS="VAULT PASS HERE"
    ```
 1) Install python virtual environments
 	1) `sudo apt install python3-venv`

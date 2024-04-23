@@ -19,12 +19,12 @@
     - name: Add rule
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{ device }}"
-        rule_name: "nic_rule243"
+        rule_name: "AAAAAAA"
         source_zone: ["Internal"]
         source_ip: ["10.0.0.1"]
         destination_zone: ["Internet"]
         destination_ip: ["10.0.0.128"]
         application: ["ssh"]
-        service: ["any"]
+        service: ["tcp-22"]
         action: "allow"
   

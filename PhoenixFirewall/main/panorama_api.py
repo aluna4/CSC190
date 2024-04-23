@@ -146,7 +146,7 @@ def delete_firewall_rule(rule_name, source_ip, port):
 
   return True
 
-def commit_firewall_rule(rule_name, destination_zone, port):
+def commit_firewall_rules():
   # ansible playbook template for committing a firewall rule
   playbook_template = """
 ---
@@ -170,15 +170,9 @@ def commit_firewall_rule(rule_name, destination_zone, port):
       paloaltonetworks.panos.panos_commit_firewall:
         provider: "{{{{ device }}}}"
       register: results
-
-    - debug:
-        msg: "Commit with Job ID: {{{{ results.jobid }}}} had output: {{{{ results.details }}}}"
 """
   # create ansible playbook
   playbook_content = playbook_template.format(
-    rule_name=rule_name,
-    destination_zone=destination_zone,
-    port=port,
     ansible_python_interpreter=str((project_root / 'CSC190/venv/bin/python3'))
   )
 
@@ -187,6 +181,59 @@ def commit_firewall_rule(rule_name, destination_zone, port):
   with open(playbook_path, 'w') as file:
     file.write(playbook_content)
 
+  # run ansible playbook
+  run_playbook(playbook_path, ansible_dir)
+
+  return True
+
+
+# add firewall service
+def add_firewall_service(service_name, protocol, port):
+  # ansible playbook template for adding a firewall service
+  playbook_template = """
+---
+- name: Create service
+  hosts: phoenix_firewall
+  connection: local
+  vars_files:
+    - nic_vault.txt
+
+  vars:
+    device:
+      ip_address: "{{{{ ip_address }}}}"
+      username: "{{{{ username }}}}"
+      password: "{{{{ password }}}}"
+
+  collections:
+    - paloaltonetworks.panos
+
+  tasks:
+    - name: Check if the service object exists
+      panos_object_facts:
+        provider: "{{{{ device }}}}"
+        name: "{service_name}"
+      register: service_objects
+
+    - name: Create service object if it does not exist
+      panos_service_object:
+        provider: "{{{{ device }}}}"
+        name: "{service_name}"
+        protocol: "{protocol}"
+        destination_port: "{port}"
+      when: "'{service_name}' not in service_objects.objects | map(attribute='name') | list"
+  """
+
+  # create ansible playbook
+  playbook_content = playbook_template.format(
+    service_name=service_name,
+    protocol=protocol,
+    port=port,
+    ansible_python_interpreter=str((project_root / 'CSC190/venv/bin/python3'))
+  )
+  playbook_path = ansible_dir / 'create-service.yml'
+  with open(playbook_path, 'w') as file:
+    file.write(playbook_content)
+  
   # run ansible playbook
   run_playbook(playbook_path, ansible_dir)
 

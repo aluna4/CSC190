@@ -1,3 +1,4 @@
+
 ---
 - name: Delete security rule
   hosts: phoenix_firewall
@@ -10,7 +11,7 @@
       ip_address: "{{ ip_address }}"
       username: "{{ username }}"
       password: "{{ password }}"
-      
+    
   collections:  
     - paloaltonetworks.panos
 
@@ -18,7 +19,7 @@
     - name: Delete rule
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{ device }}"
-        rule_name: "up"
-        source_ip: "1.1.1.1"
+        rule_name: "nic_rule5"
+        source_ip: "ssh"
         port: 12345
         state: 'absent'

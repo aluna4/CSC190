@@ -14,7 +14,6 @@
             {% endif %}
     <nav>
         <a href="{% url 'home' %}">Home</a>
-        <a href="{% url 'add_rule' %}">View Rules</a>
         <a href="{% url 'admin:index' %}">Administration</a>
     </nav>
 
@@ -25,7 +24,8 @@
         <div class="form-group action">
             <button type="button" onclick="location.href='{% url 'add_rule' %}' " class="button">Add Rule</button>
             <button type="button" onclick="location.href='{% url 'delete_rule' %}' " class="button">Delete Rule</button>
-            <button type="button" onclick="location.href='{% url 'commit_rule' %}' " class="button">Commit Rule</button>
+            <button type="button" onclick="location.href='{% url 'commit_rule' %}' " class="button">Commit</button>
+            <button type="button" onclick="location.href='{% url 'add_service' %}' " class="button">Add Service</button>
             <button type="button" onclick="location.href='{% url 'upload' %}' " class="button">Upload Security Config</button>
             <form action="{% url 'get_pan_security_config' %}" method="post">
                 {% csrf_token %}

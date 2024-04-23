@@ -1,3 +1,4 @@
+
 ---
 - name: Commit firewall change
   hosts: phoenix_firewall
@@ -19,6 +20,3 @@
       paloaltonetworks.panos.panos_commit_firewall:
         provider: "{{ device }}"
       register: results
-    - debug:
-        msg: "Commit with Job ID: {{ results.jobid }} had output: {{ results.details }}"
-

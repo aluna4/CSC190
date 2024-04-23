@@ -1,0 +1,32 @@
+
+---
+- name: Create service
+  hosts: phoenix_firewall
+  connection: local
+  vars_files:
+    - nic_vault.txt
+
+  vars:
+    device:
+      ip_address: "{{ ip_address }}"
+      username: "{{ username }}"
+      password: "{{ password }}"
+
+  collections:
+    - paloaltonetworks.panos
+
+  tasks:
+    - name: Check if the service object exists
+      panos_object_facts:
+        provider: "{{ device }}"
+        name: "tcp-22"
+      register: service_objects
+
+    - name: Create service object if it does not exist
+      panos_service_object:
+        provider: "{{ device }}"
+        name: "tcp-22"
+        protocol: "tcp"
+        destination_port: "22"
+      when: "'tcp-22' not in service_objects.objects | map(attribute='name') | list"
+  

@@ -1155,7 +1155,7 @@ input, select, textarea {
 
 /* Navigation Bar */
 #nav {
-  background: #333;
+  background: #333; /* Set the background color to match your theme */
   color: white;
   padding: 1em 0; /* Adjust as needed */
   text-align: center; /* This centers the content in the nav bar */
@@ -1314,3 +1314,4 @@ select {
 .user-page .action-btn:hover {
     background-color: #ff9933; /* Lighter orange on hover */
 }
+
