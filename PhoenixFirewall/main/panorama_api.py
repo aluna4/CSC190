@@ -100,7 +100,7 @@ def add_firewall_rule(rule_name, source_zone, source_ip, destination_zone, desti
 
   return True
 
-def delete_firewall_rule(rule_name, source_ip, port):
+def delete_firewall_rule(rule_name, application, service):
   # Ansible playbook template for deleting a firewall rule
   playbook_template = """
 ---
@@ -124,15 +124,15 @@ def delete_firewall_rule(rule_name, source_ip, port):
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{{{ device }}}}"
         rule_name: "{rule_name}"
-        source_ip: "{source_ip}"
-        port: 12345
+        application: "ssh"
+        service: "tcp-22"
         state: 'absent'
 """
   # create ansible playbook
   playbook_content = playbook_template.format(
     rule_name=rule_name,
-    source_ip=source_ip,
-    port=port,
+    application=application,
+    service=service,
     ansible_python_interpreter=str((project_root / 'CSC190/venv/bin/python3'))
   )
 

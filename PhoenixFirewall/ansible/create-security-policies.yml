@@ -19,12 +19,12 @@
     - name: Add rule
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{ device }}"
-        rule_name: "rulename"
+        rule_name: "Test Rule"
         source_zone: ["Internal"]
         source_ip: ["10.0.0.1"]
         destination_zone: ["Internet"]
         destination_ip: ["10.0.0.129"]
         application: ["ssh"]
-        service: ["bad_service"]
+        service: ["tcp-22"]
         action: "allow"
   
