@@ -6,8 +6,6 @@ from django.contrib import admin
 urlpatterns = [
     path("", views.home, name="home"),
     path("success", views.add_success, name="add_success"),
-    # successful config upload url
-    path("success_config/", views.config_sucess_resp, name="config_success_resp"),
     # log in url
     path("login/", views.login_view, name ="login"),
     # add rule url
