@@ -19,17 +19,20 @@
 						<span class="tooltiptext">Enter a unique name for the service</span>
 					</abbr>
 				</label>
-				<input type="text" id="service-name" name="service_name" value="{{ service_name|default:'' }}">
+				<input type="text" id="service-name" name="service_name" value="{{ service_name|default:'' }}" placeholder="Enter a service (ex. tcp-22)">
 			</div>        
 			<div class="form-group">
 				<!-- protocol -->
 				<label for="application">TCP/UDP:
 					<abbr class="tooltip-icon">
 						<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
-						<span class="tooltiptext">Enter tcp or udp</span>
+						<span class="tooltiptext">Select tcp or udp</span>
 					</abbr>
 				</label>
-				<input type="text" id="protocol" name="protocol" value="{{ protocol|default:'' }}">
+				<select id="protocol" name="protocol">
+					<option value="tcp" {% if protocol == 'tcp' %}selected{% endif %}>tcp</option>
+					<option value="udp" {% if protocol == 'udp' %}selected{% endif %}>udp</option>
+				</select>
 			</div> 
 		
 			<div class="form-group">
@@ -40,7 +43,7 @@
 						<span class="tooltiptext">Enter an allowed port (ex. 12345)</span>
 					</abbr>
 				</label>
-				<input type="text" id="port" name="port" value="{{ port|default:'' }}">
+				<input type="text" id="port" name="port" value="{{ port|default:'' }}" placeholder="Enter a Port Number (ex. 22)">
 			</div> 
 			<div class="form-group action">
 				<button type="submit" class="button">Add Service</button>

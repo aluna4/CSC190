@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from main.views import login_view, add_rule, delete_rule, commit_rule, user_view, admin_view, get_pan_security_config, upload, create_user_view
+from main.views import login_view, add_rule, delete_rule, commit_rule, user_view, custom_admin_view, get_pan_security_config, upload, create_user_view
 
 class TestUrls(SimpleTestCase):
 
@@ -30,9 +30,9 @@ class TestUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, user_view)
 
     def test_admin(self):
-        url = reverse('admin')
+        url = reverse('custom_admin')
         # check if the resolved function is admin_view
-        self.assertEquals(resolve(url).func, admin_view)
+        self.assertEquals(resolve(url).func, custom_admin_view)
 
     def test_get_pan_security_config(self):
         url = reverse('get_pan_security_config')
