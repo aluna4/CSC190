@@ -19,7 +19,7 @@
     - name: Delete rule
       paloaltonetworks.panos.panos_security_rule:
         provider: "{{ device }}"
-        rule_name: "Test R"
+        rule_name: "ruleeee"
         application: "ssh"
         service: "tcp-22"
         state: 'absent'

@@ -19,7 +19,7 @@
 						<span class="tooltiptext">Enter a unique name for the firewall rule</span>
 					</abbr>
 				</label>
-				<input type="text" id="rule-name" name="rule_name" value="{{ rule_name|default:'' }}">
+				<input type="text" id="rule-name" name="rule_name" value="{{ rule_name|default:'' }}" placeholder="Enter a Rule Name (ex. myrule)">
 			</div>        
 		
 			<div class="form-group">
@@ -30,7 +30,7 @@
 						<span class="tooltiptext">Source Zones: Internal, DMZ, Internet</span>
 					</abbr>
 				</label>
-				<input type="text" id="source-zone" name="source_zone" value="{{ source_zone|default:'' }}">
+				<input type="text" id="source-zone" name="source_zone" value="{{ source_zone|default:'' }}" placeholder="Enter a Source Zone (ex. Internal)">
 			</div>   
 
 			<div class="form-group">
@@ -41,7 +41,7 @@
 						<span class="tooltiptext">Enter an IP in the format X.X.X.X</span>
 					</abbr>
 				</label>
-				<input type="text" id="source-ip" name="source_ip" value="{{ source_ip|default:'' }}">
+				<input type="text" id="source-ip" name="source_ip" value="{{ source_ip|default:'' }}" placeholder="Enter a Source IP (ex. 10.0.0.1)">
 			</div> 
 
 			<div class="form-group">
@@ -52,7 +52,7 @@
 						<span class="tooltiptext">Destination Zones: Internal, DMZ, Internet</span>
 					</abbr>
 				</label>
-				<input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' }}">
+				<input type="text" id="destination-zone" name="destination_zone" value="{{ destination_zone|default:'' }}" placeholder="Enter a Destination Zone (ex. Internet)">
 			</div> 
 
 			<div class="form-group">
@@ -63,7 +63,7 @@
 						<span class="tooltiptext">Enter an IP in the format X.X.X.X</span>
 					</abbr>
 				</label>
-				<input type="text" id="destination-ip" name="destination_ip" value="{{ destination_ip|default:'' }}">
+				<input type="text" id="destination-ip" name="destination_ip" value="{{ destination_ip|default:'' }}" placeholder="Enter a Destination IP (ex. 10.0.0.129)">
 			</div> 
 		
 			<div class="form-group">
@@ -71,10 +71,10 @@
 				<label for="application">Protocol:
 					<abbr class="tooltip-icon">
 						<img src="{% static 'info_icon.png' %}" alt="Info" style="width: 16px; height: 16px;">
-						<span class="tooltiptext">Enter a protocol (ex. SSH)</span>
+						<span class="tooltiptext">Enter a protocol (ex. ssh)</span>
 					</abbr>
 				</label>
-				<input type="text" id="application" name="application" value="{{ application|default:'' }}">
+				<input type="text" id="application" name="application" value="{{ application|default:'' }}" placeholder="Enter a protocol (ex. ssh)">
 			</div> 
 		
 			<div class="form-group">
@@ -85,7 +85,7 @@
 						<span class="tooltiptext">Enter an allowed service (ex. tcp-22)</span>
 					</abbr>
 				</label>
-				<input type="text" id="service" name="service" value="{{ service|default:'' }}">
+				<input type="text" id="service" name="service" value="{{ service|default:'' }}" placeholder="Enter a service (ex. tcp-22)">
 			</div> 
 
 			<div class="form-group">
