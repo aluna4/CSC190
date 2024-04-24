@@ -169,6 +169,38 @@ class DeleteRuleViewTest(TestCase):
         #messages = list(get_messages(response.wsgi_request))  # get the messages from the response
         self.assertTrue(ruleVal1!=ruleVal2, "Applications of rules must match.")  # assert the message content
 
+   
+    def test_delete_rule_valid_target(self):
+        
+          # data for successful rule creation
+        data = {
+            'rule_name': 'Test Rule',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'Internet',
+            'destination_ip': '10.0.0.129',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), "Rule created successfully")  # assert the message content
+
+
+        data = {
+            'rule_name': 'Test Rule',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'state': 'abt',
+        }
+
+        response = self.client.post(reverse('delete_rule'), data)
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        #self.assertEqual(response.status_code, 200)
+        self.assertIn('ok=2', response.content.decode())  # assert that the Ansible task returns "ok"
 
     def test_delete_rule_invalid_service(self):
         # data for successful rule creation
@@ -197,7 +229,7 @@ class DeleteRuleViewTest(TestCase):
             'state': 'absent',
         }
 
-        ruleVal2 = data['application']
+        ruleVal2 = data['service']
         response = self.client.post(reverse('delete_rule'), data)
         #self.assertEqual(response.status_code, 200)
         #messages = list(get_messages(response.wsgi_request))  # get the messages from the response
