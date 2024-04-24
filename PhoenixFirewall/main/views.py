@@ -245,6 +245,11 @@ def delete_rule(request):
         application = request.POST.get("application")
         service = request.POST.get("service")
 
+        # Confirm all fields entered
+        if not rule_name or not application or not service:
+            messages.error(request, 'Please fill in all the fields.')
+            return render(request, "delete_rule.html")
+
         try:
             # Call panorama_api function to delete the firewall rule
             success = delete_firewall_rule(rule_name, application, service)
