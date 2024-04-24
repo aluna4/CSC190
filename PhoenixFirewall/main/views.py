@@ -157,7 +157,23 @@ def add_rule(request):
 
         current_user = request.user
 
+        # check if any field is empty
+        if not rule_name or not source_zone or not source_ip or not destination_zone or not destination_ip or not application or not service or not action:
+            messages.error(request, 'Please fill in all the fields.')
+            return render(request, "add_rule.html")
+
+        # check if the source or destination zones are part of the allowed zones
+        allowed_zones = ['DMZ', 'Internal', 'Internet', 'Other']
+        if source_zone not in allowed_zones or destination_zone not in allowed_zones:
+            messages.error(request, 'The specified source or destination zone is not allowed, or does not exist.')
+            return render(request, "add_rule.html")
+
         # check if the flow is allowed
+        if (source_zone, destination_zone) not in ALLOWED_FLOWS:
+            messages.error(request, 'The specified flow is not allowed.')
+            return render(request, "add_rule.html")
+            
+        # check if user has access to entered zone    
         user_zones = current_user.zones
         if source_zone not in user_zones or destination_zone not in user_zones:
             messages.error(request,'The specified flow is not allowed. You do not have access to a zone')
@@ -165,8 +181,12 @@ def add_rule(request):
 
         # validate IP addresses
         if source_zone in ZONE_SUBNETS and destination_zone in ZONE_SUBNETS:
-            source_ip_valid = ipaddress.ip_address(source_ip) in ZONE_SUBNETS [source_zone]
-            destination_ip_valid = ipaddress.ip_address(destination_ip) in ZONE_SUBNETS[destination_zone]
+            try:
+                source_ip_valid = ipaddress.ip_address(source_ip) in ZONE_SUBNETS[source_zone]
+                destination_ip_valid = ipaddress.ip_address(destination_ip) in ZONE_SUBNETS[destination_zone]
+            except ValueError:
+                messages.error(request, 'The IP address entered is not in the correct format (x.x.x.x).')
+                return render(request, "add_rule.html")
 
             if not source_ip_valid or not destination_ip_valid:
                 messages.error(request, 'The IP address entered is not within the correct zone.')
@@ -348,7 +368,7 @@ def upload(request):
 
             # this requires further testing to get the xml correct
             # _set_pan_security_config(request, request.FILES['/tmp/upl_security_config.txt'])  
-            return config_sucess_resp(request)  # return success response for uploading a security config
+            return HttpResponse("File uploaded successfully")
     else:  
         upload = SecurityConfUpload()  
         return render(request,"upload.html",{'form':upload})

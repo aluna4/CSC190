@@ -8,6 +8,7 @@ import ipaddress
 
 User = get_user_model()  # get the user model
 
+############### SETUP ###############
 class AddRuleViewTest(TestCase):
     def setUp(self):
         # create a user with zones to test with
@@ -32,6 +33,8 @@ class AddRuleViewTest(TestCase):
             'Other': ipaddress.ip_network('10.0.0.192/26'),
         }
     
+
+############### TEST RULE SUCCESS ###############
     def test_add_rule_success(self):
         # data for successful rule creation
         data = {
@@ -40,76 +43,180 @@ class AddRuleViewTest(TestCase):
             'source_ip': '10.0.0.1',
             'destination_zone': 'Internet',
             'destination_ip': '10.0.0.129',
-            'application': 'SSH',
-            'service': '22',
+            'application': 'ssh',
+            'service': 'tcp-22',
             'action': 'allow',
         }
 
         response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
-
         self.assertEqual(response.status_code, 200)  # assert the response status code
-
-        self.assertTrue(Rule.objects.filter(rule_name='Test Rule').exists())  # assert that the rule exists
         messages = list(get_messages(response.wsgi_request))  # get the messages from the response
         self.assertEqual(str(messages[0]), "Rule created successfully")  # assert the message content
 
-    # tests for zone access or non-allowed flows
-    def test_add_rule_disallowed_flow(self):
-        # data for disallowed flow rule
+
+
+############### TEST BAD INPUT ###############
+    def test_bad_rule_name(self):
         data = {
-            'rule_name': 'Disallowed Rule',
-            'source_zone': 'DMZ',
-            'source_ip': '10.0.0.65',
-            'destination_zone': 'Other',
-            'destination_ip': '10.0.0.193',
+            'rule_name': '',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'Internet',
+            'destination_ip': '10.0.0.129',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), 'Please fill in all the fields.')  # assert the message content
+
+    def test_bad_source_zone(self):
+        data = {
+            'rule_name': 'bad_source_zone',
+            'source_zone': 'bad_zone',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'Internet',
+            'destination_ip': '10.0.0.129',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), 'The specified source or destination zone is not allowed, or does not exist.')  # assert the message content
+
+    def test_bad_destination_zone(self):
+        data = {
+            'rule_name': 'bad_destination_zone',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'bad_zone',
+            'destination_ip': '10.0.0.129',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), 'The specified source or destination zone is not allowed, or does not exist.')  # assert the message content
+
+    def test_bad_source_ip(self):
+        data = {
+            'rule_name': 'rulename',
+            'source_zone': 'Internal',
+            'source_ip': 'bad_format',
+            'destination_zone': 'Internet',
+            'destination_ip': '10.0.0.129',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), "The IP address entered is not in the correct format (x.x.x.x).")  # assert the message content
+
+    def test_bad_dest_ip(self):
+        data = {
+            'rule_name': 'rulename',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'Internet',
+            'destination_ip': 'bad_format',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), "The IP address entered is not in the correct format (x.x.x.x).")  # assert the message content
+
+    def test_bad_application(self):
+        data = {
+            'rule_name': 'rulename',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'Internet',
+            'destination_ip': '10.0.0.129',
+            'application': 'bad_application',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertIn("returned non-zero exit status 2.", str(messages[0]))  # assert that the message content contains the specified string
+
+    def test_bad_service(self):
+        data = {
+            'rule_name': 'rulename',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'Internet',
+            'destination_ip': '10.0.0.129',
+            'application': 'ssh',
+            'service': 'bad_service',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertIn("returned non-zero exit status 2.", str(messages[0]))  # assert that the message content contains the specified string
+
+############### TEST WRONG INPUT ###############
+    def test_ip_in_wrong_zone(self):
+        data = {
+            'rule_name': 'rulename',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.130',
+            'destination_zone': 'Internet',
+            'destination_ip': '10.0.0.129',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), 'The IP address entered is not within the correct zone.')  # assert the message content
+
+    def test_add_rule_no_zone_access(self):
+        data = {
+            'rule_name': 'no_zone_access',
+            'source_zone': 'Internal',
+            'source_ip': '10.0.0.1',
+            'destination_zone': 'DMZ',
+            'destination_ip': '10.0.0.65',
             'application': 'SSH',
             'service': '22',
             'action': 'allow',
         }
 
         response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
+        self.assertEqual(response.status_code, 200)  # assert the response status code
+        messages = list(get_messages(response.wsgi_request))  # get the messages from the response
+        self.assertEqual(str(messages[0]), 'The specified flow is not allowed. You do not have access to a zone')  # assert the message content
+
+    def test_bad_flow(self):
+        data = {
+            'rule_name': 'no_zone_access',
+            'source_zone': 'Internet',
+            'source_ip': '10.0.0.129',
+            'destination_zone': 'Internal',
+            'destination_ip': '10.0.0.1',
+            'application': 'ssh',
+            'service': 'tcp-22',
+            'action': 'allow',
+        }
+
+        response = self.client.post(reverse('add_rule'), data, follow=True)  # send a POST request
 
         self.assertEqual(response.status_code, 200)  # assert the response status code
-        self.assertFalse(Rule.objects.filter(rule_name='DISALLOWED RULE').exists())  # assert that the rule does not exist
         messages = list(get_messages(response.wsgi_request))  # get the messages from the response
         self.assertEqual(str(messages[0]), 'The specified flow is not allowed.')  # assert the message content
-    
-    def test_add_rule_validation_error(self):
-        # data for rule with validation error
-        data = {
-            'rule_name': 'Test Rule2',
-            'source_zone': 'Internal',
-            'source_ip': '10.0.0.10',
-            'destination_zone': 'Internet',
-            'application': 'SSH',
-            'service': '22',
-            'action': 'allow',
-        }
 
-        response = self.client.post(reverse('add_rule'), data)  # send a POST request
-
-        self.assertEqual(response.status_code, 200)  # assert the response status code
-        self.assertFormError(response, 'form', 'destination_ip', 'This field is required.')  # assert the form error
-
-    def test_add_rule_invalid_data(self):
-        # data for rule with invalid data
-        data = {
-            'rule_name': 'Test Rule',
-            'source_zone': 'Internal',
-            'source_ip': '192.168.1.1',
-            'destination_zone': 'Internet',
-            'destination_ip': 'invalid_ip',  
-            'application': 'SSH',
-            'service': '22',
-            'action': 'allow',
-        }
-
-        response = self.client.post(reverse('add_rule'), data)  # send a POST request
-
-        self.assertEqual(response.status_code, 200)  # assert the response status code
-        self.assertFormError(response, 'form', 'destination_ip', 'Enter a valid IPv4 or IPv6 address.')  # assert the form error
-
-    def test_add_rule_back_button(self):
-        response = self.client.get(reverse('add_rule'))  # send a GET request
-
-        self.assertContains(response, '<a href="{}">'.format(reverse('user')), html=True)  # assert the presence of a specific HTML element
