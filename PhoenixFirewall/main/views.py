@@ -301,7 +301,7 @@ def commit_rule(request):
 @login_required
 def handle_uploaded_file(request):
     f = request.FILES['file']
-    with open("/tmp/upl_security_config.txt", "wb+") as destination:
+    with open("/tmp/upl_security_config.xml", "wb+") as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
@@ -324,8 +324,8 @@ def _download_config(request):
     file_path = '/tmp/security_policies.txt'
     # open the file in binary mode
     with open(file_path, 'r') as file:
-        # set the content type to the appropriate file type (text/plain for .txt files)
-        response = HttpResponse(file, content_type='text/plain')
+        # set the content type to the appropriate file type (text/xml for .xml files)
+        response = HttpResponse(file, content_type='text/xml')
         # set the Content-Disposition header to attach the file as a download
         response['Content-Disposition'] = 'attachment; filename="security_policies.txt"'
         return response
@@ -351,17 +351,54 @@ def get_pan_security_config(request):
     #time.sleep(3)
     #os.remove("/tmp/firewall-config.xml")
 
+# Function to get all current configs
+def _get_current_active_config(request):
+    key = _get_api_key(request)
+
+    headers = {"X-PAN-KEY":key}
+    policies = requests.get(f"{URL}/api?type=config&action=show&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules&key={key}", headers=headers, verify=False)
+    return policies.text
+
+# Function to store all names into list
+def _store_names_into_list(text: str) -> list:
+    names = re.findall('(?<=<entry name=")[^"]*', text)
+    if(names is not None):
+        for name in names:
+            print(name)
+    else:
+        print("No names")
+    return names
+
+# Function to flush existing names
+def _flush_config(request, names):
+    key = _get_api_key(request)
+
+    headers = {"X-PAN-KEY":key}
+    for name in names:
+        requests.post(f"{URL}/api?type=config&action=delete&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules/entry[@name='{name}']&key={key}", headers=headers, verify=False)
+
+# Function to commmit all changes
+def _commit_changes(request):
+    key = _get_api_key(request)
+
+    headers = {"X-PAN-KEY":key}
+    r = requests.post(f"{URL}/api?type=commit&cmd=<commit></commit>&key={key}", headers=headers, verify=False)
+    print(r.text)
+
+
 # function to set security config rules on PAN
-# note, this will change the default rulesets
-# documentation for API: https://docs.paloaltonetworks.com/pan-os/9-1/pan-os-panorama-api/pan-os-xml-api-request-types/configuration-api/set-configuration#id52c0a29e-5573-4a40-bccf-5585fee352f3
 @login_required
-def _set_pan_security_config(request, file):
+def _set_pan_security_config(request):
     # generate API key
     key = _get_api_key(request)
 
     # upload config rules via API
     headers = {"X-PAN-KEY":key}
-    requests.post(f"{URL}/api/?type=config&action=set&xpath=/config/devices/entry/vsys/entry/rulebase/security/rules/entry[@name='vsys1']&element={file}", headers=headers, verify=False)
+
+    with open("/tmp/upl_security_config.xml", 'r') as file:
+        xml_content = file.read()
+
+        requests.post(f"{URL}/api/?type=config&action=set&xpath=/config/devices/entry[@name='localhost.localdomain']/vsys/entry[@name='vsys1']/rulebase/security/rules&element={xml_content}&key={key}", headers=headers, verify=False)
 
 # function used to handle file uploads from upload template
 @login_required
@@ -370,9 +407,12 @@ def upload(request):
         file = SecurityConfUpload(request.POST, request.FILES)  
         if file.is_valid():  
             handle_uploaded_file(request)  # pass the request object instead of request.FILES['file']
+            names = _store_names_into_list(_get_current_active_config(request))
+            _flush_config(request, names)
+            names = []
+            _set_pan_security_config(request)
+            _commit_changes(request)
 
-            # this requires further testing to get the xml correct
-            # _set_pan_security_config(request, request.FILES['/tmp/upl_security_config.txt'])  
             return HttpResponse("File uploaded successfully")
     else:  
         upload = SecurityConfUpload()  
