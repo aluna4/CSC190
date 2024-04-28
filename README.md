@@ -80,7 +80,14 @@ A) You can opt to change your firewall address in the `.env` file or you can uti
 To utilize Selenium based testing, run the script `sel_test.py`. This script can be found in the path `$PROJECT_ROOT/CSC190/PhoenixFirewall/tests`. The Selenium testing will check for API endpoint connections, firewall communication, and valid firewall credential. Check the `Developer Instructions` for more details on adding test cases. 
 
 ### Ansible Testing
-#### Placeholder
+To utilize Ansible based testing, run the command `python3 manage.py test`. This command should be ran from `$PROJECT_ROOT/CSC190/PhoenixFirewall`. This will run both the add rule tests and the delete rule tests.
+To run a specific ansible test, run the command `python3 manage.py test main.test.[ansible_test_file]`.
+There are scripts to run tests when adding rules, deleting rules, and committing the firewall. The tests run from the unittests python library and check valid rule names, existence of rules, proper credentials, and other inputs that could potentially be unsuccessful when running the specified ansible script.
+To add more test cases:
+   -First create a way to capture the invalid success in the `main.views` file. 
+   -Then modify the respecitve ansible script to catch the invalid success in its own defined method.
+Upon running the modified test file again, the new tests will be included in the tests result output. 
+
 
 ## Deployment
 ### AWS/Azure
@@ -94,7 +101,7 @@ The self hosted instructions for deployment is under the `Installation Guide` ab
 ### Testing
 When utilizing the selenium based testing, you can put your endpoints within the `uEP.csv` file under the path `$PROJECT_ROOT/CSC190/PhoenixFirewall/tests`. The endpoint format should be `$ENDPOINT_NAME/` with the first line being `endpoints`.
 
-The selenium based testing is based on python's `unittest` library. To add more test cases, it is recommended to read on their documentation to add onto the existing code-base. 
+The selenium and ansible testing is based on python's `unittest` library. To add more test cases, it is recommended to read on their documentation to add onto the existing code-base. 
 
 ### .ENV File
 The `PAN_URL` variable takes both an ip address as well as a FQDN. 
