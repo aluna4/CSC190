@@ -1,7 +1,15 @@
 ![](https://lh7-us.googleusercontent.com/Q5qISaC80enw9vhh_JmkwlelJS5Kkxu_U5Oy03W-LZ7wMiQUXAb2MhCGINlo3p8Ft8Lvy-j1uT8bh09CySWQZFcyg8GRVQoeQ3VskPOTfi_cfD356djTSzpTgreCIgoiUV_o2vDvsYpfx6o=s2048)
 
 ## PhoenixFirewall
-PhoenixFirewall is meant to streamline the process of firewall amendment requests as well as help set up complete firewalls from configs. Rather than having continuous pipelines with developers creating tickets to amend the firewall and having administrators go in and manually accept/decline each request, PhoenixFirewall is aiming to make it so that developers can create rules directly `python3 manage.py runserver` the firewall using specifically crafted requests with a definite scope. One of the main purposes of PhoenixFirewall  is to deploy and modify Palo Alto specific firewalls.  Utilizing Palo Alto's native API as well as Django's native API, PhoenixFirewall will create routes and workflows to alter the Palo Alto firewall as defined by an administrative user.
+The primary aim of this project was to develop an application that could automate the deployment and management of Palo Alto Panorama firewalls by minimizin manual interventions, thereby increasing efficiency and reducing errors. The software was designed to cater to two user groups: the general Intel employee and the network admin/engineers. The general employee has a focus on rule automation. The GUI was designed to allow users with minimal technical knowledge to make firewall configurations effectively. Admins/engineers would focus on script and user access management. Network admins would have the ability to upload and manage Ansible scripts to facilitate new configurations. Lastly, mechanisms were in place to ensure that only authorized personnel could make changes to the firewall settings.
+
+## Contributors
+Nicolas Cordero: nicolascordero@csus.edu
+Jesus-Pablo Alfaro: jesus-pabloalfaro2@csus.edu
+Malkylm Wright: malkylmwright@csus.edu
+Trang Phan: trangphan@csus.edu
+Ian Vachuska: ianvachuska@csus.edu
+Alicia Luna: alicialuna@csus.edu
 
 ## Installation Guide
 Clone this repository
