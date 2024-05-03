@@ -11,7 +11,7 @@ Trang Phan: trangphan@csus.edu
 Ian Vachuska: ianvachuska@csus.edu
 Alicia Luna: alicialuna@csus.edu
 
-## Installation Guide
+## Installation Guide 
 Clone this repository
 ```
 git clone https://github.com/aluna4/CSC190.git
