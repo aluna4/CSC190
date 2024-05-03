@@ -64,7 +64,7 @@ python3 manage.py runserver
 ```
 
 ## Visualization Demo
-[Video Link](https://www.youtube.com/shorts/pWTXqm0EDjQ)
+[Video Link](https://youtu.be/tg95MOidORg)
 
 ## Q&A
 ### Q)  What stack is this project running?
