@@ -1,0 +1,294 @@
+(venv) nic@HatsuneMiku:~/nic_190/CSC190/PhoenixFirewall$ python manage.py test -v 3
+Found 26 test(s).
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+Operations to perform:
+  Synchronize unmigrated apps: livereload, messages, staticfiles
+  Apply all migrations: admin, auth, contenttypes, main, sessions
+Running pre-migrate handlers for application main
+Running pre-migrate handlers for application admin
+Running pre-migrate handlers for application auth
+Running pre-migrate handlers for application contenttypes
+Running pre-migrate handlers for application sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK (0.002s)
+  Applying contenttypes.0002_remove_content_type_name... OK (0.004s)
+  Applying auth.0001_initial... OK (0.006s)
+  Applying auth.0002_alter_permission_name_max_length... OK (0.003s)
+  Applying auth.0003_alter_user_email_max_length... OK (0.002s)
+  Applying auth.0004_alter_user_username_opts... OK (0.003s)
+  Applying auth.0005_alter_user_last_login_null... OK (0.002s)
+  Applying auth.0006_require_contenttypes_0002... OK (0.000s)
+  Applying auth.0007_alter_validators_add_error_messages... OK (0.002s)
+  Applying auth.0008_alter_user_username_max_length... OK (0.003s)
+  Applying auth.0009_alter_user_last_name_max_length... OK (0.003s)
+  Applying auth.0010_alter_group_name_max_length... OK (0.003s)
+  Applying auth.0011_update_proxy_permissions... OK (0.002s)
+  Applying auth.0012_alter_user_first_name_max_length... OK (0.002s)
+  Applying main.0001_initial... OK (0.008s)
+  Applying admin.0001_initial... OK (0.005s)
+  Applying admin.0002_logentry_remove_auto_add... OK (0.007s)
+  Applying admin.0003_logentry_add_action_flag_choices... OK (0.004s)
+  Applying sessions.0001_initial... OK (0.001s)
+Running post-migrate handlers for application main
+Adding content type 'main | userlogin'
+Adding content type 'main | rule'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Running post-migrate handlers for application admin
+Adding content type 'admin | logentry'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Running post-migrate handlers for application auth
+Adding content type 'auth | permission'
+Adding content type 'auth | group'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Running post-migrate handlers for application contenttypes
+Adding content type 'contenttypes | contenttype'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Running post-migrate handlers for application sessions
+Adding content type 'sessions | session'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+Adding permission 'Permission object (None)'
+System check identified some issues:
+
+WARNINGS:
+?: (urls.W005) URL namespace 'admin' isn't unique. You may not be able to reverse all URLs in this namespace
+
+System check identified 1 issue (0 silenced).
+test_add_rule_no_zone_access (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_add_rule_success (main.tests.test_add_rule.AddRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ok
+test_bad_application (main.tests.test_add_rule.AddRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+fatal: [13.93.160.223]: FAILED! => {"changed": false, "msg": "Failed create:  rulename -> application 'bad_application' is not an allowed keyword\n rulename -> application 'bad_application' is not a valid reference\n rulename -> application is invalid"}
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
+ok
+test_bad_dest_ip (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_bad_destination_zone (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_bad_flow (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_bad_rule_name (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_bad_service (main.tests.test_add_rule.AddRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+fatal: [13.93.160.223]: FAILED! => {"changed": false, "msg": "Failed create:  rulename -> service 'bad_service' is not an allowed keyword\n rulename -> service 'bad_service' is not a valid reference\n rulename -> service is invalid"}
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=1    changed=0    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+
+ok
+test_bad_source_ip (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_bad_source_zone (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_ip_in_wrong_zone (main.tests.test_add_rule.AddRuleViewTest) ... ok
+test_delete_rule_all_fields_submit (main.tests.test_delete_rule.DeleteRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ok
+test_delete_rule_invalid_application (main.tests.test_delete_rule.DeleteRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Delete security rule] *****************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Delete rule] **************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ok
+test_delete_rule_invalid_service (main.tests.test_delete_rule.DeleteRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Delete security rule] *****************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Delete rule] **************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ok
+test_delete_rule_success (main.tests.test_delete_rule.DeleteRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Delete security rule] *****************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Delete rule] **************************************************************************************************************************************************************************************
+changed: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ok
+test_delete_rule_valid_declare (main.tests.test_delete_rule.DeleteRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+changed: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Delete security rule] *****************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Delete rule] **************************************************************************************************************************************************************************************
+changed: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ok
+test_delete_rule_validate_rule_name (main.tests.test_delete_rule.DeleteRuleViewTest) ... [WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Create security policies] *************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Add rule] *****************************************************************************************************************************************************************************************
+changed: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[WARNING]: Collection paloaltonetworks.panos does not support Ansible version 2.13.13
+
+PLAY [Delete security rule] *****************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] **********************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+TASK [Delete rule] **************************************************************************************************************************************************************************************
+ok: [13.93.160.223]
+
+PLAY RECAP **********************************************************************************************************************************************************************************************
+13.93.160.223              : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+ok
+test_add_rule (main.tests.test_urls.TestUrls) ... ok
+test_admin (main.tests.test_urls.TestUrls) ... ok
+test_commit_rule (main.tests.test_urls.TestUrls) ... ok
+test_create_user (main.tests.test_urls.TestUrls) ... ok
+test_delete_rule (main.tests.test_urls.TestUrls) ... ok
+test_get_pan_security_config (main.tests.test_urls.TestUrls) ... ok
+test_login (main.tests.test_urls.TestUrls) ... ok
+test_upload (main.tests.test_urls.TestUrls) ... ok
+test_user (main.tests.test_urls.TestUrls) ... ok
+
+----------------------------------------------------------------------
+Ran 26 tests in 46.721s
+
+OK
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
