@@ -112,3 +112,13 @@ Ensure the `PROJECT_ROOT` variable is your absolute path right before the cloned
 
 ### Deployment
 Currently, the project has been created only to run in Django's developer mode. This is intentional, as the product was meant specifically to be used as an internal application. This gives the application administrators an easier time with logging and bug reduction. Some infrastructure changes may be required if future developers would like Django to run in production mode. 
+
+## Contributors
+```
+Nicolas Cordero: nicolascordero@csus.edu
+Jesus-Pablo Alfaro: jesus-pabloalfaro2@csus.edu
+Malkylm Wright: malkylmwright@csus.edu
+Trang Phan: trangphan@csus.edu
+Ian Vachuska: ianvachuska@csus.edu
+Alicia Luna: alicialuna@csus.edu
+```
